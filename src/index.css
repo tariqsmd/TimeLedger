@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Core Colors */
+    --primary: #4f46e5;
+    --primary-glow: rgba(79, 70, 229, 0.15);
+    --secondary: #7c3aed;
+    --accent: #059669;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+
+    /* Backgrounds - Default Light */
+    --bg-main: #f8fafc;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f1f5f9;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: #e2e8f0;
+
+    /* Text Colors */
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+
+    /* Spacing & Sizes */
+    --sidebar-width: 260px;
+    --info-sidebar-width: 320px;
+    --header-height: 70px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 24px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* --- THEMES --- */
+
+/* Obsidian (Deep Dark) */
+[data-theme='obsidian'] {
+    --bg-main: #0a0a0b;
+    --bg-sidebar: #121214;
+    --bg-card: #18181b;
+    --bg-card-hover: #27272a;
+    --glass-bg: rgba(24, 24, 27, 0.8);
+    --glass-border: #27272a;
+    --text-primary: #f4f4f5;
+    --text-secondary: #a1a1aa;
+    --text-muted: #52525b;
+    --primary: #6366f1;
+    --primary-glow: rgba(99, 102, 241, 0.2);
+}
+
+/* Oceanic (Deep Blue) */
+[data-theme='oceanic'] {
+    --bg-main: #0f172a;
+    --bg-sidebar: #1e293b;
+    --bg-card: #1e293b;
+    --bg-card-hover: #334155;
+    --glass-bg: rgba(30, 41, 59, 0.8);
+    --glass-border: #334155;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #475569;
+    --primary: #38bdf8;
+    --primary-glow: rgba(56, 189, 248, 0.2);
+}
+
+/* Lavender (Soft Purple) */
+[data-theme='lavender'] {
+    --bg-main: #f5f3ff;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #ede9fe;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: #ddd6fe;
+    --text-primary: #4c1d95;
+    --text-secondary: #6d28d9;
+    --text-muted: #a78bfa;
+    --primary: #8b5cf6;
+    --primary-glow: rgba(139, 92, 246, 0.15);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    transition: var(--transition);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}

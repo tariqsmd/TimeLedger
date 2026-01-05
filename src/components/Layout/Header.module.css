@@ -1,0 +1,58 @@
+.header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    background-color: transparent;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.timeContainer {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+    background: var(--glass-bg);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--glass-border);
+}
+
+.searchBar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--bg-card);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+    width: 250px;
+}
+
+.searchBar input {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    outline: none;
+    width: 100%;
+}
+
+.searchBar input::placeholder {
+    color: var(--text-muted);
+}

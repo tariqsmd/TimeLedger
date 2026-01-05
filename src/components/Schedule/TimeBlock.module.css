@@ -1,0 +1,118 @@
+.timeBlock {
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.timeBlock:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+    background: var(--bg-card-hover);
+}
+
+.blockInfo {
+    flex: 1;
+}
+
+.blockTime {
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+}
+
+.icon {
+    font-size: 1.1rem;
+}
+
+.timeText {
+    color: var(--primary);
+}
+
+.duration {
+    opacity: 0.6;
+}
+
+.blockActivity {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.blockActions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.timeBlock:hover .blockActions {
+    opacity: 1;
+}
+
+.btnTrack,
+.btnDelete {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    font-size: 0.9rem;
+}
+
+.btnTrack:hover {
+    background: var(--primary-glow);
+    border-color: var(--primary);
+}
+
+.btnDelete:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+/* Category Indicators */
+.timeBlock::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+}
+
+.health::after {
+    background-color: #10b981;
+}
+
+.learning::after {
+    background-color: #3b82f6;
+}
+
+.company::after {
+    background-color: #6366f1;
+}
+
+.own::after {
+    background-color: #f59e0b;
+}
+
+.rest::after {
+    background-color: #8b5cf6;
+}
+
+.family::after {
+    background-color: #ec4899;
+}

@@ -1,0 +1,93 @@
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-width) 1fr var(--info-sidebar-width);
+    min-height: 100vh;
+    background-color: var(--bg-main);
+    transition: var(--transition);
+}
+
+.main-content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    border-right: 1px solid var(--glass-border);
+}
+
+.content-area {
+    flex: 1;
+    padding: 2.5rem;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Common Header Styles for views */
+.view-header {
+    margin-bottom: 2.5rem;
+}
+
+.view-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    letter-spacing: -1px;
+}
+
+.view-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Animation for tab switching */
+.content-area>div {
+    animation: slideUpFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Responsive Adjustments --- */
+
+@media (max-width: 1400px) {
+    .dashboard-layout {
+        grid-template-columns: var(--sidebar-width) 1fr;
+    }
+
+    /* Info sidebar is hidden via its own module media query */
+}
+
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 80px;
+    }
+
+    .content-area {
+        padding: 1.5rem;
+    }
+
+    .view-title {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+}
