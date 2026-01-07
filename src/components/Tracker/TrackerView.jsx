@@ -7,11 +7,6 @@ import styles from './TrackerView.module.css';
 export default function TrackerView() {
     return (
         <div className={styles.trackerView}>
-            <div className="view-header">
-                <h2 className="view-title">Time Tracker</h2>
-                <p className="view-subtitle">Monitor your daily performance and adherence</p>
-            </div>
-
             <div className={styles.contentGrid}>
                 <div className={styles.mainCol}>
                     <WeekSelector />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useApp } from '../../contexts/AppContext';
 import ScheduleColumn from './ScheduleColumn';
 import styles from './ScheduleView.module.css';
@@ -10,7 +10,8 @@ export default function ScheduleView() {
         monthlyGoals,
         addMonthlyGoal,
         toggleMonthlyGoal,
-        deleteMonthlyGoal
+        deleteMonthlyGoal,
+        searchQuery
     } = useApp();
 
     const [activeTab, setActiveTab] = useState('daily'); // 'daily' | 'monthly'
@@ -30,9 +31,32 @@ export default function ScheduleView() {
     const [newGoal, setNewGoal] = useState('');
     const [dueDate, setDueDate] = useState('');
 
+    const schedule = useMemo(() => {
+        if (!customSchedules) return null;
+        const current = customSchedules[activeSubTab];
+        if (!searchQuery.trim()) return current;
+
+        const query = searchQuery.toLowerCase();
+        const filterFn = (blocks) => blocks.filter(b =>
+            b.activity.toLowerCase().includes(query) ||
+            b.category.toLowerCase().includes(query) ||
+            b.time.toLowerCase().includes(query)
+        );
+
+        return {
+            weekday: filterFn(current.weekday),
+            weekend: filterFn(current.weekend)
+        };
+    }, [customSchedules, activeSubTab, searchQuery]);
+
+    const filteredGoals = useMemo(() => {
+        if (!searchQuery.trim()) return monthlyGoals;
+        const query = searchQuery.toLowerCase();
+        return monthlyGoals.filter(g => g.text.toLowerCase().includes(query));
+    }, [monthlyGoals, searchQuery]);
+
     if (!customSchedules) return <div className={styles.loading}>Initializing Workspace...</div>;
 
-    const schedule = customSchedules[activeSubTab];
     const isOptimized = activeSubTab === 'optimized';
 
     const handleAddBlock = (e, dayType) => {
@@ -71,15 +95,6 @@ export default function ScheduleView() {
 
     return (
         <div className={styles.scheduleView}>
-            <div className="view-header">
-                <div className={styles.headerMain}>
-                    <div>
-                        <h2 className="view-title">Schedule Architect</h2>
-                        <p className="view-subtitle">Design your routines and track monthly milestones</p>
-                    </div>
-                </div>
-            </div>
-
             <div className={styles.tabBar}>
                 <div className={styles.mainTabs}>
                     <button
@@ -176,6 +191,12 @@ export default function ScheduleView() {
                         </div>
                     </div>
 
+                    {(schedule.weekday.length === 0 && schedule.weekend.length === 0 && searchQuery) && (
+                        <div className={styles.emptySearch}>
+                            <div className={styles.emptyIcon}>🔍</div>
+                            <p>No routine blocks match your search.</p>
+                        </div>
+                    )}
                 </>
             ) : (
                 <div className={styles.monthlySection}>
@@ -205,14 +226,14 @@ export default function ScheduleView() {
                     </form>
 
                     <div className={styles.goalsContainer}>
-                        {monthlyGoals.length === 0 ? (
+                        {filteredGoals.length === 0 ? (
                             <div className={styles.emptyGoals}>
-                                <div className={styles.emptyIcon}>🎯</div>
-                                <p>No active milestones for this month.</p>
+                                <div className={styles.emptyIcon}>{searchQuery ? '🔍' : '🎯'}</div>
+                                <p>{searchQuery ? 'No milestones match your search.' : 'No active milestones for this month.'}</p>
                             </div>
                         ) : (
                             <div className={styles.goalsList}>
-                                {monthlyGoals.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)).map(goal => (
+                                {filteredGoals.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)).map(goal => (
                                     <div key={goal.id} className={`${styles.goalItem} ${goal.completed ? styles.goalDone : ''}`}>
                                         <div className={styles.goalCheck} onClick={() => toggleMonthlyGoal(goal.id)}>
                                             {goal.completed && '✓'}

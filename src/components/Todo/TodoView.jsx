@@ -1,22 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useApp } from '../../contexts/AppContext';
 import styles from './TodoView.module.css';
+import {
+    IconEdit, IconTrash, IconInfo, IconPlus, IconClose
+} from '../Common/Icons';
 
 export default function TodoView() {
     const {
         todos, addTodo, toggleTodo, deleteTodo,
         startTodo, pauseTodo, resumeTodo, endTodo, restartTodo,
         viewMode, setViewMode, sortBy, setSortBy,
-        groupBy, setGroupBy, renameList, reorderTodos,
-        updateTodoStatus
+        groupBy, setGroupBy, reorderTodos,
+        updateTodoStatus, searchQuery, updateTodo, projects
     } = useApp();
 
     const [inputValue, setInputValue] = useState('');
     const [description, setDescription] = useState('');
     const [newListTitle, setNewListTitle] = useState('');
-    const [editingListTitle, setEditingListTitle] = useState(null);
-    const [tempTitle, setTempTitle] = useState('');
+    const [editingTodoId, setEditingTodoId] = useState(null);
+    const [openMenuId, setOpenMenuId] = useState(null);
     const [draggedItem, setDraggedItem] = useState(null);
+    const [isInputVisible, setIsInputVisible] = useState(false);
+
+    const menuRef = useRef(null);
+
+    // Close dropdown on click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpenMenuId(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     // Live duration updates
     const [, setTick] = useState(0);
@@ -25,20 +42,52 @@ export default function TodoView() {
         return () => clearInterval(interval);
     }, []);
 
+    // Filtered Todos
+    const filteredTodos = useMemo(() => {
+        if (!searchQuery.trim()) return todos;
+        const query = searchQuery.toLowerCase();
+        return todos.filter(t =>
+            t.text.toLowerCase().includes(query) ||
+            t.description?.toLowerCase().includes(query) ||
+            t.listTitle?.toLowerCase().includes(query)
+        );
+    }, [todos, searchQuery]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (inputValue.trim()) {
-            addTodo(inputValue.trim(), newListTitle || 'Default', description.trim());
+            if (editingTodoId) {
+                updateTodo(editingTodoId, {
+                    text: inputValue.trim(),
+                    description: description.trim(),
+                    listTitle: newListTitle || 'Default'
+                });
+                setEditingTodoId(null);
+            } else {
+                addTodo(inputValue.trim(), newListTitle || 'Default', description.trim());
+            }
             setInputValue('');
             setDescription('');
+            setNewListTitle('');
         }
     };
 
-    const handleRename = (oldTitle) => {
-        if (tempTitle.trim() && tempTitle !== oldTitle) {
-            renameList(oldTitle, tempTitle.trim());
-        }
-        setEditingListTitle(null);
+    const handleEdit = (todo) => {
+        setEditingTodoId(todo.id);
+        setInputValue(todo.text);
+        setDescription(todo.description || '');
+        setNewListTitle(todo.listTitle || '');
+        setOpenMenuId(null);
+        setIsInputVisible(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleCancel = () => {
+        setEditingTodoId(null);
+        setInputValue('');
+        setDescription('');
+        setNewListTitle('');
+        setIsInputVisible(false);
     };
 
     const formatTime = (isoString) => {
@@ -85,7 +134,7 @@ export default function TodoView() {
     const handleDragOver = (e, targetTodo) => {
         e.preventDefault();
         if (!draggedItem || draggedItem.id === targetTodo.id) return;
-        if (viewMode === 'kanban') return; // Kanban has different logic
+        if (viewMode === 'kanban') return;
 
         const newTodos = [...todos];
         const draggedIdx = newTodos.findIndex(t => t.id === draggedItem.id);
@@ -100,7 +149,7 @@ export default function TodoView() {
 
     // Grouping & Sorting
     const getGroupedTodos = () => {
-        return todos.reduce((groups, todo) => {
+        return filteredTodos.reduce((groups, todo) => {
             let key;
             if (groupBy === 'date') key = new Date(todo.createdAt).toDateString();
             else key = todo.listTitle || 'Default';
@@ -119,81 +168,133 @@ export default function TodoView() {
         });
     };
 
-    // Layout Renderers
-    const renderTodoItem = (todo, compact = false) => (
-        <div
-            key={todo.id}
-            className={`${styles.todoItem} ${todo.completed ? styles.completed : ''} ${draggedItem?.id === todo.id ? styles.dragging : ''} ${compact ? styles.compactItem : ''}`}
-            draggable={sortBy === 'manual' || viewMode === 'kanban'}
-            onDragStart={(e) => handleDragStart(e, todo)}
-            onDragOver={(e) => handleDragOver(e, todo)}
-            onDragEnd={handleDragEnd}
-        >
-            <div className={styles.checkbox} onClick={() => toggleTodo(todo.id)}>
-                {todo.completed && '✓'}
-            </div>
+    const [expandedIds, setExpandedIds] = useState([]);
 
-            <div className={styles.todoBody}>
-                <div className={styles.todoInfo}>
-                    <div className={styles.todoMain}>
-                        <div className={styles.taskLeft}>
-                            <span className={styles.todoText} onClick={() => toggleTodo(todo.id)}>
-                                {todo.text}
-                            </span>
-                            {!compact && <span className={styles.listTag}>{todo.listTitle || 'Default'}</span>}
-                        </div>
-                        <div className={styles.taskRight}>
-                            <span className={styles.dateTag}>{formatDateShort(todo.createdAt)}</span>
-                        </div>
-                    </div>
-                    {!compact && todo.description && (
-                        <p className={styles.todoDesc}>{todo.description}</p>
+    const toggleExpand = (id) => {
+        setExpandedIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
+    };
+
+    // Layout Renderers
+    const renderTodoItem = (todo, compact = false) => {
+        const isExpanded = expandedIds.includes(todo.id);
+
+        return (
+            <div
+                key={todo.id}
+                className={`${styles.todoItem} ${todo.completed ? styles.completed : ''} ${draggedItem?.id === todo.id ? styles.dragging : ''} ${compact ? styles.compactItem : ''}`}
+                draggable={sortBy === 'manual' || viewMode === 'kanban'}
+                onDragStart={(e) => handleDragStart(e, todo)}
+                onDragOver={(e) => handleDragOver(e, todo)}
+                onDragEnd={handleDragEnd}
+            >
+                <div className={styles.checkbox} onClick={() => toggleTodo(todo.id)}>
+                    {todo.completed && (
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg>
                     )}
                 </div>
 
-                <div className={styles.timeFooter}>
-                    <div className={styles.timeMetrics}>
-                        {todo.startTime && !compact && (
-                            <span className={styles.metric}>
-                                Start: {formatTime(todo.startTime)}
+                <div className={styles.todoBody}>
+                    <div className={styles.todoInlineRow}>
+                        <div className={styles.taskPrimaryInfo}>
+                            <span className={styles.todoText} onClick={() => toggleTodo(todo.id)}>
+                                {todo.text}
                             </span>
-                        )}
-                        {(todo.accumulatedTime > 0 || todo.status === 'running') && (
-                            <span className={styles.liveDuration}>
-                                {todo.status === 'running' ? '⚡ ' : '⏱ '}
-                                {getLiveDuration(todo)}
-                            </span>
-                        )}
+                            {todo.description && (
+                                <button
+                                    className={`${styles.btnExpand} ${isExpanded ? styles.expanded : ''}`}
+                                    onClick={() => toggleExpand(todo.id)}
+                                    title="Toggle Description"
+                                >
+                                    <IconInfo size={14} />
+                                </button>
+                            )}
+                            {!compact && <span className={styles.listTag}>{todo.listTitle || 'Default'}</span>}
+                        </div>
+
+                        <div className={styles.taskSecondaryInfo}>
+                            <div className={styles.timeStack}>
+                                {(todo.accumulatedTime > 0 || todo.status === 'running') && (
+                                    <span className={styles.inlineDuration}>
+                                        {todo.status === 'running' ? '⚡' : '⏱'} {getLiveDuration(todo)}
+                                    </span>
+                                )}
+                                <span className={styles.dateTag}>{formatDateShort(todo.createdAt)}</span>
+                            </div>
+
+                            <div className={styles.inlineControls}>
+                                {todo.status === 'idle' && (
+                                    <button className={styles.btnStartSmall} onClick={() => startTodo(todo.id)} title="Start">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z" /></svg>
+                                    </button>
+                                )}
+                                {todo.status === 'running' && (
+                                    <button className={styles.btnPauseSmall} onClick={() => pauseTodo(todo.id)} title="Pause">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></svg>
+                                    </button>
+                                )}
+                                {todo.status === 'paused' && (
+                                    <button className={styles.btnResumeSmall} onClick={() => resumeTodo(todo.id)} title="Resume">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3l14 9-14 9V3z" /></svg>
+                                    </button>
+                                )}
+                                {todo.status !== 'completed' && todo.status !== 'idle' && (
+                                    <button className={styles.btnEndSmall} onClick={() => endTodo(todo.id)} title="Stop">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" /></svg>
+                                    </button>
+                                )}
+                                {todo.status === 'completed' && (
+                                    <button className={styles.btnRestartSmall} onClick={() => restartTodo(todo.id)} title="Restart">
+                                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>
+                                    </button>
+                                )}
+                            </div>
+
+
+                            <div className={styles.menuContainer} ref={openMenuId === todo.id ? menuRef : null}>
+                                <button
+                                    className={styles.btnMenu}
+                                    onClick={() => setOpenMenuId(openMenuId === todo.id ? null : todo.id)}
+                                >
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                        <circle cx="12" cy="12" r="1" /><circle cx="12" cy="5" r="1" /><circle cx="12" cy="19" r="1" />
+                                    </svg>
+                                </button>
+                                {openMenuId === todo.id && (
+                                    <div className={styles.dropdown}>
+                                        <button onClick={() => handleEdit(todo)}>
+                                            <IconEdit size={14} /> Edit Task
+                                        </button>
+                                        <button onClick={() => { deleteTodo(todo.id); setOpenMenuId(null); }} className={styles.dangerAction}>
+                                            <IconTrash size={14} /> Delete
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                     </div>
 
-                    <div className={styles.taskControls}>
-                        {todo.status === 'idle' && (
-                            <button className={styles.btnStart} onClick={() => startTodo(todo.id)}>▶</button>
-                        )}
-                        {todo.status === 'running' && (
-                            <button className={styles.btnPause} onClick={() => pauseTodo(todo.id)}>⏸</button>
-                        )}
-                        {todo.status === 'paused' && (
-                            <button className={styles.btnResume} onClick={() => resumeTodo(todo.id)}>⏯</button>
-                        )}
-                        {todo.status !== 'completed' && todo.status !== 'idle' && (
-                            <button className={styles.btnEnd} onClick={() => endTodo(todo.id)}>⏹</button>
-                        )}
-                        {todo.status === 'completed' && (
-                            <button className={styles.btnRestart} onClick={() => restartTodo(todo.id)}>🔄</button>
-                        )}
-                        <button className={styles.btnDeleteInline} onClick={() => deleteTodo(todo.id)}>🗑</button>
-                    </div>
+                    {isExpanded && todo.description && (
+                        <div className={styles.expandedDesc}>
+                            <p>{todo.description}</p>
+                            {todo.startTime && (
+                                <div className={styles.startTimeLabel}>
+                                    Started: {formatTime(todo.startTime)}
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
-        </div>
-    );
+        );
+    };
 
     const renderKanban = () => {
         const columns = [
-            { id: 'idle', title: 'To Do', icon: '📝' },
+            { id: 'idle', title: 'To Do', icon: <IconPlus size={16} /> },
             { id: 'running', title: 'In Progress', icon: '⚡' },
-            { id: 'completed', title: 'Completed', icon: '✅' }
+            { id: 'completed', title: 'Completed', icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg> }
         ];
 
         return (
@@ -206,13 +307,13 @@ export default function TodoView() {
                         onDrop={() => draggedItem && updateTodoStatus(draggedItem.id, col.id)}
                     >
                         <div className={styles.colHeader}>
-                            <span>{col.icon} {col.title}</span>
+                            <span className={styles.colLabel}>{col.icon} {col.title}</span>
                             <span className={styles.countBadge}>
-                                {todos.filter(t => col.id === 'running' ? (t.status === 'running' || t.status === 'paused') : t.status === col.id).length}
+                                {filteredTodos.filter(t => col.id === 'running' ? (t.status === 'running' || t.status === 'paused') : t.status === col.id).length}
                             </span>
                         </div>
                         <div className={styles.kanbanList}>
-                            {todos
+                            {filteredTodos
                                 .filter(t => col.id === 'running' ? (t.status === 'running' || t.status === 'paused') : t.status === col.id)
                                 .map(todo => renderTodoItem(todo, true))}
                         </div>
@@ -223,7 +324,7 @@ export default function TodoView() {
     };
 
     const renderFocus = () => {
-        const activeTask = todos.find(t => t.status === 'running') || todos.find(t => t.status === 'paused') || todos.find(t => !t.completed);
+        const activeTask = filteredTodos.find(t => t.status === 'running') || filteredTodos.find(t => t.status === 'paused') || filteredTodos.find(t => !t.completed);
 
         if (!activeTask) return <div className={styles.emptyFocus}>All caught up! Grab some coffee. ☕</div>;
 
@@ -259,7 +360,7 @@ export default function TodoView() {
     };
 
     const renderTimeline = () => {
-        const entries = [...todos].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const entries = [...filteredTodos].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         return (
             <div className={styles.timelineView}>
                 {entries.map((todo, idx) => (
@@ -286,20 +387,39 @@ export default function TodoView() {
 
     return (
         <div className={styles.todoView}>
-            <div className={styles.viewHeader}>
-                <div>
-                    <h2 className="view-title">Workflow Engine</h2>
-                    <p className="view-subtitle">The ultimate dashboard for your daily execution</p>
-                </div>
 
-                <div className={styles.controls}>
+            <div className={styles.stickyTasksBar}>
+
+                <div className={styles.tasksControlsBar}>
                     <div className={styles.viewToggle}>
-                        <button className={viewMode === 'list' ? styles.activeView : ''} onClick={() => setViewMode('list')} title="List">📜</button>
-                        <button className={viewMode === 'grid' ? styles.activeView : ''} onClick={() => setViewMode('grid')} title="Grid">▦</button>
-                        <button className={viewMode === 'kanban' ? styles.activeView : ''} onClick={() => setViewMode('kanban')} title="Kanban">📋</button>
-                        <button className={viewMode === 'timeline' ? styles.activeView : ''} onClick={() => setViewMode('timeline')} title="Timeline">⏱</button>
-                        <button className={viewMode === 'focus' ? styles.activeView : ''} onClick={() => setViewMode('focus')} title="Focus">🧘</button>
-                        <button className={viewMode === 'compact' ? styles.activeView : ''} onClick={() => setViewMode('compact')} title="Compact">➡</button>
+                        <button className={viewMode === 'list' ? styles.activeView : ''} onClick={() => setViewMode('list')} title="List Layout">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" /><line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" /></svg>
+                        </button>
+                        <button className={viewMode === 'grid' ? styles.activeView : ''} onClick={() => setViewMode('grid')} title="Grid Layout">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
+                        </button>
+                        <button className={viewMode === 'kanban' ? styles.activeView : ''} onClick={() => setViewMode('kanban')} title="Kanban Board">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="9" y1="3" x2="9" y2="21" /></svg>
+                        </button>
+                        <button className={viewMode === 'timeline' ? styles.activeView : ''} onClick={() => setViewMode('timeline')} title="Timeline View">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
+                        </button>
+                        <button className={viewMode === 'focus' ? styles.activeView : ''} onClick={() => setViewMode('focus')} title="Focus Mode">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></svg>
+                        </button>
+                        <button className={viewMode === 'compact' ? styles.activeView : ''} onClick={() => setViewMode('compact')} title="Compact Mode">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="21" y1="12" x2="9" y2="12" /><polyline points="15 18 21 12 15 6" /><path d="M3 12h0" /></svg>
+                        </button>
+                    </div>
+
+                    <div className={styles.tasksActionRow}>
+                        <button
+                            className={styles.btnFullAdd}
+                            onClick={() => setIsInputVisible(true)}
+                        >
+                            <IconPlus size={18} />
+                            <span>Add Goal</span>
+                        </button>
                     </div>
 
                     <div className={styles.selectGroup}>
@@ -314,41 +434,11 @@ export default function TodoView() {
                         </select>
                     </div>
                 </div>
+
             </div>
 
             <div className={styles.todoLayout}>
                 <div className={styles.mainCol}>
-                    {viewMode !== 'focus' && (
-                        <form className={styles.inputArea} onSubmit={handleSubmit}>
-                            <div className={styles.inputStack}>
-                                <div className={styles.inputMainRow}>
-                                    <input
-                                        type="text"
-                                        className={styles.mainInput}
-                                        placeholder="Add a new goal..."
-                                        value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
-                                        required
-                                    />
-                                    <input
-                                        type="text"
-                                        className={styles.listTagInput}
-                                        placeholder="Project"
-                                        value={newListTitle}
-                                        onChange={(e) => setNewListTitle(e.target.value)}
-                                    />
-                                    <button type="submit" className={styles.btnAdd}>Add</button>
-                                </div>
-                                <textarea
-                                    className={styles.descInput}
-                                    placeholder="Details and context..."
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                />
-                            </div>
-                        </form>
-                    )}
-
                     <div className={styles.todoContainer}>
                         {viewMode === 'kanban' ? renderKanban() :
                             viewMode === 'focus' ? renderFocus() :
@@ -362,15 +452,74 @@ export default function TodoView() {
                                         </div>
                                     ))}
 
-                        {todos.length === 0 && (
+                        {filteredTodos.length === 0 && (
                             <div className={styles.emptyState}>
-                                <div className={styles.emptyIcon}>🚀</div>
-                                <p>No tasks. Time to plan something big!</p>
+                                <div className={styles.emptyIcon}>
+                                    {searchQuery ? <IconSearch size={40} /> : <IconPlus size={40} />}
+                                </div>
+                                <p>{searchQuery ? `No results found for "${searchQuery}"` : 'No tasks. Time to plan something big!'}</p>
                             </div>
                         )}
                     </div>
                 </div>
             </div>
+
+            {viewMode !== 'focus' && isInputVisible && (
+                <div className={styles.modalOverlay} onClick={handleCancel}>
+                    <form className={styles.inputArea} onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
+                        <button type="button" className={styles.btnCloseModal} onClick={handleCancel} title="Dismiss">
+                            <IconClose size={24} />
+                        </button>
+
+                        <div className={styles.inputStack}>
+                            <div className={styles.inputHeader}>
+
+                                <div className={styles.headerInfo}>
+                                    <h2 className={styles.modalTitle}>{editingTodoId ? 'Edit Task' : 'Add Task'}</h2>
+                                    <button type="button" className={styles.btnTextCancel} onClick={handleCancel}>Cancel</button>
+                                </div>
+
+                                <div className={styles.projectField}>
+                                    <select
+                                        className={styles.projectSelect}
+                                        value={newListTitle || 'Default'}
+                                        onChange={(e) => setNewListTitle(e.target.value)}
+                                    >
+                                        <option value="Default">Select Group</option>
+                                        {projects.map(p => (
+                                            <option key={p} value={p}>{p}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div className={styles.inputMainRow}>
+                                <input
+                                    type="text"
+                                    className={styles.mainInput}
+                                    placeholder="What's your primary focus?"
+                                    value={inputValue}
+                                    onChange={(e) => setInputValue(e.target.value)}
+                                    required
+                                    autoFocus={editingTodoId ? true : false}
+                                />
+                            </div>
+                            <textarea
+                                className={styles.descInput}
+                                placeholder="Add context, sub-tasks, or notes..."
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                            />
+
+                            <div className={styles.modalActions}>
+                                <button type="submit" className={styles.btnAdd}>
+                                    {editingTodoId ? 'Update Goal' : 'Add Goal'}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            )}
         </div>
     );
 }

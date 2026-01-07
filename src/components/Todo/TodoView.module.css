@@ -73,13 +73,52 @@
 }
 
 /* Input Form */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn 0.2s ease-out;
+}
+
 .inputArea {
     background: var(--bg-card);
-    padding: 1.5rem;
+    padding: 2.5rem;
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg), 0 0 0 1px var(--glass-border);
     border: 1px solid var(--glass-border);
-    margin-bottom: 2.5rem;
+    width: 100%;
+    max-width: 800px;
+    animation: slideUpModal 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpModal {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .inputStack {
@@ -94,48 +133,171 @@
 }
 
 .mainInput {
-    flex: 2;
+    width: 100%;
     background: var(--bg-main);
     border: 1px solid var(--glass-border);
-    padding: 0.875rem 1.25rem;
+    padding: 1.125rem 1.5rem;
     border-radius: var(--radius-md);
-    font-size: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
     color: var(--text-primary);
+    transition: var(--transition);
 }
 
-.listTagInput {
-    flex: 1;
-    background: var(--bg-main);
-    border: 1px solid var(--glass-border);
-    padding: 0.875rem 1.25rem;
-    border-radius: var(--radius-md);
-    font-size: 0.9rem;
+.mainInput:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+    background: var(--bg-card);
 }
 
 .descInput {
     background: var(--bg-main);
     border: 1px solid var(--glass-border);
-    padding: 0.875rem 1.25rem;
+    padding: 1rem 1.5rem;
     border-radius: var(--radius-md);
     resize: vertical;
-    min-height: 80px;
+    min-height: 120px;
     font-family: inherit;
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    transition: var(--transition);
+}
+
+.descInput:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-glow);
+    background: var(--bg-card);
+}
+
+.projectField {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.projectSelect {
+    background: var(--bg-main);
+    border: 1px solid var(--glass-border);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition);
+    outline: none;
+}
+
+.projectSelect:focus {
+    border-color: var(--primary);
+    background: var(--bg-card);
+}
+
+.btnCloseModal {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnCloseModal:hover {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    transform: rotate(90deg);
+}
+
+.inputHeader {
+    width: 100%;
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.headerInfo {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 1rem;
+}
+
+.btnTextCancel {
+    background: var(--bg-main);
+    color: var(--text-muted);
+    border: 1px solid var(--glass-border);
+    padding: 4px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btnTextCancel:hover {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.modalTitle {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.5px;
+}
+
+.modalSubtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: center;
 }
 
 .btnAdd {
     background: var(--primary);
     color: white;
-    padding: 0 1.5rem;
+    width: 100%;
+    padding: 1.125rem 3rem;
     border-radius: var(--radius-md);
-    font-weight: 700;
-    font-size: 0.95rem;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    box-shadow: 0 4px 12px var(--primary-glow);
+    transition: var(--transition);
+}
+
+.btnAdd:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px var(--primary-glow);
+}
+
+.btnAdd:active {
+    transform: translateY(0);
 }
 
 /* View Containers */
 .todoContainer {
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .list {
@@ -154,8 +316,8 @@
 .todoGroup {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
 }
 
 .groupTitle {
@@ -177,8 +339,8 @@
 /* Base Todo Item */
 .todoItem {
     display: flex;
-    gap: 1.25rem;
-    padding: 1.5rem;
+    gap: 1rem;
+    padding: 1.125rem 1.5rem;
     border-bottom: 1px solid var(--glass-border);
     transition: var(--transition);
 }
@@ -262,10 +424,12 @@
 }
 
 .dateTag {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.65rem;
+    font-weight: 700;
     color: var(--text-muted);
     white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .timeFooter {
@@ -313,7 +477,7 @@
     border: 1px solid var(--glass-border);
     background: var(--bg-main);
     color: var(--text-secondary);
-    font-size: 1rem;
+    font-size: 12px;
 }
 
 .taskControls button:hover {
@@ -591,4 +755,325 @@
     font-size: 4rem;
     margin-bottom: 1.5rem;
     opacity: 0.5;
+}
+
+/* Inline Row Logic */
+.todoInlineRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.taskPrimaryInfo {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.taskSecondaryInfo {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-shrink: 0;
+}
+
+.timeStack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    min-width: 60px;
+}
+
+.inlineDuration {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: var(--primary-glow);
+    padding: 1px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+}
+
+.inlineControls {
+    display: flex;
+    gap: 6px;
+}
+
+.inlineControls button {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-main);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    transition: var(--transition);
+}
+
+.inlineControls button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-glow);
+}
+
+.btnEndSmall:hover {
+    color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.btnExpand {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    opacity: 0.6;
+    transition: var(--transition);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnExpand:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.expanded {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px var(--primary-glow));
+}
+
+.expandedDesc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    animation: slideDown 0.1s ease-out;
+}
+
+.startTimeLabel {
+    margin-top: 0.2rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dropdown Menu */
+.menuContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.btnMenu {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.25rem;
+    padding: 0 8px;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    line-height: 1;
+}
+
+.btnMenu:hover {
+    color: var(--text-primary);
+    background: var(--bg-main);
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 100;
+    min-width: 150px;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: fadeInMenu 0.2s ease;
+}
+
+.dropdown button {
+    background: none;
+    border: none;
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.dropdown button:hover {
+    background: var(--bg-main);
+}
+
+.dangerAction {
+    color: #ef4444 !important;
+    border-top: 1px solid var(--glass-border) !important;
+    margin-top: 4px;
+    padding-top: 0.75rem !important;
+}
+
+.dangerAction:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Edit Mode Portal */
+.inputHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.inputHeader h3 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.btnCancelEdit {
+    background: var(--bg-main);
+    border: 1px solid var(--glass-border);
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+@keyframes fadeInMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stickyTasksBar {
+    position: sticky;
+    top: -40px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+    background: linear-gradient(to top, var(--bg-main) 70%, transparent);
+    display: flex;
+    flex-direction: column;
+}
+
+.stickyTasksBar>div,
+.stickyTasksBar>form {
+    pointer-events: auto;
+}
+
+.tasksControlsBar {
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+    margin-bottom: 2rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-md);
+}
+
+.tasksControlsBar .viewToggle {
+    border: none;
+    background: none;
+    padding: 0;
+}
+
+.tasksControlsBar .selectGroup select {
+    padding: 0.4rem 0.6rem;
+}
+
+.tasksActionRow {
+    width: 100%;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.btnFullAdd {
+    width: 100%;
+    background: var(--primary);
+    color: white;
+    padding: 0.65rem 0.875rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px var(--primary-glow);
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+}
+
+.btnFullAdd:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--primary-glow);
+    filter: brightness(1.1);
+}
+
+.btnFullAdd:active {
+    transform: translateY(0);
+}
+
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

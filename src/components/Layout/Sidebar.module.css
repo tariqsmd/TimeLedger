@@ -1,14 +1,84 @@
 .sidebar {
-    width: 100%;
+    width: var(--sidebar-width);
     height: 100vh;
     background-color: var(--bg-sidebar);
     border-right: 1px solid var(--glass-border);
     display: flex;
     flex-direction: column;
-    padding: 2rem 1rem;
+    padding: 1.5rem 0.75rem;
+    flex-shrink: 0;
+    transition: var(--transition);
     z-index: 100;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-x: hidden;
+}
+
+.sidebarHeader {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 0 0.75rem;
+}
+
+.menuContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.menuLabel {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    font-weight: 800;
+}
+
+.navHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0.75rem 1rem 0.75rem;
+}
+
+.btnSettingsToggle {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    transition: var(--transition);
+    background: var(--bg-main);
+    border: 1px solid var(--glass-border);
+}
+
+.btnSettingsToggle:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: var(--primary-glow);
+    transform: rotate(90deg);
+}
+
+.menuList {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: slideInMenu 0.3s ease-out;
+}
+
+@keyframes slideInMenu {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .logo {
@@ -98,45 +168,82 @@
 }
 
 .footer {
-    margin-top: auto;
-    padding-top: 1.5rem;
+    padding: 1rem;
     border-top: 1px solid var(--glass-border);
+    margin-top: auto;
 }
 
 .profile {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 0.5rem;
-    min-width: 200px;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-md);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.profile:hover {
+    background: var(--bg-card-hover);
 }
 
 .avatar {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
+    background: var(--primary);
+    color: white;
     border-radius: 50%;
-    background-color: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    color: white;
+    font-weight: 700;
     flex-shrink: 0;
 }
 
 .profileInfo {
-    white-space: nowrap;
-    transition: opacity 0.2s;
+    min-width: 0;
 }
 
 .profileName {
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 700;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .profileStatus {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: slideInMenu 0.3s ease-out;
+}
+
+@keyframes slideInMenu {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.activeSettings {
+    background: var(--primary) !important;
+    color: white !important;
+    border-color: var(--primary) !important;
 }
 
 /* Responsive States */

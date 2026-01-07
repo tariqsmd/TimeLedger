@@ -15,11 +15,6 @@ export default function ProfileView() {
 
     return (
         <div className={styles.profileView}>
-            <div className="view-header">
-                <h2 className="view-title">User Profile</h2>
-                <p className="view-subtitle">Manage your personal information and productivity goals</p>
-            </div>
-
             <div className={styles.profileCard}>
                 <div className={styles.header}>
                     <div className={styles.avatarLarge}>

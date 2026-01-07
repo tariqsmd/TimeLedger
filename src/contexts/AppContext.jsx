@@ -17,21 +17,31 @@ export function AppProvider({ children }) {
     const [customSchedules, setCustomSchedules] = useLocalStorage('timeBlockSchedules', null);
     const [monthlyGoals, setMonthlyGoals] = useLocalStorage('timeBlockMonthlyGoals', []);
     const [activeTheme, setActiveTheme] = useLocalStorage('timeLedgerTheme', 'light');
-    const [dbEngine, setDbEngine] = useState(db.engine);
+    const [activeSettingsTab, setActiveSettingsTab] = useState('appearance');
+    const [projects, setProjects] = useLocalStorage('mt_projects', ['Work', 'Personal', 'Side Project', 'Learning', 'Health']);
+    const [enabledModules, setEnabledModules] = useLocalStorage('mt_enabled_modules', {
+        todo: true,
+        schedule: true,
+        tracker: true,
+        analytics: true
+    });
+    const [dbEngine, setDbEngine] = useLocalStorage('mt_db_engine', 'local');
     const [userProfile, setUserProfile] = useLocalStorage('timeLedgerProfile', {
-        name: 'Tariq Khan',
-        role: 'Senior Product Designer',
+        name: 'Muhammad Tariq',
+        role: 'Senior Web Developer',
         bio: 'Passionate about building tools that help people master their time and reach their full potential.',
-        email: 'tariq.khan@example.com',
+        email: 'tariqkhansmd.mob@gmail.com',
         goal: 40, // hours per week
-        specialization: 'Design & Development',
-        avatar: 'T'
+        specialization: 'Web Design & Development',
+        avatar: 'MT'
     });
     const [notices, setNotices] = useState([
         { id: 1, type: 'suggest', title: 'Deep Work Suggestion', text: 'You have a 3-hour block open this afternoon. Perfect for "Learning"!', icon: '💡' },
         { id: 2, type: 'error', title: 'Tracker Gap', text: 'You missed logging yesterday\'s evening block. Keep the streak alive?', icon: '⚠️' },
         { id: 3, type: 'notice', title: 'System Update', text: 'Schedule Architect v2.0 is now live! New calendar features added.', icon: '🚀' }
     ]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [activeTab, setActiveTab] = useLocalStorage('activeView', 'analytics');
 
     // Initialize schedules from static data if not present
     useEffect(() => {
@@ -216,6 +226,10 @@ export function AppProvider({ children }) {
         setTodos(newTodos);
     };
 
+    const updateTodo = (id, updates) => {
+        setTodos(todos.map(todo => todo.id === id ? { ...todo, ...updates } : todo));
+    };
+
     // Schedule Management
     const addScheduleBlock = (type, dayType, block) => {
         const updated = { ...customSchedules };
@@ -250,6 +264,28 @@ export function AppProvider({ children }) {
 
     const deleteMonthlyGoal = (id) => {
         setMonthlyGoals(monthlyGoals.filter(g => g.id !== id));
+    };
+
+    const updateMonthlyGoal = (id, updates) => {
+        setMonthlyGoals(monthlyGoals.map(g => g.id === id ? { ...g, ...updates } : g));
+    };
+
+    // Project Management
+    const addProject = (name) => {
+        if (name && !projects.includes(name)) {
+            setProjects([...projects, name]);
+        }
+    };
+
+    const removeProject = (name) => {
+        setProjects(projects.filter(p => p !== name));
+    };
+
+    const toggleModule = (moduleId) => {
+        setEnabledModules(prev => ({
+            ...prev,
+            [moduleId]: !prev[moduleId]
+        }));
     };
 
     const removeNotice = (id) => {
@@ -317,14 +353,27 @@ export function AppProvider({ children }) {
         addMonthlyGoal,
         toggleMonthlyGoal,
         deleteMonthlyGoal,
+        updateMonthlyGoal,
+        updateTodo,
         activeTheme,
         setActiveTheme,
         dbEngine,
         switchDatabase,
+        projects,
+        addProject,
+        removeProject,
+        enabledModules,
+        toggleModule,
+        activeSettingsTab,
+        setActiveSettingsTab,
         userProfile,
         updateProfile,
         notices,
         removeNotice,
+        searchQuery,
+        setSearchQuery,
+        activeTab,
+        setActiveTab,
         openModal,
         closeModal
     };
