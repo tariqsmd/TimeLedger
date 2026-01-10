@@ -36,6 +36,13 @@ export default function SettingsView() {
         { id: 'paper', name: 'Classic Paper', desc: 'Clinical eggshell white', colors: ['#f9f9f9', '#2c3e50'], category: 'light' },
         { id: 'mint', name: 'Spring Mint', desc: 'Cool pastel green focus', colors: ['#f6fffa', '#00b894'], category: 'light' },
 
+        // EXTENDED LIGHT THEMES (OS / PLATFORM INSPIRED — neutral naming)
+        { id: 'system-soft', name: 'System Soft', desc: 'Balanced OS-neutral interface', colors: ['#f3f3f3', '#3b82f6'], category: 'light' },
+        { id: 'glass-blue', name: 'Glass Blue', desc: 'Translucent blue-tinted UI', colors: ['#f7faff', '#2563eb'], category: 'light' },
+        { id: 'material-soft', name: 'Material Soft', desc: 'Rounded modern surface UI', colors: ['#ffffff', '#22c55e'], category: 'light' },
+        { id: 'web-clean', name: 'Web Clean', desc: 'Neutral web-first clarity', colors: ['#ffffff', '#0ea5e9'], category: 'light' },
+        { id: 'studio-cream', name: 'Studio Cream', desc: 'Warm premium editorial feel', colors: ['#faf7f2', '#a855f7'], category: 'light' },
+
         // DARK THEMES (18)
         { id: 'obsidian', name: 'Obsidian Night', desc: 'Pure focus dark mode', colors: ['#0a0a0b', '#6366f1'], category: 'dark' },
         { id: 'cyber', name: 'Midnight Cyber', desc: 'High-contrast neon UI', colors: ['#020617', '#38bdf8'], category: 'dark' },
@@ -54,7 +61,14 @@ export default function SettingsView() {
         { id: 'onedark', name: 'One Dark Pro', desc: 'Atom-style aesthetics', colors: ['#21252b', '#61afef'], category: 'dark' },
         { id: 'oceanic', name: 'Deep Oceanic', desc: 'Calm relaxed navy', colors: ['#0f172a', '#38bdf8'], category: 'dark' },
         { id: 'rose', name: 'Rose Pine', desc: 'Soft aesthetic dark', colors: ['#1f1d2e', '#ebbcba'], category: 'dark' },
-        { id: 'emerald', name: 'Emerald Forest', desc: 'Earthy green focus', colors: ['#064e3b', '#34d399'], category: 'dark' }
+        { id: 'emerald', name: 'Emerald Forest', desc: 'Earthy green focus', colors: ['#064e3b', '#34d399'], category: 'dark' },
+
+        // EXTENDED DARK THEMES (PLATFORM / BRAND-VIBE INSPIRED — neutral naming)
+        { id: 'system-dark', name: 'System Dark', desc: 'Default OS dark neutrality', colors: ['#121212', '#3b82f6'], category: 'dark' },
+        { id: 'material-dark', name: 'Material Night', desc: 'Soft rounded dark surfaces', colors: ['#1c1c1e', '#22c55e'], category: 'dark' },
+        { id: 'ink-blue', name: 'Ink Blue', desc: 'Elegant corporate blue dark', colors: ['#0b1220', '#2563eb'], category: 'dark' },
+        { id: 'signal-red', name: 'Signal Red', desc: 'Alert-focused attention skin', colors: ['#120909', '#ef4444'], category: 'dark' },
+        { id: 'neural-purple', name: 'Neural Purple', desc: 'AI studio inspired glow', colors: ['#0b0616', '#a855f7'], category: 'dark' }
     ];
 
     const [themeCategory, setThemeCategory] = useState('dark');
@@ -77,8 +91,8 @@ export default function SettingsView() {
                         </div>
 
                         <div className={styles.categoryTabs}>
-                            <button className={themeCategory === 'dark' ? styles.activeCategory : ''} onClick={() => setThemeCategory('dark')}>Deep Dark (18)</button>
-                            <button className={themeCategory === 'light' ? styles.activeCategory : ''} onClick={() => setThemeCategory('light')}>Atmospheric Light (12)</button>
+                            <button className={themeCategory === 'dark' ? styles.activeCategory : ''} onClick={() => setThemeCategory('dark')}>Deep Dark (23)</button>
+                            <button className={themeCategory === 'light' ? styles.activeCategory : ''} onClick={() => setThemeCategory('light')}>Atmospheric Light (17)</button>
                         </div>
 
                         <div className={styles.themeGrid}>

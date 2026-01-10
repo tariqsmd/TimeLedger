@@ -12,16 +12,16 @@ const Footer = () => {
                     <span className={styles.version}>v2.4.0 High-Performance ERP</span>
                 </div>
 
-                {/* <div className={styles.center}>
+                <div className={styles.center}>
                     <nav className={styles.nav}>
                         <a href="#about"></a>
                         <a href="#security"></a>
                         <a href="#api"></a>
                     </nav>
-                </div> */}
+                </div>
 
                 <div className={styles.right}>
-                    <p className={styles.copyright}>&copy; {year} Antigravity Dynamics. System Operational.</p>
+                    <p className={styles.copyright}>&copy; {year} MT Developers.</p>
                 </div>
             </div>
         </footer>

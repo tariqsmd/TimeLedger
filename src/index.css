@@ -37,6 +37,49 @@
     --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    transition: var(--transition);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
 /* --- THEMES --- */
 
 /* Obsidian (Deep Dark) */
@@ -445,45 +488,186 @@
     --primary-glow: rgba(192, 132, 252, 0.3);
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+/* --- EXTENDED LIGHT THEMES --- */
+
+/* System Soft - Balanced OS-neutral interface */
+[data-theme='system-soft'] {
+    --bg-main: #f3f3f3;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f1f1f1;
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --text-muted: #999999;
+    --primary: #3b82f6;
+    --primary-glow: rgba(59, 130, 246, 0.15);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 24px;
 }
 
-body {
-    font-family: 'Outfit', sans-serif;
-    background-color: var(--bg-main);
-    color: var(--text-primary);
-    overflow: hidden;
-    height: 100vh;
-    transition: background-color 0.3s, color 0.3s;
+/* Glass Blue - Translucent blue-tinted UI */
+[data-theme='glass-blue'] {
+    --bg-main: #f7faff;
+    --bg-sidebar: rgba(255, 255, 255, 0.8);
+    --bg-card: rgba(255, 255, 255, 0.6);
+    --bg-card-hover: rgba(255, 255, 255, 0.9);
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(37, 99, 235, 0.1);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --primary: #2563eb;
+    --primary-glow: rgba(37, 99, 235, 0.1);
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 28px;
 }
 
-button {
-    font-family: inherit;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: none;
-    transition: var(--transition);
+/* Material Soft - Rounded modern surface UI */
+[data-theme='material-soft'] {
+    --bg-main: #ffffff;
+    --bg-sidebar: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f5f5f5;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.08);
+    --text-primary: #212121;
+    --text-secondary: #757575;
+    --text-muted: #bdbdbd;
+    --primary: #22c55e;
+    --primary-glow: rgba(34, 197, 94, 0.12);
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 32px;
 }
 
-::-webkit-scrollbar {
-    width: 6px;
+/* Web Clean - Neutral web-first clarity */
+[data-theme='web-clean'] {
+    --bg-main: #ffffff;
+    --bg-sidebar: #fafafa;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f0f0;
+    --glass-bg: rgba(255, 255, 255, 0.9);
+    --glass-border: #e5e7eb;
+    --text-primary: #111827;
+    --text-secondary: #4b5563;
+    --text-muted: #9ca3af;
+    --primary: #0ea5e9;
+    --primary-glow: rgba(14, 165, 233, 0.1);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
 }
 
-::-webkit-scrollbar-track {
-    background: transparent;
+/* Studio Cream - Warm premium editorial feel */
+[data-theme='studio-cream'] {
+    --bg-main: #faf7f2;
+    --bg-sidebar: #fffefc;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f5f1e9;
+    --glass-bg: rgba(255, 254, 252, 0.8);
+    --glass-border: rgba(168, 85, 247, 0.08);
+    --text-primary: #2d1b69;
+    --text-secondary: #4c1d95;
+    --text-muted: #7c3aed;
+    --primary: #a855f7;
+    --primary-glow: rgba(168, 85, 247, 0.12);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
 }
 
-::-webkit-scrollbar-thumb {
-    background: var(--glass-border);
-    border-radius: 10px;
+/* --- EXTENDED DARK THEMES --- */
+
+/* System Dark - Default OS dark neutrality */
+[data-theme='system-dark'] {
+    --bg-main: #121212;
+    --bg-sidebar: #1e1e1e;
+    --bg-card: #242424;
+    --bg-card-hover: #2d2d2d;
+    --glass-bg: rgba(30, 30, 30, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #888888;
+    --primary: #3b82f6;
+    --primary-glow: rgba(59, 130, 246, 0.25);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 24px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
+/* Material Night - Soft rounded dark surfaces */
+[data-theme='material-dark'] {
+    --bg-main: #1c1c1e;
+    --bg-sidebar: #242426;
+    --bg-card: #2c2c2e;
+    --bg-card-hover: #343436;
+    --glass-bg: rgba(36, 36, 38, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #e5e5e5;
+    --text-muted: #a1a1a1;
+    --primary: #22c55e;
+    --primary-glow: rgba(34, 197, 94, 0.25);
+    --radius-sm: 12px;
+    --radius-md: 20px;
+    --radius-lg: 32px;
+}
+
+/* Ink Blue - Elegant corporate blue dark */
+[data-theme='ink-blue'] {
+    --bg-main: #0b1220;
+    --bg-sidebar: #101828;
+    --bg-card: #152030;
+    --bg-card-hover: #1a2840;
+    --glass-bg: rgba(16, 24, 40, 0.9);
+    --glass-border: rgba(37, 99, 235, 0.2);
+    --text-primary: #ffffff;
+    --text-secondary: #dbeafe;
+    --text-muted: #93c5fd;
+    --primary: #2563eb;
+    --primary-glow: rgba(37, 99, 235, 0.3);
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+}
+
+/* Signal Red - Alert-focused attention skin */
+[data-theme='signal-red'] {
+    --bg-main: #120909;
+    --bg-sidebar: #1a0f0f;
+    --bg-card: #221515;
+    --bg-card-hover: #2a1b1b;
+    --glass-bg: rgba(26, 15, 15, 0.9);
+    --glass-border: rgba(239, 68, 68, 0.25);
+    --text-primary: #ffffff;
+    --text-secondary: #fecaca;
+    --text-muted: #fca5a5;
+    --primary: #ef4444;
+    --primary-glow: rgba(239, 68, 68, 0.3);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+}
+
+/* Neural Purple - AI studio inspired glow */
+[data-theme='neural-purple'] {
+    --bg-main: #0b0616;
+    --bg-sidebar: #140a24;
+    --bg-card: #1d0e32;
+    --bg-card-hover: #261240;
+    --glass-bg: rgba(20, 10, 36, 0.9);
+    --glass-border: rgba(168, 85, 247, 0.3);
+    --text-primary: #ffffff;
+    --text-secondary: #f3e8ff;
+    --text-muted: #d8b4fe;
+    --primary: #a855f7;
+    --primary-glow: rgba(168, 85, 247, 0.35);
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 28px;
 }
