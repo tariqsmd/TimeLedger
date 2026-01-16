@@ -4,7 +4,6 @@ import { IconTrash, IconPlus, IconClose, IconPlay, IconPause, IconStop, IconRefr
 import Board from './Board';
 import { getLiveDuration, formatDateFull } from './useTodoUtils';
 import RichEditor from '../Common/RichEditor';
-import InlineAddTask from './InlineAddTask';
 
 export default function TodoView() {
     const {
@@ -213,48 +212,46 @@ export default function TodoView() {
                 <div className="todo-list-view">
                     <div className="view-header">
                         <h2>Tasks</h2>
+                        <button className="btn-primary btn-sm" onClick={() => setIsTodoModalOpen(true)}>
+                            <IconPlus size={16} /> Add Task
+                        </button>
                     </div>
-                    <div className="list-content">
-                        {filteredTodos.map(todo => (
-                            <div key={todo.id} className="todo-item-row" onClick={() => handleEdit(todo)}>
-                                <div className="item-check" onClick={(e) => { e.stopPropagation(); toggleTodo(todo.id); }}>
-                                    {todo.completed ? (
-                                        <IconCheckSquare size={20} color="var(--primary)" />
-                                    ) : (
-                                        <div className="check-placeholder"></div>
+                    {filteredTodos.map(todo => (
+                        <div key={todo.id} className="todo-item-row" onClick={() => handleEdit(todo)}>
+                            <div className="item-check" onClick={(e) => { e.stopPropagation(); toggleTodo(todo.id); }}>
+                                {todo.completed ? (
+                                    <IconCheckSquare size={20} color="var(--primary)" />
+                                ) : (
+                                    <div className="check-placeholder"></div>
+                                )}
+                            </div>
+                            <div className="item-main">
+                                <div className={`item-title ${todo.completed ? 'completed' : ''}`}>{todo.text}</div>
+                                <div className="item-meta">
+                                    <span className={`priority-tag ${todo.priority}`}>{todo.priority}</span>
+                                    {todo.listTitle && <span className="project-tag">{todo.listTitle}</span>}
+                                    {todo.dueAt && (
+                                        <span className="due-tag">
+                                            <IconClock size={12} /> {todo.dueAt}
+                                        </span>
+                                    )}
+                                    {todo.subtasks?.length > 0 && (
+                                        <span className="info-tag">
+                                            <IconCheckSquare size={12} /> {todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}
+                                        </span>
+                                    )}
+                                    {todo.description && (
+                                        <span className="info-tag">
+                                            <IconAlignLeft size={12} />
+                                        </span>
                                     )}
                                 </div>
-                                <div className="item-main">
-                                    <div className={`item-title ${todo.completed ? 'completed' : ''}`}>{todo.text}</div>
-                                    <div className="item-meta">
-                                        <span className={`priority-tag ${todo.priority}`}>{todo.priority}</span>
-                                        {todo.listTitle && <span className="project-tag">{todo.listTitle}</span>}
-                                        {todo.dueAt && (
-                                            <span className="due-tag">
-                                                <IconClock size={12} /> {todo.dueAt}
-                                            </span>
-                                        )}
-                                        {todo.subtasks?.length > 0 && (
-                                            <span className="info-tag">
-                                                <IconCheckSquare size={12} /> {todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}
-                                            </span>
-                                        )}
-                                        {todo.description && (
-                                            <span className="info-tag">
-                                                <IconAlignLeft size={12} />
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="item-status">
-                                    <span className={`status-pill ${todo.status}`}>{todo.status.toUpperCase()}</span>
-                                </div>
                             </div>
-                        ))}
-                        <div className="list-inline-add">
-                            <InlineAddTask onAdd={(text, list, status) => addTodo(text, list || 'Default', '', { status: status || 'idle' })} />
+                            <div className="item-status">
+                                <span className={`status-pill ${todo.status}`}>{todo.status.toUpperCase()}</span>
+                            </div>
                         </div>
-                    </div>
+                    ))}
                     {filteredTodos.length === 0 && (
                         <div className="empty-state">No tasks found</div>
                     )}
@@ -265,6 +262,9 @@ export default function TodoView() {
                 <div className="todo-table-view">
                     <div className="view-header">
                         <h2>Task Master List</h2>
+                        <button className="btn-primary btn-sm" onClick={() => setIsTodoModalOpen(true)}>
+                            <IconPlus size={16} /> Add Task
+                        </button>
                     </div>
                     <div className="table-container">
                         <table className="tasks-table">
@@ -343,11 +343,6 @@ export default function TodoView() {
                                         </td>
                                     </tr>
                                 ))}
-                                <tr className="row-inline-add">
-                                    <td colSpan="9">
-                                        <InlineAddTask onAdd={(text, list, status) => addTodo(text, list || 'Default', '', { status: status || 'idle' })} />
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                         {filteredTodos.length === 0 && (

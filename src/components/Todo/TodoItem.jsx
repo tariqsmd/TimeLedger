@@ -101,26 +101,25 @@ export default function TodoItem({
                                 <span>{todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}</span>
                             </div>
                         )}
-
-                        {todo.labels && todo.labels.length > 0 && (
-                            <div className="task-labels-container">
-                                {todo.labels.map((label, idx) => (
-                                    <span key={idx} className="item-label-tag">
-                                        <IconTag size={10} />
-                                        {label}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-
                         {todo.description && (
                             <div className="task-badge desc-badge" title="Has description">
                                 <IconAlignLeft size={12} className="badge-icon" />
                             </div>
                         )}
-
                     </div>
+
+                    {todo.labels && todo.labels.length > 0 && (
+                        <div className="task-labels-container">
+                            {todo.labels.map((label, idx) => (
+                                <span key={idx} className="item-label-tag">
+                                    <IconTag size={10} />
+                                    {label}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
+
             </div>
         </div>
     );

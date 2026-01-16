@@ -1,76 +1,14 @@
 {
   "tasks": [
     {
-      "id": "1768252213953",
-      "text": "Bring Flor from Chaki",
-      "description": "",
-      "completed": true,
-      "createdAt": "2026-01-12T21:10:13.953Z",
-      "listTitle": "Default",
-      "status": "completed",
-      "startTime": null,
-      "endTime": "2026-01-13T08:52:32.573Z",
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": [],
-      "coverColor": "#fa8231",
-      "boardTitle": "Completed"
-    },
-    {
-      "id": "1768252196633",
-      "text": "Ask for the dress stiching",
-      "description": "",
-      "completed": true,
-      "createdAt": "2026-01-12T21:09:56.633Z",
-      "listTitle": "Default",
-      "status": "completed",
-      "startTime": null,
-      "endTime": "2026-01-13T08:52:31.758Z",
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": []
-    },
-    {
-      "id": "1768252179289",
-      "text": "Fix the Almari",
-      "description": "",
-      "completed": true,
-      "createdAt": "2026-01-12T21:09:39.289Z",
-      "listTitle": "Default",
-      "status": "completed",
-      "startTime": null,
-      "endTime": "2026-01-13T08:52:33.422Z",
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": []
-    },
-    {
-      "id": "1768252168945",
-      "text": "Buy Solar Panel",
-      "description": "",
-      "completed": true,
-      "createdAt": "2026-01-12T21:09:28.945Z",
-      "listTitle": "Default",
-      "status": "completed",
-      "startTime": null,
-      "endTime": "2026-01-13T08:52:34.079Z",
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": []
-    },
-    {
       "id": "t1",
       "text": "Design System Documentation",
       "description": "Update the component library documentation with new tokens and guidelines for dark mode.",
       "listTitle": "Work",
       "priority": "high",
       "dueAt": "2026-01-13T16:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "paused",
       "subtasks": [
         {
           "text": "Audit existing color tokens",
@@ -88,8 +26,7 @@
       "createdAt": "2026-01-10T16:00:00.000Z",
       "startTime": "2026-01-12T20:35:40.146Z",
       "lastStartedAt": null,
-      "accumulatedTime": 712,
-      "endTime": "2026-01-12T21:09:10.009Z"
+      "accumulatedTime": null
     },
     {
       "id": "t2",
@@ -98,17 +35,17 @@
       "listTitle": "Work",
       "priority": "low",
       "dueAt": "2026-01-14",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "accumulatedTime": -11391724,
       "lastStartedAt": null,
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.209Z",
+      "endTime": null,
       "subtasks": [],
       "labels": [
         "Test Label"
       ],
-      "coverColor": "#fa8231",
+      "coverColor": null,
       "startTime": "2026-01-12T20:37:35.720Z"
     },
     {
@@ -118,8 +55,8 @@
       "listTitle": "Personal",
       "priority": "medium",
       "dueAt": "2026-01-13T04:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "subtasks": [
         {
           "text": "Check pantry stocks",
@@ -131,7 +68,7 @@
         }
       ],
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.409Z"
+      "endTime": null
     },
     {
       "id": "t4",
@@ -140,11 +77,11 @@
       "listTitle": "Side Project",
       "priority": "high",
       "dueAt": null,
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "accumulatedTime": 7200000,
       "createdAt": "2026-01-08T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:56.954Z"
+      "endTime": null
     },
     {
       "id": "t5",
@@ -153,10 +90,10 @@
       "listTitle": "Learning",
       "priority": "low",
       "dueAt": null,
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.609Z"
+      "endTime": null
     },
     {
       "id": "t6",
@@ -165,11 +102,11 @@
       "listTitle": "Health",
       "priority": "medium",
       "dueAt": "2026-01-12T16:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "accumulatedTime": 1800000,
       "createdAt": "2026-01-11T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:53.203Z"
+      "endTime": null
     },
     {
       "id": "t7",
@@ -178,10 +115,10 @@
       "listTitle": "Work",
       "priority": "high",
       "dueAt": "2026-01-12T12:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-01-09T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:57.409Z"
+      "endTime": null
     },
     {
       "id": "t8",
@@ -190,10 +127,10 @@
       "listTitle": "Personal",
       "priority": "low",
       "dueAt": "2026-01-17T16:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.809Z"
+      "endTime": null
     },
     {
       "id": "t9",
@@ -202,10 +139,10 @@
       "listTitle": "Work",
       "priority": "medium",
       "dueAt": null,
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-01-05T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:56.545Z"
+      "endTime": null
     },
     {
       "id": "t10",
@@ -214,10 +151,10 @@
       "listTitle": "Personal",
       "priority": "medium",
       "dueAt": "2026-01-19T16:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:53.009Z"
+      "endTime": null
     }
   ]
 }

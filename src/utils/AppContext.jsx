@@ -95,10 +95,6 @@ export function AppProvider({ children }) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [boardColumns, setBoardColumns] = useLocalStorage('boardColumns', 3);
     const [sortBy, setSortBy] = useLocalStorage('sortBy', 'createdAt'); // 'createdAt', 'priority', 'dueAt', 'alpha'
-    const [appFontBody, setAppFontBody] = useLocalStorage('appFontBody', 'Inter');
-    const [appFontHeading, setAppFontHeading] = useLocalStorage('appFontHeading', 'Outfit');
-    const [appTheme, setAppTheme] = useLocalStorage('appTheme', 'default');
-    const [customBoards, setCustomBoards] = useLocalStorage('customBoards', ['To Do', 'In Progress', 'Completed']);
 
     // Todo Actions
     const addTodo = (text, listTitle = '', description = '', extraData = {}) => {
@@ -320,14 +316,6 @@ export function AppProvider({ children }) {
         setBoardColumns,
         sortBy,
         setSortBy,
-        appFontBody,
-        setAppFontBody,
-        appFontHeading,
-        setAppFontHeading,
-        appTheme,
-        setAppTheme,
-        customBoards,
-        setCustomBoards,
     };
 
     return (

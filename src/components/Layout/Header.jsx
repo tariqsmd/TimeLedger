@@ -30,6 +30,8 @@ export default function Header() {
 
             {/* Right Column: User Controls */}
             <div className="header-right">
+                {/* <button className="btn-add-task" onClick={loadSampleData}>Load Samples</button> */}
+
                 <ProgressWidget todos={todos} />
                 <TimeDisplay format="2-digit-minute" />
                 <DateDisplay format="full" />
