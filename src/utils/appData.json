@@ -8,7 +8,7 @@
       "priority": "high",
       "dueAt": "2026-01-13T16:00:00.000Z",
       "completed": false,
-      "status": "paused",
+      "status": "idle",
       "subtasks": [
         {
           "text": "Audit existing color tokens",
@@ -23,30 +23,24 @@
           "done": false
         }
       ],
-      "createdAt": "2026-01-10T16:00:00.000Z",
-      "startTime": "2026-01-12T20:35:40.146Z",
-      "lastStartedAt": null,
-      "accumulatedTime": null
+      "createdAt": "2026-01-10T16:00:00.000Z"
     },
     {
       "id": "t2",
       "text": "Review Q1 Analytics",
-      "description": "<p><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"Analyze user growth trends and prepare slides for the quarterly meeting\"><u>Analyze&nbsp;user&nbsp;growth&nbsp;trends&nbsp;and&nbsp;prepare&nbsp;slides&nbsp;for&nbsp;the&nbsp;quarterly&nbsp;meeting</u></a>.</p><p></p><p></p>",
+      "description": "<ol><li><u><a href=\"Analyze user growth trends and prepare slides for the quarterly meeting\" rel=\"noopener noreferrer\" target=\"_blank\">Analyze&nbsp;user&nbsp;growth&nbsp;trends&nbsp;and&nbsp;prepare&nbsp;slides&nbsp;for&nbsp;the&nbsp;quarterly&nbsp;meeting</a></u>.</li><li>s;gs</li><li>hrhh</li><li>hr</li><li>hth</li><li></li><li>rth</li><li>thsrh</li><li>ht</li><li>h</li><li>hth</li><li>h</li><li>htthhsh</li><li>thh</li></ol><ul><li>hts</li></ul>",
       "listTitle": "Work",
-      "priority": "low",
+      "priority": "high",
       "dueAt": "2026-01-14",
       "completed": false,
       "status": "idle",
-      "accumulatedTime": -11391724,
+      "accumulatedTime": -11398403,
       "lastStartedAt": null,
       "createdAt": "2026-01-12T16:00:00.000Z",
       "endTime": null,
       "subtasks": [],
-      "labels": [
-        "Test Label"
-      ],
-      "coverColor": null,
-      "startTime": "2026-01-12T20:37:35.720Z"
+      "labels": [],
+      "coverColor": null
     },
     {
       "id": "t3",
@@ -117,8 +111,7 @@
       "dueAt": "2026-01-12T12:00:00.000Z",
       "completed": false,
       "status": "idle",
-      "createdAt": "2026-01-09T16:00:00.000Z",
-      "endTime": null
+      "createdAt": "2026-01-09T16:00:00.000Z"
     },
     {
       "id": "t8",
@@ -129,8 +122,7 @@
       "dueAt": "2026-01-17T16:00:00.000Z",
       "completed": false,
       "status": "idle",
-      "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": null
+      "createdAt": "2026-01-12T16:00:00.000Z"
     },
     {
       "id": "t9",
@@ -141,8 +133,7 @@
       "dueAt": null,
       "completed": false,
       "status": "idle",
-      "createdAt": "2026-01-05T16:00:00.000Z",
-      "endTime": null
+      "createdAt": "2026-01-05T16:00:00.000Z"
     },
     {
       "id": "t10",

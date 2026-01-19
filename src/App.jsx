@@ -2,7 +2,6 @@ import React from 'react';
 import { AppProvider, useApp } from './utils/AppContext';
 import Header from './components/Layout/Header';
 import TodoView from './components/Todo/TodoView';
-import { IconBoard, IconList, IconTable } from './assets/Icons';
 
 function MainLayout() {
     const {
@@ -13,9 +12,7 @@ function MainLayout() {
         boardColumns,
         setBoardColumns,
         sortBy,
-        setSortBy,
-        viewMode,
-        setViewMode
+        setSortBy
     } = useApp();
 
     const backgrounds = [
@@ -88,30 +85,6 @@ function MainLayout() {
                                 <option value="dueAt">Due Date</option>
                                 <option value="alpha">Alphabetical</option>
                             </select>
-                        </div>
-
-                        <div className="settings-group">
-                            <label className="settings-label">View Mode</label>
-                            <div className="view-mode-toggle sidebar-toggle">
-                                <button
-                                    className={`toggle-btn ${viewMode === 'board' ? 'active' : ''}`}
-                                    onClick={() => setViewMode('board')}
-                                >
-                                    <IconBoard size={16} /> Board
-                                </button>
-                                <button
-                                    className={`toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
-                                    onClick={() => setViewMode('list')}
-                                >
-                                    <IconList size={16} /> List
-                                </button>
-                                <button
-                                    className={`toggle-btn ${viewMode === 'table' ? 'active' : ''}`}
-                                    onClick={() => setViewMode('table')}
-                                >
-                                    <IconTable size={16} /> Table
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
