@@ -5,7 +5,8 @@
 import React from 'react';
 import { useIsOverdue, getLiveDuration, formatDateShort } from './useTodoUtils';
 import { useState, useEffect } from 'react';
-import { IconClock, IconCalendar, IconCheckSquare, IconAlignLeft, IconTag } from '../../assets/Icons';
+import { IconClock, IconCalendar, IconCheckSquare, IconAlignLeft, IconTag, IconInfo, IconBell } from '../../assets/Icons';
+import { useApp } from '../../utils/AppContext';
 
 export default function TodoItem({
     todo,
@@ -17,6 +18,7 @@ export default function TodoItem({
     draggedItem,
     viewMode
 }) {
+    const { showGlobalBadges, setShowGlobalBadges } = useApp();
     const [tick, setTick] = useState(0);
 
     useEffect(() => {
@@ -40,7 +42,7 @@ export default function TodoItem({
 
     return (
         <div
-            className={`todo-item ${todo.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''} ${draggedItem?.id === todo.id ? 'dragging' : ''}`}
+            className={`todo-item ${todo.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''} ${draggedItem?.id === todo.id ? 'dragging' : ''} view-mode-${viewMode}`}
             draggable={viewMode === 'board'}
             onDragStart={(e) => onDragStart(e, todo)}
             onDragOver={(e) => onDragOver(e, todo)}
@@ -71,55 +73,69 @@ export default function TodoItem({
             )}
 
             <div className="todo-body">
-                <span
-                    className={`todo-text ${hasIncompleteSubtasks ? 'text-disabled' : ''}`}
-                    style={{ cursor: 'pointer' }}>
-                    {todo.text}
-                </span>
-
-                <div className="task-primary-info">
-                    <div className="task-badges-row">
-                        {todo.priority && todo.priority !== 'none' && (
-                            <div className={`task-badge priority-badge priority-${todo.priority}`}>
-                                <span>{todo.priority}</span>
-                            </div>
-                        )}
-                        {todo.listTitle && todo.listTitle !== 'Default' && (
-                            <div className="task-badge project-badge">
-                                <span>{todo.listTitle}</span>
-                            </div>
-                        )}
-                        {todo.dueAt && (
-                            <div className={`task-badge due-badge ${isOverdue ? 'overdue' : ''}`}>
-                                <IconCalendar size={12} className="badge-icon" />
-                                <span>{formatDateShort(todo.dueAt)}</span>
-                            </div>
-                        )}
-                        {todo.subtasks?.length > 0 && (
-                            <div className={`task-badge subtasks-badge ${todo.subtasks.every(s => s.done) ? 'all-done' : ''}`}>
-                                <IconCheckSquare size={12} className="badge-icon" />
-                                <span>{todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}</span>
-                            </div>
-                        )}
-                        {todo.description && (
-                            <div className="task-badge desc-badge" title="Has description">
-                                <IconAlignLeft size={12} className="badge-icon" />
-                            </div>
-                        )}
-                    </div>
-
-                    {todo.labels && todo.labels.length > 0 && (
-                        <div className="task-labels-container">
-                            {todo.labels.map((label, idx) => (
-                                <span key={idx} className="item-label-tag">
-                                    <IconTag size={10} />
-                                    {label}
-                                </span>
-                            ))}
-                        </div>
-                    )}
+                <div className="todo-header-row">
+                    <span
+                        className={`todo-text ${hasIncompleteSubtasks ? 'text-disabled' : ''}`}
+                        style={{ cursor: 'pointer' }}>
+                        {todo.text}
+                    </span>
+                    <button
+                        className={`btn-toggle-badges ${showGlobalBadges ? 'active' : ''}`}
+                        onClick={(e) => { e.stopPropagation(); setShowGlobalBadges(!showGlobalBadges); }}
+                        title="Toggle Badges Globally"
+                    >
+                        <IconInfo size={14} />
+                    </button>
                 </div>
 
+                {showGlobalBadges && (
+                    <div className="task-primary-info">
+                        <div className="task-badges-row">
+                            {todo.priority && todo.priority !== 'none' && (
+                                <div className={`task-badge priority-badge priority-${todo.priority}`}>
+                                    <IconBell size={12} className="badge-icon" />
+                                    <span>{todo.priority}</span>
+                                </div>
+                            )}
+                            {todo.listTitle && todo.listTitle !== 'Default' && (
+                                <div className="task-badge project-badge">
+                                    <IconTag size={12} className="badge-icon" />
+                                    <span>{todo.listTitle}</span>
+                                </div>
+                            )}
+                            {todo.dueAt && (
+                                <div className={`task-badge due-badge ${isOverdue ? 'overdue' : ''}`}>
+                                    <IconCalendar size={12} className="badge-icon" />
+                                    <span>{formatDateShort(todo.dueAt)}</span>
+                                </div>
+                            )}
+                            {todo.subtasks?.length > 0 && (
+                                <div className={`task-badge subtasks-badge ${todo.subtasks.every(s => s.done) ? 'all-done' : ''}`}>
+                                    <IconCheckSquare size={12} className="badge-icon" />
+                                    <span>{todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}</span>
+                                </div>
+                            )}
+
+                            {todo.labels && todo.labels.length > 0 && (
+                                <div className="task-labels-container">
+                                    {todo.labels.map((label, idx) => (
+                                        <span key={idx} className="item-label-tag">
+                                            <IconTag size={10} />
+                                            {label}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+
+                            {todo.description && (
+                                <div className="task-badge desc-badge" title="Has description">
+                                    <IconAlignLeft size={12} className="badge-icon" />
+                                </div>
+                            )}
+
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
