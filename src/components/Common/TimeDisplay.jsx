@@ -1,34 +1,29 @@
 /**
  * TimeDisplay.jsx
  * Reusable time display component with live updates
- * format '2-digit-minute', 'full-time', 'custom'
- * formatDate 'full', 'short', 'iso'
  */
 import React, { useState, useEffect } from 'react';
-import { formatTime, formatDate } from '../../utils/Helpers';
 
 export default function TimeDisplay({
-    timeFormat = '2-digit-minute',
-    dateFoemat = 'full',
-    showDate = false
+    format = '2-digit-minute' // '2-digit-minute', 'full-time', 'custom'
 }) {
     const [time, setTime] = useState(new Date());
-    const [date, setDate] = useState(new Date());
-
-    useEffect(() => {
-        const timer = setInterval(() => setDate(new Date()), 30000); // Update every 30 minute
-        return () => clearInterval(timer);
-    }, []);
 
     useEffect(() => {
         const timer = setInterval(() => setTime(new Date()), 1000);
         return () => clearInterval(timer);
     }, []);
 
+    const formatTime = (date) => {
+        if (format === '2-digit-minute') {
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+        return date.toLocaleTimeString();
+    };
+
     return (
         <div className="timeWidget">
-            {showDate ? <span className="date">{formatDate(date, dateFoemat)}</span> : ""}
-            <span className="time">{formatTime(time, timeFormat)}</span>
+            <span>{formatTime(time)}</span>
         </div>
     );
 }

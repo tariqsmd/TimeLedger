@@ -5,6 +5,7 @@ import { sampleTasks, sampleTaskGroups } from './appData';
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
+
     // Project State
     const [projects, setProjects] = useLocalStorage('taskGroups', sampleTaskGroups);
 
@@ -12,6 +13,10 @@ export function AppProvider({ children }) {
     const [editingEntry, setEditingEntry] = useState(null);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+
+    console.log(sampleTasks);
+    console.log(sampleTaskGroups);
 
     // Load Sample Data
     const loadSampleData = () => {
@@ -97,7 +102,6 @@ export function AppProvider({ children }) {
     const [boardBackgroundType, setBoardBackgroundType] = useLocalStorage('boardBackgroundType', 'none'); // 'none', 'color', 'gradient', 'image'
     const [boardBackgroundValue, setBoardBackgroundValue] = useLocalStorage('boardBackgroundValue', '');
     const [customBoards, setCustomBoards] = useLocalStorage('customBoards', ['To Do', 'In Progress', 'Completed']);
-    const [showGlobalBadges, setShowGlobalBadges] = useLocalStorage('showGlobalBadges', true);
 
     // Todo Actions
     const addTodo = (text, listTitle = '', description = '', extraData = {}) => {
@@ -333,8 +337,6 @@ export function AppProvider({ children }) {
         setBoardBackgroundValue,
         customBoards,
         setCustomBoards,
-        showGlobalBadges,
-        setShowGlobalBadges,
     };
 
     return (

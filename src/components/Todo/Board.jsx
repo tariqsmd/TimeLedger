@@ -34,7 +34,7 @@ export default function Board({
 
     return (
         <div className="board-view-container">
-            <div className="board-view">
+            <div className="board-view" style={{ gridTemplateColumns: `repeat(${customBoards.length + 1}, minmax(320px, 1fr))` }}>
                 {customBoards.map((boardTitle, index) => (
                     <div
                         key={boardTitle}

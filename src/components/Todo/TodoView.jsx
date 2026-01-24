@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../../utils/AppContext';
-import { IconTrash, IconPlus, IconClose, IconPlay, IconPause, IconStop, IconRefresh, IconClock, IconCheckSquare, IconInfo, IconBell, IconList, IconCalendar, IconEdit, IconAlignLeft, IconTag } from '../../assets/Icons';
+import { IconTrash, IconPlus, IconClose, IconPlay, IconPause, IconStop, IconRefresh, IconClock, IconCheckSquare, IconCheck, IconBoard, IconList, IconTable, IconEdit, IconAlignLeft, IconTag } from '../../assets/Icons';
 import Board from './Board';
-import { getLiveDuration, formatDateFull, formatDateShort } from './useTodoUtils';
+import { getLiveDuration, formatDateFull } from './useTodoUtils';
 import RichEditor from '../Common/RichEditor';
 import InlineAddTask from './InlineAddTask';
 
@@ -26,9 +26,7 @@ export default function TodoView() {
         isTodoModalOpen,
         setIsTodoModalOpen,
         sortBy,
-        setViewMode,
-        showGlobalBadges,
-        setShowGlobalBadges
+        setViewMode
     } = useApp();
 
     // Form state
@@ -227,45 +225,26 @@ export default function TodoView() {
                                     )}
                                 </div>
                                 <div className="item-main">
-                                    <div className="item-title-row">
-                                        <div className={`item-title ${todo.completed ? 'completed' : ''}`}>{todo.text}</div>
-                                        <button
-                                            className={`btn-toggle-badges ${showGlobalBadges ? 'active' : ''}`}
-                                            onClick={(e) => { e.stopPropagation(); setShowGlobalBadges(!showGlobalBadges); }}
-                                            title="Toggle Badges Globally"
-                                        >
-                                            <IconInfo size={14} />
-                                        </button>
-                                    </div>
-                                    {showGlobalBadges && (
-                                        <div className="item-meta">
-                                            <span className={`priority-tag priority-${todo.priority}`}>
-                                                <IconBell size={12} />
-                                                {todo.priority}
+                                    <div className={`item-title ${todo.completed ? 'completed' : ''}`}>{todo.text}</div>
+                                    <div className="item-meta">
+                                        <span className={`priority-tag ${todo.priority}`}>{todo.priority}</span>
+                                        {todo.listTitle && <span className="project-tag">{todo.listTitle}</span>}
+                                        {todo.dueAt && (
+                                            <span className="due-tag">
+                                                <IconClock size={12} /> {todo.dueAt}
                                             </span>
-                                            {todo.listTitle && todo.listTitle !== 'Default' && (
-                                                <span className="project-tag">
-                                                    <IconTag size={12} />
-                                                    {todo.listTitle}
-                                                </span>
-                                            )}
-                                            {todo.dueAt && (
-                                                <span className="due-tag">
-                                                    <IconCalendar size={12} /> {formatDateShort(todo.dueAt)}
-                                                </span>
-                                            )}
-                                            {todo.subtasks?.length > 0 && (
-                                                <span className="info-tag">
-                                                    <IconCheckSquare size={12} /> {todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}
-                                                </span>
-                                            )}
-                                            {todo.description && (
-                                                <span className="info-tag">
-                                                    <IconAlignLeft size={12} />
-                                                </span>
-                                            )}
-                                        </div>
-                                    )}
+                                        )}
+                                        {todo.subtasks?.length > 0 && (
+                                            <span className="info-tag">
+                                                <IconCheckSquare size={12} /> {todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}
+                                            </span>
+                                        )}
+                                        {todo.description && (
+                                            <span className="info-tag">
+                                                <IconAlignLeft size={12} />
+                                            </span>
+                                        )}
+                                    </div>
                                 </div>
                                 <div className="item-status">
                                     <span className={`status-pill ${todo.status}`}>{todo.status.toUpperCase()}</span>
@@ -388,11 +367,18 @@ export default function TodoView() {
                                     <div className="title-row">
                                         <h2 className="modal-title">{editingTodoId ? 'Edit Task' : 'Add Task'}</h2>
                                     </div>
+                                    <p className="modal-subtitle">
+                                        {editingTodoId ? 'Update your task details' : 'What needs to be done?'}
+                                    </p>
                                 </div>
                             </div>
                             <div className="header-actions">
                                 {editingTodoId && currentEditingTodo && (
                                     <div className="header-timer-indicator">
+                                        <div className="header-time-spent">
+                                            <IconClock size={16} />
+                                            <span>{getLiveDuration(currentEditingTodo)}</span>
+                                        </div>
                                         <div className="timer-controls-inline">
                                             {currentEditingTodo.status === 'idle' && (
                                                 <button type="button" className="btn-timer-control start" onClick={() => startTodo(editingTodoId)} title="Start Timer">
@@ -424,10 +410,6 @@ export default function TodoView() {
                                                     <span>Restart</span>
                                                 </button>
                                             )}
-                                        </div>
-                                        <div className="header-time-spent">
-                                            <IconClock size={16} />
-                                            <span>{getLiveDuration(currentEditingTodo)}</span>
                                         </div>
                                     </div>
                                 )}
