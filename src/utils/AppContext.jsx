@@ -42,7 +42,7 @@ export function AppProvider({ children }) {
     const [isDataLoaded, setIsDataLoaded] = useState(false); // Flag to prevent overwriting server data on init
 
     // --- File Persistence Logic ---
-    const API_URL = 'http://localhost:5175/api/tasks';
+    const API_URL = 'http://localhost:3001/api/tasks';
 
     // 1. Fetch initial data from server (appData.json)
     React.useEffect(() => {
@@ -93,15 +93,8 @@ export function AppProvider({ children }) {
     const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
     const [boardBackground, setBoardBackground] = useLocalStorage('todoBoardBackground', null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [boardColumns, setBoardColumns] = useLocalStorage('boardColumns', 3);
     const [sortBy, setSortBy] = useLocalStorage('sortBy', 'createdAt'); // 'createdAt', 'priority', 'dueAt', 'alpha'
-    const [appFontBody, setAppFontBody] = useLocalStorage('appFontBody', 'Inter');
-    const [appFontWeightBody, setAppFontWeightBody] = useLocalStorage('appFontWeightBody', '400');
-    const [appFontHeading, setAppFontHeading] = useLocalStorage('appFontHeading', 'Outfit');
-    const [appFontWeightHeading, setAppFontWeightHeading] = useLocalStorage('appFontWeightHeading', '700');
-    const [appTheme, setAppTheme] = useLocalStorage('appTheme', 'default');
-    const [boardBackgroundType, setBoardBackgroundType] = useLocalStorage('boardBackgroundType', 'none'); // 'none', 'color', 'gradient', 'image'
-    const [boardBackgroundValue, setBoardBackgroundValue] = useLocalStorage('boardBackgroundValue', '');
-    const [customBoards, setCustomBoards] = useLocalStorage('customBoards', ['To Do', 'In Progress', 'Completed']);
 
     // Todo Actions
     const addTodo = (text, listTitle = '', description = '', extraData = {}) => {
@@ -204,9 +197,9 @@ export function AppProvider({ children }) {
                 }
                 return {
                     ...todo,
-                    status: 'paused', // STOPPED -> Paused state to preserve time
-                    completed: false, // Do NOT mark as completed
-                    // endTime: now, // Do NOT set End Time if not completed
+                    status: 'completed',
+                    completed: true,
+                    endTime: now,
                     accumulatedTime: finalTime,
                     lastStartedAt: null
                 };
@@ -319,24 +312,10 @@ export function AppProvider({ children }) {
         removeProject,
         isSidebarOpen,
         setIsSidebarOpen,
+        boardColumns,
+        setBoardColumns,
         sortBy,
         setSortBy,
-        appFontBody,
-        setAppFontBody,
-        appFontWeightBody,
-        setAppFontWeightBody,
-        appFontHeading,
-        setAppFontHeading,
-        appFontWeightHeading,
-        setAppFontWeightHeading,
-        appTheme,
-        setAppTheme,
-        boardBackgroundType,
-        setBoardBackgroundType,
-        boardBackgroundValue,
-        setBoardBackgroundValue,
-        customBoards,
-        setCustomBoards,
     };
 
     return (
