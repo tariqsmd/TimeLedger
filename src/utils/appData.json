@@ -1,142 +1,70 @@
 {
-    "tasks": [
+  "tasks": [
+    {
+      "id": "1768932095097",
+      "text": "Complete the CRM fixes",
+      "description": "<p>This is a <strong>area</strong> for description.</p>",
+      "completed": false,
+      "createdAt": "2026-01-20T18:01:35.097Z",
+      "listTitle": "Default",
+      "status": "idle",
+      "startTime": "2026-01-20T18:01:44.481Z",
+      "endTime": null,
+      "accumulatedTime": 10321,
+      "lastStartedAt": null,
+      "priority": "high",
+      "categories": [
+        "Default"
+      ],
+      "labels": [],
+      "checklists": [
         {
-            "id": "t1",
-            "text": "Design System Documentation",
-            "description": "Update the component library documentation with new tokens and guidelines for dark mode.",
-            "listTitle": "Work",
-            "priority": "high",
-            "dueAt": "2026-01-13T16:00:00.000Z",
-            "completed": false,
-            "status": "idle",
-            "subtasks": [
-                {
-                    "text": "Audit existing color tokens",
-                    "done": true
-                },
-                {
-                    "text": "Draft new spacing guidelines",
-                    "done": false
-                },
-                {
-                    "text": "Update button component examples",
-                    "done": false
-                }
-            ],
-            "createdAt": "2026-01-10T16:00:00.000Z"
-        },
-        {
-            "id": "t2",
-            "text": "Review Q1 Analytics",
-            "description": "Analyze user growth trends and prepare slides for the quarterly meeting.",
-            "listTitle": "Work",
-            "priority": "high",
-            "dueAt": "2026-01-14T16:00:00.000Z",
-            "completed": false,
-            "status": "running",
-            "accumulatedTime": 3600000,
-            "lastStartedAt": "2026-01-12T16:00:00.000Z",
-            "createdAt": "2026-01-12T16:00:00.000Z"
-        },
-        {
-            "id": "t3",
-            "text": "Grocery Shopping",
-            "description": "Buy essentials for the week: Fruits, Vegetables, Milk, Eggs.",
-            "listTitle": "Personal",
-            "priority": "medium",
-            "dueAt": "2026-01-13T04:00:00.000Z",
-            "completed": false,
-            "status": "idle",
-            "subtasks": [
-                {
-                    "text": "Check pantry stocks",
-                    "done": true
-                },
-                {
-                    "text": "Make a list",
-                    "done": true
-                }
-            ],
-            "createdAt": "2026-01-12T16:00:00.000Z"
-        },
-        {
-            "id": "t4",
-            "text": "React Query Integration",
-            "description": "Refactor data fetching layer to use React Query for better caching and background updates.",
-            "listTitle": "Side Project",
-            "priority": "high",
-            "dueAt": null,
-            "completed": false,
-            "status": "paused",
-            "accumulatedTime": 7200000,
-            "createdAt": "2026-01-08T16:00:00.000Z"
-        },
-        {
-            "id": "t5",
-            "text": "Read \"Atomic Habits\"",
-            "description": "Finish chapter 4 and take notes on habit stacking.",
-            "listTitle": "Learning",
-            "priority": "low",
-            "dueAt": null,
-            "completed": false,
-            "status": "idle",
-            "createdAt": "2026-01-12T16:00:00.000Z"
-        },
-        {
-            "id": "t6",
-            "text": "Morning Jog",
-            "description": "Run 5km at the park.",
-            "listTitle": "Health",
-            "priority": "medium",
-            "dueAt": "2026-01-12T16:00:00.000Z",
-            "completed": true,
-            "status": "completed",
-            "accumulatedTime": 1800000,
-            "createdAt": "2026-01-11T16:00:00.000Z"
-        },
-        {
-            "id": "t7",
-            "text": "Fix Navbar Bug",
-            "description": "Mobile menu does not close when clicking outside on iOS devices.",
-            "listTitle": "Work",
-            "priority": "high",
-            "dueAt": "2026-01-12T12:00:00.000Z",
-            "completed": false,
-            "status": "idle",
-            "createdAt": "2026-01-09T16:00:00.000Z"
-        },
-        {
-            "id": "t8",
-            "text": "Plan Weekend Trip",
-            "description": "Look for Airbnb options in the mountains.",
-            "listTitle": "Personal",
-            "priority": "low",
-            "dueAt": "2026-01-17T16:00:00.000Z",
-            "completed": false,
-            "status": "idle",
-            "createdAt": "2026-01-12T16:00:00.000Z"
-        },
-        {
-            "id": "t9",
-            "text": "Update Portfolio",
-            "description": "Add recent projects and update resume PDF.",
-            "listTitle": "Work",
-            "priority": "medium",
-            "dueAt": null,
-            "completed": false,
-            "status": "idle",
-            "createdAt": "2026-01-05T16:00:00.000Z"
-        },
-        {
-            "id": "t10",
-            "text": "Car Service",
-            "description": "Book appointment for annual maintenance.",
-            "listTitle": "Personal",
-            "priority": "medium",
-            "dueAt": "2026-01-19T16:00:00.000Z",
-            "completed": false,
-            "status": "idle",
-            "createdAt": "2026-01-12T16:00:00.000Z"
+          "id": "1768932157953i6qe5",
+          "title": "My First List",
+          "items": [
+            {
+              "id": "1768932177537eym8i",
+              "text": "Task one",
+              "done": false
+            },
+            {
+              "id": "1768932184313wv68o",
+              "text": "Task two",
+              "done": false
+            }
+          ]
         }
-    ]
+      ],
+      "boardTitle": "To Do",
+      "dueAt": "2026-01-23",
+      "coverColor": "#eb3b5a"
+    },
+    {
+      "id": "1768504193851",
+      "text": "Complete the WP Contact Form Plugin",
+      "description": "",
+      "completed": false,
+      "createdAt": "2026-01-15T19:09:53.851Z",
+      "listTitle": "Default",
+      "status": "idle",
+      "startTime": null,
+      "endTime": null,
+      "accumulatedTime": 0,
+      "lastStartedAt": null,
+      "priority": "high",
+      "categories": [
+        "Default"
+      ],
+      "labels": [],
+      "checklists": [
+        {
+          "id": "1768931619385r7qpl",
+          "title": "Subtask List",
+          "items": []
+        }
+      ],
+      "boardTitle": "To Do",
+      "coverColor": "#f7b731"
+    }
+  ]
 }

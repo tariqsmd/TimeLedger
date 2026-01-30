@@ -1,14 +1,49 @@
-const express = require('express');
-const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+import express from 'express';
+import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3001;
+const PORT = 5175;
 const DATA_FILE = path.join(__dirname, 'src/utils/appData.json');
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// POST: Upload image
+app.post('/api/upload', (req, res) => {
+    const { image } = req.body;
+    if (!image) return res.status(400).json({ error: 'No image data provided' });
+
+    // Remove header (data:image/png;base64,)
+    const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
+    const extension = image.match(/^data:image\/(\w+);base64,/)[1];
+    const fileName = `bg_${Date.now()}.${extension}`;
+    const filePath = path.join(__dirname, 'uploads', fileName);
+
+    fs.writeFile(filePath, base64Data, 'base64', (err) => {
+        if (err) {
+            console.error('Upload error:', err);
+            return res.status(500).json({ error: 'Failed to save image' });
+        }
+        res.json({ url: `http://localhost:5175/uploads/${fileName}` });
+    });
+});
+
+// GET: List uploaded images
+app.get('/api/uploads', (req, res) => {
+    fs.readdir(path.join(__dirname, 'uploads'), (err, files) => {
+        if (err) return res.status(500).json({ error: 'Failed to list uploads' });
+        const urls = files.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
+            .map(f => `http://localhost:5175/uploads/${f}`);
+        res.json(urls);
+    });
+});
 
 // GET: Read data
 app.get('/api/tasks', (req, res) => {
