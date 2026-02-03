@@ -1,45 +1,6 @@
 {
   "tasks": [
     {
-      "id": "1768932095097",
-      "text": "Complete the CRM fixes",
-      "description": "<p>This is a <strong>area</strong> for description.</p>",
-      "completed": false,
-      "createdAt": "2026-01-20T18:01:35.097Z",
-      "listTitle": "Default",
-      "status": "idle",
-      "startTime": "2026-01-20T18:01:44.481Z",
-      "endTime": null,
-      "accumulatedTime": 10321,
-      "lastStartedAt": null,
-      "priority": "high",
-      "categories": [
-        "Default"
-      ],
-      "labels": [],
-      "checklists": [
-        {
-          "id": "1768932157953i6qe5",
-          "title": "My First List",
-          "items": [
-            {
-              "id": "1768932177537eym8i",
-              "text": "Task one",
-              "done": false
-            },
-            {
-              "id": "1768932184313wv68o",
-              "text": "Task two",
-              "done": false
-            }
-          ]
-        }
-      ],
-      "boardTitle": "To Do",
-      "dueAt": "2026-01-23",
-      "coverColor": "#eb3b5a"
-    },
-    {
       "id": "1768504193851",
       "text": "Complete the WP Contact Form Plugin",
       "description": "",
@@ -51,20 +12,13 @@
       "endTime": null,
       "accumulatedTime": 0,
       "lastStartedAt": null,
-      "priority": "high",
+      "priority": "medium",
       "categories": [
         "Default"
       ],
       "labels": [],
-      "checklists": [
-        {
-          "id": "1768931619385r7qpl",
-          "title": "Subtask List",
-          "items": []
-        }
-      ],
-      "boardTitle": "To Do",
-      "coverColor": "#f7b731"
+      "checklists": [],
+      "boardTitle": "To Do"
     }
   ]
 }

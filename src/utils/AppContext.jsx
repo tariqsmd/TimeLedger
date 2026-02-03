@@ -1,8 +1,6 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import { sampleTasks, sampleCategories } from './appData';
-import { useElectronLifecycle } from './useElectron';
-
 
 const AppContext = createContext();
 
@@ -110,23 +108,6 @@ export function AppProvider({ children }) {
         const timeoutId = setTimeout(saveData, 500);
         return () => clearTimeout(timeoutId);
     }, [todos, isDataLoaded]);
-
-    // Electron lifecycle - save data on app close
-    const saveDataToServer = useCallback(async () => {
-        if (!isDataLoaded) return;
-        try {
-            await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tasks: todos })
-            });
-            console.log('Data saved before app close');
-        } catch (error) {
-            console.error('Failed to save data before close:', error);
-        }
-    }, [todos, isDataLoaded]);
-
-    useElectronLifecycle(saveDataToServer);
 
     const [viewMode, setViewMode] = useLocalStorage('todoViewMode', 'board');
     const [searchQuery, setSearchQuery] = useState('');
