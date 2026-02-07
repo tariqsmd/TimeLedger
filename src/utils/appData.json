@@ -1,24 +1,91 @@
 {
   "tasks": [
     {
-      "id": "1768504193851",
-      "text": "Complete the WP Contact Form Plugin",
-      "description": "",
+      "id": "1769001123456",
+      "text": "Prepare Client Proposal",
+      "description": "Draft and finalize proposal for real estate website project.",
       "completed": false,
-      "createdAt": "2026-01-15T19:09:53.851Z",
-      "listTitle": "Default",
-      "status": "idle",
-      "startTime": null,
+      "createdAt": "2026-01-10T09:30:00.000Z",
+      "listTitle": "Work",
+      "status": "paused",
+      "startTime": "2026-01-15T07:45:00.000Z",
       "endTime": null,
-      "accumulatedTime": 0,
+      "accumulatedTime": 44053100,
+      "lastStartedAt": null,
+      "priority": "high",
+      "subtasks": [],
+      "labels": [
+        "client",
+        "proposal",
+        "Bug",
+        "Urgent",
+        "Feature"
+      ],
+      "checklists": [
+        {
+          "id": "1769001129991",
+          "title": "Proposal Checklist",
+          "items": [
+            {
+              "text": "Collect client requirements",
+              "done": true
+            },
+            {
+              "text": "Collect client requirements",
+              "done": false
+            },
+            {
+              "text": "Collect client requirements",
+              "done": false
+            }
+          ]
+        },
+        {
+          "id": "1768504030875gzn2q",
+          "title": "Subtask List",
+          "items": []
+        }
+      ],
+      "dueAt": "2026-01-28"
+    },
+    {
+      "id": "1769001187654",
+      "text": "Record React Tutorial",
+      "description": "Record and edit React basics video for students.",
+      "completed": false,
+      "createdAt": "2026-01-08T14:15:00.000Z",
+      "listTitle": "Teaching",
+      "status": "idle",
+      "startTime": "2026-01-09T16:00:00.000Z",
+      "endTime": null,
+      "accumulatedTime": 9000000,
       "lastStartedAt": null,
       "priority": "medium",
-      "categories": [
-        "Default"
+      "subtasks": [],
+      "labels": [
+        "react",
+        "video"
       ],
-      "labels": [],
-      "checklists": [],
-      "boardTitle": "To Do"
+      "checklists": [
+        {
+          "id": "1769001189998",
+          "title": "Recording Tasks",
+          "items": [
+            {
+              "text": "Prepare slides",
+              "done": true
+            },
+            {
+              "text": "Record screen and audio",
+              "done": true
+            },
+            {
+              "text": "Edit and export video",
+              "done": true
+            }
+          ]
+        }
+      ]
     }
   ]
 }

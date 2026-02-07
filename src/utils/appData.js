@@ -10,31 +10,6 @@
  * 3. In the application header, click "Load Samples" (if enabled) or clear your localStorage to reset to these defaults.
  *    (For now, since "Load Samples" button might be hidden, you can use the browser console: localStorage.clear() and reload)
  */
-
-
-export const majorTasks = [
-    {
-        id: 'mt1',
-        text: 'WP wordPress Plugin',
-        description: 'Update the component library documentation with new tokens and guidelines for dark mode.',
-        categories: ['Work'],
-        priority: 'high',
-        dueAt: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
-        completed: false,
-        status: 'idle',
-        checklists: [
-            {
-                id: 'cl1', title: 'Preparation', items: [
-                    { text: 'Portfolio', done: false },
-                    { text: 'LMS online for student.', done: false },
-                    { text: 'LMS online.', done: false }
-                ]
-            }
-        ],
-        createdAt: new Date(Date.now() - 172800000).toISOString() // 2 days ago
-    },
-];
-
 export const taskGroups = ['Work', 'Personal', 'Side Project', 'Learning', 'Health', 'Finance', 'Travel', 'Household', 'Volunteer', 'Fitness'];
 
 export const sampleCategories = [
