@@ -307,7 +307,7 @@ export default function TodoView() {
                                                 {todo.priority}
                                             </span>
                                             {todo.categories?.map((cat, idx) => (
-                                                <span key={`${cat}-${idx}`} className="category-tag" style={{ borderLeft: `4px solid ${getCategoryColor(cat)}` }}>
+                                                <span key={`${cat}-${idx}`} className="category-tag">
                                                     <IconTag size={12} />
                                                     {cat}
                                                 </span>
@@ -391,7 +391,7 @@ export default function TodoView() {
                                         <td className="col-category">
                                             <div className="badge-list-cell">
                                                 {todo.categories?.map((cat, idx) => (
-                                                    <span key={`${cat}-${idx}`} className="category-pill" style={{ backgroundColor: getCategoryColor(cat) + '22', color: getCategoryColor(cat), border: `1px solid ${getCategoryColor(cat)}` }}>
+                                                    <span key={`${cat}-${idx}`} className="category-pill">
                                                         {cat}
                                                     </span>
                                                 ))}

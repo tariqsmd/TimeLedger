@@ -50,11 +50,6 @@ export default function TodoItem({
         return label ? label.color : getLabelColor(name);
     };
 
-    const getCategoryColorS = (name) => {
-        const cat = categories.find(c => c.name === name);
-        return cat ? cat.color : '#0079bf';
-    };
-
     const handleTaskClick = (e) => {
         // Prevent opening modal if clicking interactive elements
         if (e.target.closest('.checkbox') || e.target.closest('.inline-controls') || e.target.closest('.btn-menu') || e.target.closest('.dropdown') || e.target.closest('.btn-text') || e.target.closest('.btn-expand')) {
