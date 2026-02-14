@@ -1,55 +1,33 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useLocalStorage } from './useLocalStorage';
-import { sampleTasks, sampleCategories } from './appData';
+import { sampleTasks, sampleTaskGroups } from './sampleData';
 
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-    // Category/Group State
-    const [categories, setCategories] = useLocalStorage('taskGroups', sampleCategories);
-    const [allLabels, setAllLabels] = useLocalStorage('allLabels', [
-        { name: 'Urgent', color: '#eb5a46' },
-        { name: 'Bug', color: '#344563' },
-        { name: 'Feature', color: '#00c2e0' }
-    ]);
 
-    // Data Normalization (for backward compatibility)
-    React.useEffect(() => {
-        let changed = false;
-        let normCats = [...categories];
-        let normLabels = [...allLabels];
-
-        if (categories && categories.length > 0 && typeof categories[0] === 'string') {
-            normCats = categories.map(c => ({ name: c, color: '#0079bf' }));
-            changed = true;
-        }
-
-        if (allLabels && allLabels.length > 0 && typeof allLabels[0] === 'string') {
-            normLabels = allLabels.map(l => ({ name: l, color: '#61bd4f' }));
-            changed = true;
-        }
-
-        if (changed) {
-            setCategories(normCats);
-            setAllLabels(normLabels);
-        }
-    }, [categories, allLabels, setCategories, setAllLabels]);
+    // Project State
+    const [projects, setProjects] = useLocalStorage('taskGroups', sampleTaskGroups);
 
     // Modal & Editing State
     const [editingEntry, setEditingEntry] = useState(null);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
+
+    console.log(sampleTasks);
+    console.log(sampleTaskGroups);
+
     // Load Sample Data
     const loadSampleData = () => {
         if (window.confirm('This will replace your current data with sample data. Are you sure?')) {
             try {
                 localStorage.setItem('tasks', JSON.stringify(sampleTasks));
-                localStorage.setItem('taskGroups', JSON.stringify(sampleCategories));
+                localStorage.setItem('taskGroups', JSON.stringify(sampleTaskGroups));
 
                 // Force state update as well in case reload is delayed or prevented (though reload usually clears state)
                 setTodos(sampleTasks);
-                setCategories(sampleCategories);
+                setProjects(sampleTaskGroups);
 
                 window.location.reload();
             } catch (error) {
@@ -60,71 +38,16 @@ export function AppProvider({ children }) {
     };
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [todos, setTodos] = useState([]); // Start empty, fetch from server
-    const [isDataLoaded, setIsDataLoaded] = useState(false); // Flag to prevent overwriting server data on init
-
-    // --- File Persistence Logic ---
-    const API_URL = 'http://localhost:5175/api/tasks';
-
-    // 1. Fetch initial data from server (appData.json)
-    React.useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(API_URL);
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.tasks) {
-                        setTodos(data.tasks);
-                        setIsDataLoaded(true);
-                        console.log('Loaded tasks from file server:', data.tasks.length);
-                    }
-                } else {
-                    console.error('Failed to fetch from local server');
-                }
-            } catch (error) {
-                console.error('Error connecting to local server:', error);
-            }
-        };
-        fetchData();
-    }, []);
-
-    // 2. Auto-save changes to server (appData.json)
-    React.useEffect(() => {
-        if (!isDataLoaded) return; // Don't save before initial load
-
-        const saveData = async () => {
-            try {
-                await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tasks: todos })
-                });
-                console.log('Saved changes to file server');
-            } catch (error) {
-                console.error('Failed to save changes:', error);
-            }
-        };
-        // Debounce slightly to avoid too many writes
-        const timeoutId = setTimeout(saveData, 500);
-        return () => clearTimeout(timeoutId);
-    }, [todos, isDataLoaded]);
-
+    // Use file-based initial state. UI additions will be temporary until added to file.
+    const [todos, setTodos] = useState(sampleTasks);
     const [viewMode, setViewMode] = useLocalStorage('todoViewMode', 'board');
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTab, setActiveTab] = useLocalStorage('activeView', 'tasks');
     const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
     const [boardBackground, setBoardBackground] = useLocalStorage('todoBoardBackground', null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [boardColumns, setBoardColumns] = useLocalStorage('boardColumns', 3);
     const [sortBy, setSortBy] = useLocalStorage('sortBy', 'createdAt'); // 'createdAt', 'priority', 'dueAt', 'alpha'
-    const [appFontBody, setAppFontBody] = useLocalStorage('appFontBody', 'Inter');
-    const [appFontWeightBody, setAppFontWeightBody] = useLocalStorage('appFontWeightBody', '400');
-    const [appFontHeading, setAppFontHeading] = useLocalStorage('appFontHeading', 'Outfit');
-    const [appFontWeightHeading, setAppFontWeightHeading] = useLocalStorage('appFontWeightHeading', '700');
-    const [appTheme, setAppTheme] = useLocalStorage('appTheme', 'default');
-    const [boardBackgroundType, setBoardBackgroundType] = useLocalStorage('boardBackgroundType', 'none'); // 'none', 'color', 'gradient', 'image'
-    const [boardBackgroundValue, setBoardBackgroundValue] = useLocalStorage('boardBackgroundValue', '');
-    const [customBoards, setCustomBoards] = useLocalStorage('customBoards', ['To Do', 'In Progress', 'Completed']);
-    const [showGlobalBadges, setShowGlobalBadges] = useLocalStorage('showGlobalBadges', true);
 
     // Todo Actions
     const addTodo = (text, listTitle = '', description = '', extraData = {}) => {
@@ -141,9 +64,7 @@ export function AppProvider({ children }) {
             accumulatedTime: 0,
             lastStartedAt: null,
             priority: 'medium',
-            categories: listTitle ? [listTitle] : [], // Multiple categories support
-            labels: [], // Multiple labels support
-            checklists: [], // Multiple checklists support
+            subtasks: [],
             ...extraData
         };
         setTodos([newTodo, ...todos]);
@@ -229,9 +150,9 @@ export function AppProvider({ children }) {
                 }
                 return {
                     ...todo,
-                    status: 'paused', // STOPPED -> Paused state to preserve time
-                    completed: false, // Do NOT mark as completed
-                    // endTime: now, // Do NOT set End Time if not completed
+                    status: 'completed',
+                    completed: true,
+                    endTime: now,
                     accumulatedTime: finalTime,
                     lastStartedAt: null
                 };
@@ -299,56 +220,15 @@ export function AppProvider({ children }) {
         setTodos(todos.map(todo => todo.id === id ? { ...todo, ...updates } : todo));
     };
 
-    // Category Management
-    const addGlobalCategory = (name, color = '#61bd4f') => {
-        if (name && !categories.some(c => c.name === name)) {
-            setCategories([...categories, { name, color }]);
+    // Project Management
+    const addProject = (name) => {
+        if (name && !projects.includes(name)) {
+            setProjects([...projects, name]);
         }
     };
 
-    const removeCategory = (name) => {
-        setCategories(categories.filter(p => p.name !== name));
-    };
-
-    const addGlobalLabel = (name, color = '#61bd4f') => {
-        if (name && !allLabels.some(l => l.name === name)) {
-            setAllLabels([...allLabels, { name, color }]);
-        }
-    };
-
-    const addChecklist = (todoId, title = 'Checklist') => {
-        setTodos(todos.map(todo => {
-            if (todo.id === todoId) {
-                const newChecklists = [...(todo.checklists || []), {
-                    id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
-                    title,
-                    items: []
-                }];
-                return { ...todo, checklists: newChecklists };
-            }
-            return todo;
-        }));
-    };
-
-    const removeChecklist = (todoId, checklistId) => {
-        setTodos(todos.map(todo => {
-            if (todo.id === todoId) {
-                return { ...todo, checklists: todo.checklists.filter(c => c.id !== checklistId) };
-            }
-            return todo;
-        }));
-    };
-
-    const updateChecklist = (todoId, checklistId, updates) => {
-        setTodos(todos.map(todo => {
-            if (todo.id === todoId) {
-                return {
-                    ...todo,
-                    checklists: todo.checklists.map(c => c.id === checklistId ? { ...c, ...updates } : c)
-                };
-            }
-            return todo;
-        }));
+    const removeProject = (name) => {
+        setProjects(projects.filter(p => p !== name));
     };
 
 
@@ -380,36 +260,15 @@ export function AppProvider({ children }) {
         boardBackground,
         setBoardBackground,
         loadSampleData,
-        categories,
-        addGlobalCategory,
-        removeCategory,
-        allLabels,
-        addGlobalLabel,
-        addChecklist,
-        removeChecklist,
-        updateChecklist,
+        projects,
+        addProject,
+        removeProject,
         isSidebarOpen,
         setIsSidebarOpen,
+        boardColumns,
+        setBoardColumns,
         sortBy,
         setSortBy,
-        appFontBody,
-        setAppFontBody,
-        appFontWeightBody,
-        setAppFontWeightBody,
-        appFontHeading,
-        setAppFontHeading,
-        appFontWeightHeading,
-        setAppFontWeightHeading,
-        appTheme,
-        setAppTheme,
-        boardBackgroundType,
-        setBoardBackgroundType,
-        boardBackgroundValue,
-        setBoardBackgroundValue,
-        customBoards,
-        setCustomBoards,
-        showGlobalBadges,
-        setShowGlobalBadges,
     };
 
     return (
