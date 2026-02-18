@@ -1,17 +1,4 @@
-/**
- * CONFIGURATION FILE
- * 
- * This file serves as the initial configuration and data source for the application.
- * You can add, remove, or modify tasks and settings here.
- * 
- * To apply changes:
- * 1. Edit this file.
- * 2. Save.
- * 3. In the application header, click "Load Samples" (if enabled) or clear your localStorage to reset to these defaults.
- *    (For now, since "Load Samples" button might be hidden, you can use the browser console: localStorage.clear() and reload)
- */
-
-export const sampleTasks = [
+export const sampleTodos = [
     {
         id: 't1',
         text: 'Design System Documentation',
@@ -94,7 +81,7 @@ export const sampleTasks = [
     {
         id: 't7',
         text: 'Fix Navbar Bug',
-        description: 'Mobile menu does not close when clicking outside on iOS devices.',
+        description: 'Mobile menu doesn’t close when clicking outside on iOS devices.',
         listTitle: 'Work',
         priority: 'high',
         dueAt: new Date(Date.now() - 3600000).toISOString(), // Overdue
@@ -233,4 +220,4 @@ export const sampleMonthlyGoals = [
     { id: 'g10', text: 'Try 3 New Recipes', target: 3, progress: 3, unit: 'recipes', completed: true }
 ];
 
-export const sampleTaskGroups = ['Work', 'Personal', 'Side Project', 'Learning', 'Health', 'Finance', 'Travel', 'Household', 'Volunteer', 'Fitness'];
+export const sampleProjects = ['Work', 'Personal', 'Side Project', 'Learning', 'Health', 'Finance', 'Travel', 'Household', 'Volunteer', 'Fitness'];

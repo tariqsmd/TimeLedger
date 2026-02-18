@@ -1,0 +1,291 @@
+.infoSidebar {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-sidebar);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.25rem;
+    z-index: 100;
+    overflow-y: auto;
+    border-left: 1px solid var(--glass-border);
+}
+
+.section {
+    margin-bottom: 2rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sectionTitle {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Notice Cards */
+.noticeList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.noticeCard {
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+}
+
+.noticeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.noticeIcon {
+    font-size: 1.1rem;
+}
+
+.btnClose {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    line-height: 1;
+}
+
+.noticeTitle {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+    color: var(--text-primary);
+}
+
+.noticeText {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.suggest {
+    border-left: 3px solid var(--primary);
+}
+
+.error {
+    border-left: 3px solid var(--danger);
+}
+
+.notice {
+    border-left: 3px solid var(--accent);
+}
+
+/* Metrics */
+.metricsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.metricCard {
+    background: var(--bg-main);
+    padding: 0.85rem;
+    border-radius: var(--radius-md);
+    text-align: center;
+    border: 1px solid var(--glass-border);
+}
+
+.metricLabel {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+}
+
+.metricValue {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+/* AI Insights */
+.insightsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.insightCard {
+    background: var(--primary-glow);
+    color: var(--primary);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+/* Progress Section */
+.progressCard {
+    background: var(--bg-card);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--glass-border);
+}
+
+.progressBar {
+    height: 8px;
+    background: var(--bg-main);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progressStats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.percentage {
+    color: var(--primary);
+}
+
+/* Status Guide */
+.guideGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.guideItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.guideItem span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.dotIdle {
+    background: var(--text-muted);
+}
+
+.dotRunning {
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary-glow);
+}
+
+.dotPaused {
+    background: var(--warning);
+}
+
+.dotCompleted {
+    background: var(--accent);
+}
+
+/* Analysis Sections */
+.analysisList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.analysisItem {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.strength {
+    background: rgba(5, 150, 105, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.concern {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.divider {
+    height: 1px;
+    background: var(--glass-border);
+    margin: 1rem 0 2rem;
+    opacity: 0.5;
+}
+
+.footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.systemStatus {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.statusDot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 5px var(--accent);
+}
+
+.version {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 800;
+}
+
+.emptyNotices {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.8rem;
+}
