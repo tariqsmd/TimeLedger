@@ -1,26 +1,6 @@
 {
   "tasks": [
     {
-      "id": "1771223089244",
-      "text": "To Do App",
-      "description": "",
-      "completed": false,
-      "createdAt": "2026-02-16T06:24:49.244Z",
-      "listTitle": "Default",
-      "status": "idle",
-      "startTime": null,
-      "endTime": null,
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "categories": [
-        "Default"
-      ],
-      "labels": [],
-      "checklists": [],
-      "boardTitle": "To Do"
-    },
-    {
       "id": "1771222559388",
       "text": "Build Portfolio",
       "description": "",
