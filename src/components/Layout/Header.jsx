@@ -1,48 +1,65 @@
-import React, { useState } from 'react';
-import { IconPlus, IconSettings } from '../../assets//Icons';
-
-import { useApp } from '../../utils/AppContext';
-import Search from '../Common/Search';
-import TimeDisplay from '../Common/TimeDisplay';
-import DateDisplay from '../Common/DateDisplay';
-import ProgressWidget from '../Common/ProgressWidget';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useApp } from '../../contexts/AppContext';
+import styles from './Header.module.css';
+import { IconSearch } from '../Common/Icons';
 
 export default function Header() {
-    const {
-        searchQuery, setSearchQuery,
-        todos,
-        isSidebarOpen,
-        setIsSidebarOpen,
-        loadSampleData
-    } = useApp();
+    const { searchQuery, setSearchQuery, activeTab } = useApp();
+    const [time, setTime] = useState(new Date());
+
+    const headerData = useMemo(() => {
+        const data = {
+            analytics: { title: 'Analytics', subtitle: 'Global performance metrics and health insights' },
+            tasks: { title: 'Todo List', subtitle: 'The ultimate dashboard for your daily execution' },
+            schedules: { title: 'Schedules', subtitle: 'Design your routines and track monthly milestones' },
+            tracker: { title: 'Time Tracker', subtitle: 'Real-time focus and activity logging' },
+            settings: { title: 'Settings', subtitle: 'Customize, modularize, and synchronize your environment' },
+            profile: { title: 'Profile', subtitle: 'Manage your professional focus profile' }
+        };
+        return data[activeTab] || { title: 'TimeLedger', subtitle: 'Master your mission' };
+    }, [activeTab]);
+
+    useEffect(() => {
+        const timer = setInterval(() => setTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const formatTime = (date) => {
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    };
+
+    const formatDate = (date) => {
+        return date.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+    };
 
     return (
-        <header className="header">
-            {/* Left Column: Logo */}
-            <div className="header-left">
-                <div className="logo">
-                    <div className="logo-icon">TL</div>
-                    <div className="logo-text">Time<span>Ledger</span></div>
-                </div>
-
-                <Search value={searchQuery} onChange={setSearchQuery} placeholder="Search" />
+        <header className={styles.header}>
+            <div className={styles.left}>
+                <h1 className={styles.title}>{headerData.title}</h1>
+                <p className={styles.subtitle}>{headerData.subtitle}</p>
             </div>
 
-            {/* Right Column: User Controls */}
-            <div className="header-right">
-                {/* <button className="btn-add-task" onClick={loadSampleData}>Load Samples</button> */}
+            <div className={styles.center}>
+                <div className={styles.searchBar}>
+                    <span className={styles.searchIcon}>
+                        <IconSearch size={18} />
+                    </span>
+                    <input
+                        type="text"
+                        placeholder="Search entries, tasks, or projects..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
+            </div>
 
-                <ProgressWidget todos={todos} />
-                <TimeDisplay format="2-digit-minute" />
-                <DateDisplay format="full" />
-
-                <button
-                    className="btn-icon settings-btn"
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    title="Settings"
-                >
-                    <IconSettings size={20} />
-                </button>
+            <div className={styles.right}>
+                <div className={styles.timeStack}>
+                    <div className={styles.timeContainer}>
+                        <span className={styles.time}>{formatTime(time)}</span>
+                    </div>
+                    <p className={styles.date}>{formatDate(time)}</p>
+                </div>
             </div>
         </header>
     );

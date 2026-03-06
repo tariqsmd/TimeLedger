@@ -1,0 +1,11 @@
+/* Container for tracker entries */
+
+.emptyState {
+    text-align: center;
+    color: #6b7280;
+    padding: 40px;
+}
+
+.emptyState p {
+    font-size: 1.1em;
+}
