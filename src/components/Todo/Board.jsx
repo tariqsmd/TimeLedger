@@ -1,16 +1,11 @@
-/**
- * Board.jsx
- * Renders tasks in a board layout
- */
-import React from 'react';
+import React, { useState } from 'react';
 import TodoItem from './TodoItem';
 import InlineAddTask from './InlineAddTask';
-import { IconPlus } from '../../assets/Icons';
+import { IconPlus, IconClose } from '../../assets/Icons';
 import { useApp } from '../../utils/AppContext';
 
 export default function Board({
     filteredTodos,
-    onUpdateTodoStatus,
     draggedItem,
     viewMode,
     onToggle,
@@ -19,57 +14,109 @@ export default function Board({
     onDragOver,
     onDragEnd
 }) {
-    const { addTodo, boardColumns } = useApp();
+    const { addTodo, customBoards, setCustomBoards, updateTodo } = useApp();
+    const [isAddingBoard, setIsAddingBoard] = useState(false);
+    const [newBoardName, setNewBoardName] = useState('');
 
-    const columns = [
-        { id: 'idle', title: 'To Do', icon: <IconPlus size={16} /> },
-        { id: 'running', title: 'In Progress', icon: '⚡' },
-        { id: 'completed', title: 'Completed', icon: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg> }
-    ];
+    const handleAddBoard = () => {
+        if (newBoardName.trim() && !customBoards.includes(newBoardName.trim())) {
+            setCustomBoards([...customBoards, newBoardName.trim()]);
+            setNewBoardName('');
+            setIsAddingBoard(false);
+        }
+    };
+
+    const handleRemoveBoard = (name) => {
+        if (window.confirm(`Are you sure you want to remove the "${name}" board?`)) {
+            setCustomBoards(customBoards.filter(b => b !== name));
+        }
+    };
 
     return (
-        <div className="board-view" style={{ gridTemplateColumns: `repeat(${boardColumns}, 1fr)` }}>
-            {columns.map(col => (
-                <div
-                    key={col.id}
-                    className="board-column"
-                    onDragOver={(e) => e.preventDefault()}
-                    onDrop={() => {
-                        if (!draggedItem) return;
-                        let targetStatus = col.id;
-                        // Do not start time when card is move to in progress board
-                        if (targetStatus === 'running' && draggedItem.status !== 'running') {
-                            targetStatus = 'paused';
-                        }
-                        onUpdateTodoStatus(draggedItem.id, targetStatus);
-                    }}
-                >
-                    <div className="col-header">
-                        <span className="col-label">{col.icon} {col.title}</span>
-                        <span className="count-badge">
-                            {filteredTodos.filter(t => col.id === 'running' ? (t.status === 'running' || t.status === 'paused') : t.status === col.id).length}
-                        </span>
+        <div className="board-view-container">
+            <div className="board-view" style={{ gridTemplateColumns: `repeat(${customBoards.length + 1}, minmax(320px, 1fr))` }}>
+                {customBoards.map((boardTitle, index) => (
+                    <div
+                        key={boardTitle}
+                        className="board-column"
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={() => {
+                            if (!draggedItem) return;
+                            updateTodo(draggedItem.id, { boardTitle: boardTitle });
+                        }}
+                    >
+                        <div className="col-header">
+                            <span className="col-label">{boardTitle}</span>
+                            <div className="col-header-actions">
+                                <span className="count-badge">
+                                    {filteredTodos.filter(t => (t.boardTitle === boardTitle) || (!t.boardTitle && index === 0 && boardTitle === customBoards[0])).length}
+                                </span>
+                                {customBoards.length > 1 && (
+                                    <button
+                                        className="btn-remove-col"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleRemoveBoard(boardTitle);
+                                        }}
+                                        title="Remove Board"
+                                    >
+                                        ✕
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                        <div className="board-list">
+                            {filteredTodos
+                                .filter(t => (t.boardTitle === boardTitle) || (!t.boardTitle && index === 0 && boardTitle === customBoards[0]))
+                                .map(todo => (
+                                    <TodoItem
+                                        key={todo.id}
+                                        todo={todo}
+                                        onToggle={onToggle}
+                                        onEdit={onEdit}
+                                        onDragStart={onDragStart}
+                                        onDragOver={onDragOver}
+                                        onDragEnd={onDragEnd}
+                                        draggedItem={draggedItem}
+                                        viewMode={viewMode}
+                                    />
+                                ))}
+                        </div>
+                        <InlineAddTask onAdd={(text, list, status) => addTodo(text, list || 'Default', '', { boardTitle })} />
                     </div>
-                    <div className="board-list">
-                        {filteredTodos
-                            .filter(t => col.id === 'running' ? (t.status === 'running' || t.status === 'paused') : t.status === col.id)
-                            .map(todo => (
-                                <TodoItem
-                                    key={todo.id}
-                                    todo={todo}
-                                    onToggle={onToggle}
-                                    onEdit={onEdit}
-                                    onDragStart={onDragStart}
-                                    onDragOver={onDragOver}
-                                    onDragEnd={onDragEnd}
-                                    draggedItem={draggedItem}
-                                    viewMode={viewMode}
-                                />
-                            ))}
-                    </div>
-                    <InlineAddTask status={col.id} onAdd={(text, list, status) => addTodo(text, list, '', { status })} />
+                ))}
+
+                {/* Add Board Column */}
+                <div className="board-column add-column">
+                    {!isAddingBoard ? (
+                        <div className="add-board-trigger" onClick={() => setIsAddingBoard(true)}>
+                            <IconPlus size={20} />
+                            <span>Add Board</span>
+                        </div>
+                    ) : (
+                        <div className="add-board-form">
+                            <input
+                                type="text"
+                                className="input-field"
+                                placeholder="Enter board title..."
+                                value={newBoardName}
+                                onChange={(e) => setNewBoardName(e.target.value)}
+                                autoFocus
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') handleAddBoard();
+                                    if (e.key === 'Escape') setIsAddingBoard(false);
+                                }}
+                            />
+                            <div className="add-board-actions">
+                                <button className="btn-primary" onClick={handleAddBoard}>Add</button>
+                                <button className="btn-icon" onClick={() => setIsAddingBoard(false)}>
+                                    <IconClose size={16} />
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            ))}
+            </div>
         </div>
     );
 }

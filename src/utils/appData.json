@@ -4,17 +4,18 @@
       "id": "1768252213953",
       "text": "Bring Flor from Chaki",
       "description": "",
-      "completed": false,
+      "completed": true,
       "createdAt": "2026-01-12T21:10:13.953Z",
       "listTitle": "Default",
-      "status": "idle",
+      "status": "completed",
       "startTime": null,
-      "endTime": null,
+      "endTime": "2026-01-13T08:53:42.078Z",
       "accumulatedTime": 0,
       "lastStartedAt": null,
       "priority": "medium",
       "subtasks": [],
-      "coverColor": "#fa8231"
+      "coverColor": "#fa8231",
+      "boardTitle": "Completed"
     },
     {
       "id": "1768252196633",
@@ -35,12 +36,12 @@
       "id": "1768252179289",
       "text": "Fix the Almari",
       "description": "",
-      "completed": false,
+      "completed": true,
       "createdAt": "2026-01-12T21:09:39.289Z",
       "listTitle": "Default",
-      "status": "idle",
+      "status": "completed",
       "startTime": null,
-      "endTime": null,
+      "endTime": "2026-01-13T08:52:33.422Z",
       "accumulatedTime": 0,
       "lastStartedAt": null,
       "priority": "medium",
@@ -68,8 +69,8 @@
       "listTitle": "Work",
       "priority": "high",
       "dueAt": "2026-01-13T16:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "subtasks": [
         {
           "text": "Audit existing color tokens",
@@ -88,12 +89,12 @@
       "startTime": "2026-01-12T20:35:40.146Z",
       "lastStartedAt": null,
       "accumulatedTime": 712,
-      "endTime": "2026-01-12T21:09:10.009Z"
+      "endTime": null
     },
     {
       "id": "t2",
       "text": "Review Q1 Analytics",
-      "description": "<p><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"Analyze user growth trends and prepare slides for the quarterly meeting\"><u>Analyze&nbsp;user&nbsp;growth&nbsp;trends&nbsp;and&nbsp;prepare&nbsp;slides&nbsp;for&nbsp;the&nbsp;quarterly&nbsp;meeting</u></a>.</p><p></p><p></p>",
+      "description": "<p></p><p></p>",
       "listTitle": "Work",
       "priority": "low",
       "dueAt": "2026-01-14",
@@ -213,10 +214,10 @@
       "listTitle": "Personal",
       "priority": "medium",
       "dueAt": "2026-01-19T16:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:53.009Z"
+      "endTime": null
     }
   ]
 }
