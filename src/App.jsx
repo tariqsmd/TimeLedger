@@ -29,16 +29,6 @@ function MainLayout() {
     } = useApp();
 
     const [activePanel, setActivePanel] = React.useState('main'); // 'main', 'typography', 'background', 'theme'
-    const [uploadedImages, setUploadedImages] = React.useState([]);
-
-    React.useEffect(() => {
-        if (activePanel === 'background') {
-            fetch('http://localhost:5175/api/uploads')
-                .then(res => res.json())
-                .then(setUploadedImages)
-                .catch(err => console.error('Failed to fetch uploads:', err));
-        }
-    }, [activePanel]);
 
     const bodyFonts = [
         { name: 'Inter', value: 'Inter' },
@@ -107,13 +97,6 @@ function MainLayout() {
         'https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=2000'
     ];
 
-    const presetColors = [
-        '#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8',
-        '#64748b', '#475569', '#334155', '#1e293b', '#0f172a',
-        '#fff1f2', '#ffe4e6', '#fecdd3', '#fda4af', '#f43f5e',
-        '#f0fdf4', '#dcfce7', '#bbf7d0', '#86efac', '#22c55e'
-    ];
-
     // Load fonts dynamically
     useEffect(() => {
         const fontsToLoad = [
@@ -149,38 +132,19 @@ function MainLayout() {
     }, [appTheme]);
 
     const getBackgroundStyle = () => {
-        if (!boardBackgroundValue && boardBackgroundType !== 'none') return 'var(--bg-app)';
         if (boardBackgroundType === 'none') return 'var(--bg-app)';
-        if (boardBackgroundType === 'color') return boardBackgroundValue;
-        if (boardBackgroundType === 'gradient') return boardBackgroundValue;
+        if (boardBackgroundType === 'color' || boardBackgroundType === 'gradient') return boardBackgroundValue;
         if (boardBackgroundType === 'image') return `url(${boardBackgroundValue}) center/cover no-repeat fixed`;
         return 'var(--bg-app)';
     };
 
-    const handleImageUpload = async (e) => {
+    const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onloadend = async () => {
-                try {
-                    const response = await fetch('http://localhost:5175/api/upload', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ image: reader.result })
-                    });
-                    const data = await response.json();
-                    if (data.url) {
-                        setBoardBackgroundValue(data.url);
-                        setBoardBackgroundType('image');
-                        // Refresh uploads
-                        fetch('http://localhost:5175/api/uploads')
-                            .then(res => res.json())
-                            .then(setUploadedImages);
-                    }
-                } catch (error) {
-                    console.error('Upload failed:', error);
-                    alert('Failed to upload image to server');
-                }
+            reader.onloadend = () => {
+                setBoardBackgroundValue(reader.result);
+                setBoardBackgroundType('image');
             };
             reader.readAsDataURL(file);
         }
@@ -322,15 +286,9 @@ function MainLayout() {
 
                                 {boardBackgroundType === 'color' && (
                                     <div className="settings-group">
-                                        <label className="settings-label">Preset Colors</label>
-                                        <div className="preset-grid color-presets">
-                                            {presetColors.map((c, i) => (
-                                                <div key={i} className={`preset-item ${boardBackgroundValue === c ? 'active' : ''}`} style={{ background: c }} onClick={() => setBoardBackgroundValue(c)} />
-                                            ))}
-                                        </div>
-                                        <label className="settings-label mt-3">Custom Color</label>
+                                        <label className="settings-label">Pick Color</label>
                                         <div className="color-input-wrapper">
-                                            <input type="color" value={boardBackgroundValue.startsWith('#') ? boardBackgroundValue : '#ffffff'} onChange={(e) => setBoardBackgroundValue(e.target.value)} className="color-picker-input" />
+                                            <input type="color" value={boardBackgroundValue || '#ffffff'} onChange={(e) => setBoardBackgroundValue(e.target.value)} className="color-picker-input" />
                                             <input type="text" value={boardBackgroundValue} onChange={(e) => setBoardBackgroundValue(e.target.value)} className="input-field hex-input" placeholder="#FFFFFF" />
                                         </div>
                                     </div>
@@ -361,17 +319,6 @@ function MainLayout() {
                                             <span>Click to Upload Image</span>
                                             <input id="bg-upload" type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
                                         </div>
-
-                                        {uploadedImages.length > 0 && (
-                                            <>
-                                                <label className="settings-label mt-3">Your Uploads</label>
-                                                <div className="preset-grid">
-                                                    {uploadedImages.map((img, i) => (
-                                                        <div key={i} className={`preset-item ${boardBackgroundValue === img ? 'active' : ''}`} style={{ backgroundImage: `url(${img})`, backgroundSize: 'cover', backgroundPosition: 'center' }} onClick={() => setBoardBackgroundValue(img)} />
-                                                    ))}
-                                                </div>
-                                            </>
-                                        )}
 
                                         <label className="settings-label mt-3">Preset Images</label>
                                         <div className="preset-grid">
