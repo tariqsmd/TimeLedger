@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../../utils/AppContext';
-import { IconTrash, IconPlus, IconClose, IconPlay, IconPause, IconStop, IconRefresh, IconClock, IconCheckSquare, IconCheck, IconBoard, IconList, IconTable, IconEdit, IconAlignLeft, IconTag } from '../../assets/Icons';
+import { IconTrash, IconPlus, IconClose, IconPlay, IconPause, IconStop, IconRefresh, IconClock, IconCheckSquare } from '../../assets/Icons';
 import Board from './Board';
 import { getLiveDuration, formatDateFull } from './useTodoUtils';
-import RichEditor from '../Common/RichEditor';
-import InlineAddTask from './InlineAddTask';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function TodoView() {
     const {
@@ -25,8 +25,7 @@ export default function TodoView() {
         addProject,
         isTodoModalOpen,
         setIsTodoModalOpen,
-        sortBy,
-        setViewMode
+        sortBy
     } = useApp();
 
     // Form state
@@ -193,7 +192,6 @@ export default function TodoView() {
 
     return (
         <div className="todo-view main-col">
-
             {/* Render based on view mode */}
             {viewMode === 'board' && (
                 <Board
@@ -207,154 +205,6 @@ export default function TodoView() {
                     onDragOver={handleDragOver}
                     onDragEnd={handleDragEnd}
                 />
-            )}
-
-            {viewMode === 'list' && (
-                <div className="todo-list-view">
-                    <div className="view-header">
-                        <h2>Tasks</h2>
-                    </div>
-                    <div className="list-content">
-                        {filteredTodos.map(todo => (
-                            <div key={todo.id} className="todo-item-row" onClick={() => handleEdit(todo)}>
-                                <div className="item-check" onClick={(e) => { e.stopPropagation(); toggleTodo(todo.id); }}>
-                                    {todo.completed ? (
-                                        <IconCheckSquare size={20} color="var(--primary)" />
-                                    ) : (
-                                        <div className="check-placeholder"></div>
-                                    )}
-                                </div>
-                                <div className="item-main">
-                                    <div className={`item-title ${todo.completed ? 'completed' : ''}`}>{todo.text}</div>
-                                    <div className="item-meta">
-                                        <span className={`priority-tag ${todo.priority}`}>{todo.priority}</span>
-                                        {todo.listTitle && <span className="project-tag">{todo.listTitle}</span>}
-                                        {todo.dueAt && (
-                                            <span className="due-tag">
-                                                <IconClock size={12} /> {todo.dueAt}
-                                            </span>
-                                        )}
-                                        {todo.subtasks?.length > 0 && (
-                                            <span className="info-tag">
-                                                <IconCheckSquare size={12} /> {todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}
-                                            </span>
-                                        )}
-                                        {todo.description && (
-                                            <span className="info-tag">
-                                                <IconAlignLeft size={12} />
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="item-status">
-                                    <span className={`status-pill ${todo.status}`}>{todo.status.toUpperCase()}</span>
-                                </div>
-                            </div>
-                        ))}
-                        <div className="list-inline-add">
-                            <InlineAddTask onAdd={(text, list, status) => addTodo(text, list || 'Default', '', { status: status || 'idle' })} />
-                        </div>
-                    </div>
-                    {filteredTodos.length === 0 && (
-                        <div className="empty-state">No tasks found</div>
-                    )}
-                </div>
-            )}
-
-            {viewMode === 'table' && (
-                <div className="todo-table-view">
-                    <div className="view-header">
-                        <h2>Task Master List</h2>
-                    </div>
-                    <div className="table-container">
-                        <table className="tasks-table">
-                            <thead>
-                                <tr>
-                                    <th className="col-check">Done</th>
-                                    <th className="col-title">Task Title</th>
-                                    <th className="col-project">Project</th>
-                                    <th className="col-priority">Priority</th>
-                                    <th className="col-due">Due Date</th>
-                                    <th className="col-status">Status</th>
-                                    <th className="col-info">Info</th>
-                                    <th className="col-time">Time</th>
-                                    <th className="col-actions"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredTodos.map(todo => (
-                                    <tr key={todo.id} onClick={() => handleEdit(todo)} className={todo.completed ? 'completed-row' : ''}>
-                                        <td className="col-check" onClick={(e) => { e.stopPropagation(); toggleTodo(todo.id); }}>
-                                            {todo.completed ? (
-                                                <IconCheckSquare size={18} color="var(--primary)" />
-                                            ) : (
-                                                <div className="check-placeholder"></div>
-                                            )}
-                                        </td>
-                                        <td className="col-title">
-                                            <div className="title-text">{todo.text}</div>
-                                        </td>
-                                        <td className="col-project">
-                                            <span className="project-pill">{todo.listTitle || 'Default'}</span>
-                                        </td>
-                                        <td className="col-priority">
-                                            <span className={`priority-pill ${todo.priority}`}>{todo.priority}</span>
-                                        </td>
-                                        <td className="col-due">
-                                            {todo.dueAt ? new Date(todo.dueAt).toLocaleDateString() : '-'}
-                                        </td>
-                                        <td className="col-status">
-                                            <span className={`status-pill ${todo.status}`}>{todo.status}</span>
-                                        </td>
-                                        <td className="col-info">
-                                            <div className="info-badges">
-                                                {todo.subtasks?.length > 0 && (
-                                                    <span className="info-item" title={`Subtasks: ${todo.subtasks.filter(s => s.done).length}/${todo.subtasks.length}`}>
-                                                        <IconCheckSquare size={14} />
-                                                        <small>{todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}</small>
-                                                    </span>
-                                                )}
-                                                {todo.description && (
-                                                    <span className="info-item" title="Has description">
-                                                        <IconAlignLeft size={14} />
-                                                    </span>
-                                                )}
-                                                {todo.labels?.length > 0 && (
-                                                    <span className="info-item" title={`${todo.labels.length} labels`}>
-                                                        <IconTag size={12} />
-                                                    </span>
-                                                )}
-                                            </div>
-                                        </td>
-                                        <td className="col-time">
-                                            <div className={`time-display ${todo.status === 'running' ? 'active' : ''}`}>
-                                                {getLiveDuration(todo)}
-                                            </div>
-                                        </td>
-                                        <td className="col-actions" onClick={(e) => e.stopPropagation()}>
-                                            <div className="actions-cell">
-                                                <button className="btn-table-action" onClick={() => handleEdit(todo)} title="Edit">
-                                                    <IconEdit size={14} />
-                                                </button>
-                                                <button className="btn-table-action color-danger" onClick={() => deleteTodo(todo.id)} title="Delete">
-                                                    <IconTrash size={14} />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                                <tr className="row-inline-add">
-                                    <td colSpan="9">
-                                        <InlineAddTask onAdd={(text, list, status) => addTodo(text, list || 'Default', '', { status: status || 'idle' })} />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        {filteredTodos.length === 0 && (
-                            <div className="empty-state">No tasks found</div>
-                        )}
-                    </div>
-                </div>
             )}
 
             {/* Modal for Add/Edit Task */}
@@ -373,49 +223,14 @@ export default function TodoView() {
                                 </div>
                             </div>
                             <div className="header-actions">
-                                {editingTodoId && currentEditingTodo && (
-                                    <div className="header-timer-indicator">
-                                        <div className="header-time-spent">
-                                            <IconClock size={16} />
-                                            <span>{getLiveDuration(currentEditingTodo)}</span>
-                                        </div>
-                                        <div className="timer-controls-inline">
-                                            {currentEditingTodo.status === 'idle' && (
-                                                <button type="button" className="btn-timer-control start" onClick={() => startTodo(editingTodoId)} title="Start Timer">
-                                                    <IconPlay size={16} />
-                                                    <span>Start</span>
-                                                </button>
-                                            )}
-                                            {currentEditingTodo.status === 'running' && (
-                                                <button type="button" className="btn-timer-control pause" onClick={() => pauseTodo(editingTodoId)} title="Pause Timer">
-                                                    <IconPause size={16} />
-                                                    <span>Pause</span>
-                                                </button>
-                                            )}
-                                            {currentEditingTodo.status === 'paused' && (
-                                                <button type="button" className="btn-timer-control resume" onClick={() => resumeTodo(editingTodoId)} title="Resume Timer">
-                                                    <IconPlay size={16} />
-                                                    <span>Resume</span>
-                                                </button>
-                                            )}
-                                            {(currentEditingTodo.status === 'running' || currentEditingTodo.status === 'paused') && (
-                                                <button type="button" className="btn-timer-control complete" onClick={() => endTodo(editingTodoId)} title="Stop Timer (Saved)">
-                                                    <IconStop size={16} />
-                                                    <span>Stop</span>
-                                                </button>
-                                            )}
-                                            {currentEditingTodo.status === 'completed' && (
-                                                <button type="button" className="btn-timer-control restart" onClick={() => restartTodo(editingTodoId)} title="Restart Task">
-                                                    <IconRefresh size={16} />
-                                                    <span>Restart</span>
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-                                <button type="button" className="btn-close-modal" onClick={handleCancel} title="Close">
-                                    <IconClose size={24} />
+                                <button type="button" className="btn-secondary btn-cancel" onClick={handleCancel}>
+                                    {editingTodoId ? 'Close' : 'Cancel'}
                                 </button>
+                                {!editingTodoId && (
+                                    <button type="submit" className="btn-primary btn-save">
+                                        Create Task
+                                    </button>
+                                )}
                             </div>
                         </div>
 
@@ -467,9 +282,11 @@ export default function TodoView() {
 
                                         {(!editingTodoId || isDescriptionEditing) ? (
                                             <div className="description-edit-wrapper">
-                                                <RichEditor
+                                                <ReactQuill
+                                                    theme="snow"
                                                     value={description}
                                                     onChange={setDescription}
+                                                    className="quill-editor"
                                                     placeholder="Add details about this task..."
                                                 />
                                                 {editingTodoId && isDescriptionEditing && (
@@ -505,7 +322,7 @@ export default function TodoView() {
                                             >
                                                 {description ? (
                                                     <div
-                                                        className="description-content editor-content-area"
+                                                        className="description-content ql-editor"
                                                         dangerouslySetInnerHTML={{ __html: description }}
                                                     />
                                                 ) : (
@@ -749,32 +566,60 @@ export default function TodoView() {
                                             ))}
                                         </div>
                                     </div>
-
-                                    {editingTodoId && (
-                                        <div className="sidebar-footer-actions">
-                                            <button
-                                                type="button"
-                                                className="btn-sidebar-delete"
-                                                onClick={() => {
-                                                    if (window.confirm('Are you sure you want to delete this task?')) {
-                                                        deleteTodo(editingTodoId);
-                                                        handleCancel();
-                                                    }
-                                                }}
-                                            >
-                                                <IconTrash size={16} /> Delete Task
-                                            </button>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>
 
-                        {!editingTodoId && (
-                            <div className="modal-actions-footer">
-                                <button type="submit" className="btn-primary btn-save-full">
-                                    Create Task
-                                </button>
+                        {editingTodoId && currentEditingTodo && (
+                            <div className="modal-footer">
+                                <div className="footer-left">
+                                    <div className="timer-controls-inline">
+                                        {currentEditingTodo.status === 'idle' && (
+                                            <button type="button" className="btn-timer-control start" onClick={() => startTodo(editingTodoId)} title="Start Timer">
+                                                <IconPlay size={16} />
+                                                <span>Start</span>
+                                            </button>
+                                        )}
+                                        {currentEditingTodo.status === 'running' && (
+                                            <button type="button" className="btn-timer-control pause" onClick={() => pauseTodo(editingTodoId)} title="Pause Timer">
+                                                <IconPause size={16} />
+                                                <span>Pause</span>
+                                            </button>
+                                        )}
+                                        {currentEditingTodo.status === 'paused' && (
+                                            <button type="button" className="btn-timer-control resume" onClick={() => resumeTodo(editingTodoId)} title="Resume Timer">
+                                                <IconPlay size={16} />
+                                                <span>Resume</span>
+                                            </button>
+                                        )}
+                                        {(currentEditingTodo.status === 'running' || currentEditingTodo.status === 'paused') && (
+                                            <button type="button" className="btn-timer-control complete" onClick={() => endTodo(editingTodoId)} title="Stop Timer (Saved)">
+                                                <IconStop size={16} />
+                                                <span>Stop</span>
+                                            </button>
+                                        )}
+                                        {currentEditingTodo.status === 'completed' && (
+                                            <button type="button" className="btn-timer-control restart" onClick={() => restartTodo(editingTodoId)} title="Restart Task">
+                                                <IconRefresh size={16} />
+                                                <span>Restart</span>
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                                <div className="footer-right">
+                                    <button
+                                        type="button"
+                                        className="btn-secondary btn-danger-outline"
+                                        onClick={() => {
+                                            if (window.confirm('Are you sure you want to delete this task?')) {
+                                                deleteTodo(editingTodoId);
+                                                handleCancel();
+                                            }
+                                        }}
+                                    >
+                                        <IconTrash size={16} /> Delete Task
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </form>

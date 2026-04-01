@@ -1,68 +1,6 @@
 {
   "tasks": [
     {
-      "id": "1768252213953",
-      "text": "Bring Flor from Chaki",
-      "description": "",
-      "completed": true,
-      "createdAt": "2026-01-12T21:10:13.953Z",
-      "listTitle": "Default",
-      "status": "completed",
-      "startTime": null,
-      "endTime": "2026-01-13T08:53:42.078Z",
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": [],
-      "coverColor": "#fa8231",
-      "boardTitle": "Completed"
-    },
-    {
-      "id": "1768252196633",
-      "text": "Ask for the dress stiching",
-      "description": "",
-      "completed": false,
-      "createdAt": "2026-01-12T21:09:56.633Z",
-      "listTitle": "Default",
-      "status": "idle",
-      "startTime": null,
-      "endTime": null,
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": []
-    },
-    {
-      "id": "1768252179289",
-      "text": "Fix the Almari",
-      "description": "",
-      "completed": true,
-      "createdAt": "2026-01-12T21:09:39.289Z",
-      "listTitle": "Default",
-      "status": "completed",
-      "startTime": null,
-      "endTime": "2026-01-13T08:52:33.422Z",
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": []
-    },
-    {
-      "id": "1768252168945",
-      "text": "Buy Solar Panel",
-      "description": "",
-      "completed": false,
-      "createdAt": "2026-01-12T21:09:28.945Z",
-      "listTitle": "Default",
-      "status": "idle",
-      "startTime": null,
-      "endTime": null,
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": []
-    },
-    {
       "id": "t1",
       "text": "Design System Documentation",
       "description": "Update the component library documentation with new tokens and guidelines for dark mode.",
@@ -85,31 +23,24 @@
           "done": false
         }
       ],
-      "createdAt": "2026-01-10T16:00:00.000Z",
-      "startTime": "2026-01-12T20:35:40.146Z",
-      "lastStartedAt": null,
-      "accumulatedTime": 712,
-      "endTime": null
+      "createdAt": "2026-01-10T16:00:00.000Z"
     },
     {
       "id": "t2",
       "text": "Review Q1 Analytics",
-      "description": "<p><a target=\"_blank\" rel=\"noopener noreferrer\" href=\"Analyze user growth trends and prepare slides for the quarterly meeting\"><u>Analyze&nbsp;user&nbsp;growth&nbsp;trends&nbsp;and&nbsp;prepare&nbsp;slides&nbsp;for&nbsp;the&nbsp;quarterly&nbsp;meeting</u></a>.</p><p></p><p></p>",
+      "description": "<ol><li><u><a href=\"Analyze user growth trends and prepare slides for the quarterly meeting\" rel=\"noopener noreferrer\" target=\"_blank\">Analyze&nbsp;user&nbsp;growth&nbsp;trends&nbsp;and&nbsp;prepare&nbsp;slides&nbsp;for&nbsp;the&nbsp;quarterly&nbsp;meeting</a></u>.</li><li>s;gs</li><li>hrhh</li><li>hr</li><li>hth</li><li></li><li>rth</li><li>thsrh</li><li>ht</li><li>h</li><li>hth</li><li>h</li><li>htthhsh</li><li>thh</li></ol><ul><li>hts</li></ul>",
       "listTitle": "Work",
-      "priority": "low",
+      "priority": "high",
       "dueAt": "2026-01-14",
-      "completed": true,
-      "status": "completed",
-      "accumulatedTime": -11391724,
+      "completed": false,
+      "status": "idle",
+      "accumulatedTime": -11398403,
       "lastStartedAt": null,
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.209Z",
+      "endTime": null,
       "subtasks": [],
-      "labels": [
-        "Test Label"
-      ],
-      "coverColor": "#fa8231",
-      "startTime": "2026-01-12T20:37:35.720Z"
+      "labels": [],
+      "coverColor": null
     },
     {
       "id": "t3",
@@ -118,8 +49,8 @@
       "listTitle": "Personal",
       "priority": "medium",
       "dueAt": "2026-01-13T04:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "subtasks": [
         {
           "text": "Check pantry stocks",
@@ -131,7 +62,7 @@
         }
       ],
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.409Z"
+      "endTime": null
     },
     {
       "id": "t4",
@@ -140,11 +71,10 @@
       "listTitle": "Side Project",
       "priority": "high",
       "dueAt": null,
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "paused",
       "accumulatedTime": 7200000,
-      "createdAt": "2026-01-08T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:56.954Z"
+      "createdAt": "2026-01-08T16:00:00.000Z"
     },
     {
       "id": "t5",
@@ -153,10 +83,10 @@
       "listTitle": "Learning",
       "priority": "low",
       "dueAt": null,
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.609Z"
+      "endTime": null
     },
     {
       "id": "t6",
@@ -165,11 +95,11 @@
       "listTitle": "Health",
       "priority": "medium",
       "dueAt": "2026-01-12T16:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "accumulatedTime": 1800000,
       "createdAt": "2026-01-11T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:53.203Z"
+      "endTime": null
     },
     {
       "id": "t7",
@@ -178,10 +108,9 @@
       "listTitle": "Work",
       "priority": "high",
       "dueAt": "2026-01-12T12:00:00.000Z",
-      "completed": true,
-      "status": "completed",
-      "createdAt": "2026-01-09T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:57.409Z"
+      "completed": false,
+      "status": "idle",
+      "createdAt": "2026-01-09T16:00:00.000Z"
     },
     {
       "id": "t8",
@@ -190,10 +119,9 @@
       "listTitle": "Personal",
       "priority": "low",
       "dueAt": "2026-01-17T16:00:00.000Z",
-      "completed": true,
-      "status": "completed",
-      "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.809Z"
+      "completed": false,
+      "status": "idle",
+      "createdAt": "2026-01-12T16:00:00.000Z"
     },
     {
       "id": "t9",
@@ -202,22 +130,20 @@
       "listTitle": "Work",
       "priority": "medium",
       "dueAt": null,
-      "completed": true,
-      "status": "completed",
-      "createdAt": "2026-01-05T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:56.545Z"
+      "completed": false,
+      "status": "idle",
+      "createdAt": "2026-01-05T16:00:00.000Z"
     },
     {
       "id": "t10",
       "text": "Car Service",
-      "description": "<blockquote><p>Book appointment for annual maintenance.</p></blockquote><p></p>",
+      "description": "Book appointment for annual maintenance.",
       "listTitle": "Personal",
       "priority": "medium",
       "dueAt": "2026-01-19T16:00:00.000Z",
       "completed": false,
       "status": "idle",
-      "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": null
+      "createdAt": "2026-01-12T16:00:00.000Z"
     }
   ]
 }
