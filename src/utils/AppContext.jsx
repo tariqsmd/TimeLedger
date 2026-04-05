@@ -5,18 +5,14 @@ import { sampleTasks, sampleTaskGroups } from './appData';
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-
-    // Project State
-    const [projects, setProjects] = useLocalStorage('taskGroups', sampleTaskGroups);
+    // Category/Group State
+    const [categories, setCategories] = useLocalStorage('taskGroups', sampleTaskGroups);
+    const [allLabels, setAllLabels] = useLocalStorage('allLabels', ['Urgent', 'Low Priority', 'Bug', 'Feature', 'Refactor']);
 
     // Modal & Editing State
     const [editingEntry, setEditingEntry] = useState(null);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
-
-
-    console.log(sampleTasks);
-    console.log(sampleTaskGroups);
 
     // Load Sample Data
     const loadSampleData = () => {
@@ -27,7 +23,7 @@ export function AppProvider({ children }) {
 
                 // Force state update as well in case reload is delayed or prevented (though reload usually clears state)
                 setTodos(sampleTasks);
-                setProjects(sampleTaskGroups);
+                setCategories(sampleTaskGroups);
 
                 window.location.reload();
             } catch (error) {
@@ -93,8 +89,16 @@ export function AppProvider({ children }) {
     const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
     const [boardBackground, setBoardBackground] = useLocalStorage('todoBoardBackground', null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [boardColumns, setBoardColumns] = useLocalStorage('boardColumns', 3);
     const [sortBy, setSortBy] = useLocalStorage('sortBy', 'createdAt'); // 'createdAt', 'priority', 'dueAt', 'alpha'
+    const [appFontBody, setAppFontBody] = useLocalStorage('appFontBody', 'Inter');
+    const [appFontWeightBody, setAppFontWeightBody] = useLocalStorage('appFontWeightBody', '400');
+    const [appFontHeading, setAppFontHeading] = useLocalStorage('appFontHeading', 'Outfit');
+    const [appFontWeightHeading, setAppFontWeightHeading] = useLocalStorage('appFontWeightHeading', '700');
+    const [appTheme, setAppTheme] = useLocalStorage('appTheme', 'default');
+    const [boardBackgroundType, setBoardBackgroundType] = useLocalStorage('boardBackgroundType', 'none'); // 'none', 'color', 'gradient', 'image'
+    const [boardBackgroundValue, setBoardBackgroundValue] = useLocalStorage('boardBackgroundValue', '');
+    const [customBoards, setCustomBoards] = useLocalStorage('customBoards', ['To Do', 'In Progress', 'Completed']);
+    const [showGlobalBadges, setShowGlobalBadges] = useLocalStorage('showGlobalBadges', true);
 
     // Todo Actions
     const addTodo = (text, listTitle = '', description = '', extraData = {}) => {
@@ -267,15 +271,21 @@ export function AppProvider({ children }) {
         setTodos(todos.map(todo => todo.id === id ? { ...todo, ...updates } : todo));
     };
 
-    // Project Management
-    const addProject = (name) => {
-        if (name && !projects.includes(name)) {
-            setProjects([...projects, name]);
+    // Category Management
+    const addCategory = (name) => {
+        if (name && !categories.includes(name)) {
+            setCategories([...categories, name]);
         }
     };
 
-    const removeProject = (name) => {
-        setProjects(projects.filter(p => p !== name));
+    const removeCategory = (name) => {
+        setCategories(categories.filter(p => p !== name));
+    };
+
+    const addGlobalLabel = (label) => {
+        if (label && !allLabels.includes(label)) {
+            setAllLabels([...allLabels, label]);
+        }
     };
 
 
@@ -307,15 +317,33 @@ export function AppProvider({ children }) {
         boardBackground,
         setBoardBackground,
         loadSampleData,
-        projects,
-        addProject,
-        removeProject,
+        categories,
+        addCategory,
+        removeCategory,
+        allLabels,
+        addGlobalLabel,
         isSidebarOpen,
         setIsSidebarOpen,
-        boardColumns,
-        setBoardColumns,
         sortBy,
         setSortBy,
+        appFontBody,
+        setAppFontBody,
+        appFontWeightBody,
+        setAppFontWeightBody,
+        appFontHeading,
+        setAppFontHeading,
+        appFontWeightHeading,
+        setAppFontWeightHeading,
+        appTheme,
+        setAppTheme,
+        boardBackgroundType,
+        setBoardBackgroundType,
+        boardBackgroundValue,
+        setBoardBackgroundValue,
+        customBoards,
+        setCustomBoards,
+        showGlobalBadges,
+        setShowGlobalBadges,
     };
 
     return (
