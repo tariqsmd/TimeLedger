@@ -5,14 +5,18 @@ import { sampleTasks, sampleTaskGroups } from './appData';
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
-    // Category/Group State
-    const [categories, setCategories] = useLocalStorage('taskGroups', sampleTaskGroups);
-    const [allLabels, setAllLabels] = useLocalStorage('allLabels', ['Urgent', 'Low Priority', 'Bug', 'Feature', 'Refactor']);
+
+    // Project State
+    const [projects, setProjects] = useLocalStorage('taskGroups', sampleTaskGroups);
 
     // Modal & Editing State
     const [editingEntry, setEditingEntry] = useState(null);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+
+    console.log(sampleTasks);
+    console.log(sampleTaskGroups);
 
     // Load Sample Data
     const loadSampleData = () => {
@@ -23,7 +27,7 @@ export function AppProvider({ children }) {
 
                 // Force state update as well in case reload is delayed or prevented (though reload usually clears state)
                 setTodos(sampleTasks);
-                setCategories(sampleTaskGroups);
+                setProjects(sampleTaskGroups);
 
                 window.location.reload();
             } catch (error) {
@@ -271,21 +275,15 @@ export function AppProvider({ children }) {
         setTodos(todos.map(todo => todo.id === id ? { ...todo, ...updates } : todo));
     };
 
-    // Category Management
-    const addCategory = (name) => {
-        if (name && !categories.includes(name)) {
-            setCategories([...categories, name]);
+    // Project Management
+    const addProject = (name) => {
+        if (name && !projects.includes(name)) {
+            setProjects([...projects, name]);
         }
     };
 
-    const removeCategory = (name) => {
-        setCategories(categories.filter(p => p !== name));
-    };
-
-    const addGlobalLabel = (label) => {
-        if (label && !allLabels.includes(label)) {
-            setAllLabels([...allLabels, label]);
-        }
+    const removeProject = (name) => {
+        setProjects(projects.filter(p => p !== name));
     };
 
 
@@ -317,11 +315,9 @@ export function AppProvider({ children }) {
         boardBackground,
         setBoardBackground,
         loadSampleData,
-        categories,
-        addCategory,
-        removeCategory,
-        allLabels,
-        addGlobalLabel,
+        projects,
+        addProject,
+        removeProject,
         isSidebarOpen,
         setIsSidebarOpen,
         sortBy,

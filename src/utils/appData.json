@@ -1,53 +1,67 @@
 {
   "tasks": [
     {
+      "id": "1768332096266",
+      "text": "One more",
+      "description": "",
+      "completed": false,
+      "createdAt": "2026-01-13T19:21:36.266Z",
+      "listTitle": "Default",
+      "status": "idle",
+      "startTime": null,
+      "endTime": null,
+      "accumulatedTime": 0,
+      "lastStartedAt": null,
+      "priority": "medium",
+      "subtasks": []
+    },
+    {
+      "id": "1768332090146",
+      "text": "Assign new task",
+      "description": "",
+      "completed": false,
+      "createdAt": "2026-01-13T19:21:30.146Z",
+      "listTitle": "Default",
+      "status": "idle",
+      "startTime": null,
+      "endTime": null,
+      "accumulatedTime": 0,
+      "lastStartedAt": null,
+      "priority": "medium",
+      "subtasks": []
+    },
+    {
+      "id": "1768331980090",
+      "text": "New test task",
+      "description": "",
+      "completed": false,
+      "createdAt": "2026-01-13T19:19:40.090Z",
+      "listTitle": "Default",
+      "status": "idle",
+      "startTime": null,
+      "endTime": null,
+      "accumulatedTime": 0,
+      "lastStartedAt": null,
+      "priority": "medium",
+      "subtasks": [],
+      "boardTitle": "To Do"
+    },
+    {
       "id": "1768252213953",
       "text": "Bring Flor from Chaki",
-      "description": "<h1>Hello Theme</h1><p>This was helping.</p><p></p>",
+      "description": "",
       "completed": false,
       "createdAt": "2026-01-12T21:10:13.953Z",
-      "listTitle": "This is the Custom new Board",
+      "listTitle": "Default",
       "status": "idle",
-      "startTime": "2026-01-14T18:30:32.565Z",
+      "startTime": null,
       "endTime": null,
-      "accumulatedTime": 728425,
+      "accumulatedTime": 0,
       "lastStartedAt": null,
-      "priority": "high",
-      "subtasks": [
-        {
-          "text": "Hellojjlj",
-          "done": false
-        },
-        {
-          "text": "Next taskjljlj",
-          "done": false
-        },
-        {
-          "text": "fdsfjdfljljl",
-          "done": false
-        },
-        {
-          "text": "dfafjlafjjljlj",
-          "done": false
-        },
-        {
-          "text": "fkfjalljljl",
-          "done": false
-        },
-        {
-          "text": "Hello therejlj",
-          "done": false
-        }
-      ],
+      "priority": "medium",
+      "subtasks": [],
       "coverColor": "#fa8231",
-      "boardTitle": "Completed",
-      "dueAt": "2026-01-30",
-      "labels": [
-        "Urgent",
-        "Low Priority",
-        "Bug",
-        "This is my new label"
-      ]
+      "boardTitle": "Completed"
     },
     {
       "id": "1768252196633",
@@ -56,31 +70,30 @@
       "completed": false,
       "createdAt": "2026-01-12T21:09:56.633Z",
       "listTitle": "Default",
-      "status": "paused",
-      "startTime": "2026-01-14T19:09:20.438Z",
+      "status": "idle",
+      "startTime": null,
       "endTime": null,
-      "accumulatedTime": 70657,
+      "accumulatedTime": 0,
       "lastStartedAt": null,
-      "priority": "low",
+      "priority": "medium",
       "subtasks": [
         {
           "text": "This is also the sub task.",
           "done": true
         }
       ],
-      "dueAt": "2026-01-30",
-      "coverColor": "#20bf6b"
+      "dueAt": "2026-01-30"
     },
     {
       "id": "1768252179289",
       "text": "Fix the Almari",
       "description": "",
-      "completed": false,
+      "completed": true,
       "createdAt": "2026-01-12T21:09:39.289Z",
       "listTitle": "Default",
-      "status": "idle",
+      "status": "completed",
       "startTime": null,
-      "endTime": null,
+      "endTime": "2026-01-13T08:52:33.422Z",
       "accumulatedTime": 0,
       "lastStartedAt": null,
       "priority": "medium",
@@ -102,6 +115,35 @@
       "subtasks": []
     },
     {
+      "id": "t1",
+      "text": "Design System Documentation",
+      "description": "Update the component library documentation with new tokens and guidelines for dark mode.",
+      "listTitle": "Work",
+      "priority": "high",
+      "dueAt": "2026-01-13T16:00:00.000Z",
+      "completed": false,
+      "status": "idle",
+      "subtasks": [
+        {
+          "text": "Audit existing color tokens",
+          "done": true
+        },
+        {
+          "text": "Draft new spacing guidelines",
+          "done": false
+        },
+        {
+          "text": "Update button component examples",
+          "done": false
+        }
+      ],
+      "createdAt": "2026-01-10T16:00:00.000Z",
+      "startTime": "2026-01-12T20:35:40.146Z",
+      "lastStartedAt": null,
+      "accumulatedTime": 712,
+      "endTime": null
+    },
+    {
       "id": "t2",
       "text": "Review Q1 Analytics",
       "description": "<p></p><p></p>",
@@ -109,7 +151,7 @@
       "priority": "medium",
       "dueAt": "2026-01-14",
       "completed": false,
-      "status": "idle",
+      "status": "paused",
       "accumulatedTime": -11386892,
       "lastStartedAt": null,
       "createdAt": "2026-01-12T16:00:00.000Z",
@@ -129,8 +171,8 @@
       "listTitle": "Personal",
       "priority": "medium",
       "dueAt": "2026-01-13T04:00:00.000Z",
-      "completed": false,
-      "status": "idle",
+      "completed": true,
+      "status": "completed",
       "subtasks": [
         {
           "text": "Check pantry stocks",
@@ -142,8 +184,21 @@
         }
       ],
       "createdAt": "2026-01-12T16:00:00.000Z",
+      "endTime": "2026-01-12T21:08:52.409Z"
+    },
+    {
+      "id": "t4",
+      "text": "React Query Integration",
+      "description": "Refactor data fetching layer to use React Query for better caching and background updates.",
+      "listTitle": "Side Project",
+      "priority": "high",
+      "dueAt": null,
+      "completed": false,
+      "status": "idle",
+      "accumulatedTime": 7200000,
+      "createdAt": "2026-01-08T16:00:00.000Z",
       "endTime": null,
-      "boardTitle": "Home"
+      "boardTitle": "Completed"
     },
     {
       "id": "t5",
@@ -165,10 +220,22 @@
       "listTitle": "Health",
       "priority": "medium",
       "dueAt": "2026-01-12T16:00:00.000Z",
-      "completed": false,
-      "status": "idle",
+      "completed": true,
+      "status": "completed",
       "accumulatedTime": 1800000,
       "createdAt": "2026-01-11T16:00:00.000Z",
+      "endTime": "2026-01-12T21:08:53.203Z"
+    },
+    {
+      "id": "t7",
+      "text": "Fix Navbar Bug",
+      "description": "Mobile menu does not close when clicking outside on iOS devices.",
+      "listTitle": "Work",
+      "priority": "high",
+      "dueAt": "2026-01-12T12:00:00.000Z",
+      "completed": false,
+      "status": "idle",
+      "createdAt": "2026-01-09T16:00:00.000Z",
       "endTime": null
     },
     {
@@ -196,6 +263,18 @@
       "createdAt": "2026-01-05T16:00:00.000Z",
       "endTime": null,
       "boardTitle": "In Progress"
+    },
+    {
+      "id": "t10",
+      "text": "Car Service",
+      "description": "<blockquote><p>Book appointment for annual maintenance.</p></blockquote><p></p>",
+      "listTitle": "Personal",
+      "priority": "medium",
+      "dueAt": "2026-01-19T16:00:00.000Z",
+      "completed": false,
+      "status": "idle",
+      "createdAt": "2026-01-12T16:00:00.000Z",
+      "endTime": null
     }
   ]
 }

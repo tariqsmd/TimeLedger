@@ -2,24 +2,11 @@
  * TodoItem.jsx
  * Renders a single todo item with inline controls
  */
-import React, { useState, useEffect, useMemo } from 'react';
+import React from 'react';
 import { useIsOverdue, getLiveDuration, formatDateShort } from './useTodoUtils';
+import { useState, useEffect } from 'react';
 import { IconClock, IconCalendar, IconCheckSquare, IconAlignLeft, IconTag, IconInfo, IconBell } from '../../assets/Icons';
 import { useApp } from '../../utils/AppContext';
-
-// Multi-color label palette
-const LABEL_COLORS = [
-    '#61bd4f', '#f2d600', '#ff9f1a', '#eb5a46', '#c377e0',
-    '#0079bf', '#00c2e0', '#51e898', '#ff78cb', '#344563'
-];
-
-const getLabelColor = (str) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return LABEL_COLORS[Math.abs(hash) % LABEL_COLORS.length];
-};
 
 export default function TodoItem({
     todo,
@@ -111,7 +98,7 @@ export default function TodoItem({
                                 </div>
                             )}
                             {todo.listTitle && todo.listTitle !== 'Default' && (
-                                <div className="task-badge category-badge">
+                                <div className="task-badge project-badge">
                                     <IconTag size={12} className="badge-icon" />
                                     <span>{todo.listTitle}</span>
                                 </div>
@@ -132,7 +119,8 @@ export default function TodoItem({
                             {todo.labels && todo.labels.length > 0 && (
                                 <div className="task-labels-container">
                                     {todo.labels.map((label, idx) => (
-                                        <span key={idx} className="item-label-tag" style={{ backgroundColor: getLabelColor(label) }}>
+                                        <span key={idx} className="item-label-tag">
+                                            <IconTag size={10} />
                                             {label}
                                         </span>
                                     ))}

@@ -1,24 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../../utils/AppContext';
-import { IconClock, IconCalendar, IconCheckSquare, IconAlignLeft, IconTag, IconEdit, IconPlus, IconTrash, IconClose, IconPlay, IconPause, IconStop, IconRefresh, IconUser, IconBell, IconInfo } from '../../assets/Icons';
+import { IconTrash, IconPlus, IconClose, IconPlay, IconPause, IconStop, IconRefresh, IconClock, IconCheckSquare, IconInfo, IconBell, IconList, IconCalendar, IconEdit, IconAlignLeft, IconTag } from '../../assets/Icons';
+import Board from './Board';
 import { getLiveDuration, formatDateFull, formatDateShort } from './useTodoUtils';
 import RichEditor from '../Common/RichEditor';
-import Board from './Board';
 import InlineAddTask from './InlineAddTask';
-
-// Multi-color label palette
-const LABEL_COLORS = [
-    '#61bd4f', '#f2d600', '#ff9f1a', '#eb5a46', '#c377e0',
-    '#0079bf', '#00c2e0', '#51e898', '#ff78cb', '#344563'
-];
-
-const getLabelColor = (str) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return LABEL_COLORS[Math.abs(hash) % LABEL_COLORS.length];
-};
 
 export default function TodoView() {
     const {
@@ -35,10 +21,8 @@ export default function TodoView() {
         updateTodoStatus,
         searchQuery,
         updateTodo,
-        categories,
-        addCategory,
-        allLabels,
-        addGlobalLabel,
+        projects,
+        addProject,
         isTodoModalOpen,
         setIsTodoModalOpen,
         sortBy,
@@ -150,10 +134,10 @@ export default function TodoView() {
                 addTodo(payload.text, payload.listTitle, payload.description, payload);
             }
 
-            // Sync category list if new
-            const finalCategory = payload.listTitle;
-            if (finalCategory !== 'Default' && !categories.includes(finalCategory)) {
-                addCategory(finalCategory);
+            // Sync project list if new
+            const finalProject = payload.listTitle;
+            if (finalProject !== 'Default' && !projects.includes(finalProject)) {
+                addProject(finalProject);
             }
 
             // Reset form
@@ -244,9 +228,9 @@ export default function TodoView() {
                                 </div>
                                 <div className="item-main">
                                     <div className="item-title-row">
-                                        <div className={`item - title ${todo.completed ? 'completed' : ''} `}>{todo.text}</div>
+                                        <div className={`item-title ${todo.completed ? 'completed' : ''}`}>{todo.text}</div>
                                         <button
-                                            className={`btn - toggle - badges ${showGlobalBadges ? 'active' : ''} `}
+                                            className={`btn-toggle-badges ${showGlobalBadges ? 'active' : ''}`}
                                             onClick={(e) => { e.stopPropagation(); setShowGlobalBadges(!showGlobalBadges); }}
                                             title="Toggle Badges Globally"
                                         >
@@ -255,12 +239,12 @@ export default function TodoView() {
                                     </div>
                                     {showGlobalBadges && (
                                         <div className="item-meta">
-                                            <span className={`priority - tag priority - ${todo.priority} `}>
+                                            <span className={`priority-tag priority-${todo.priority}`}>
                                                 <IconBell size={12} />
                                                 {todo.priority}
                                             </span>
                                             {todo.listTitle && todo.listTitle !== 'Default' && (
-                                                <span className="category-tag">
+                                                <span className="project-tag">
                                                     <IconTag size={12} />
                                                     {todo.listTitle}
                                                 </span>
@@ -284,7 +268,7 @@ export default function TodoView() {
                                     )}
                                 </div>
                                 <div className="item-status">
-                                    <span className={`status - pill ${todo.status} `}>{todo.status.toUpperCase()}</span>
+                                    <span className={`status-pill ${todo.status}`}>{todo.status.toUpperCase()}</span>
                                 </div>
                             </div>
                         ))}
@@ -309,7 +293,7 @@ export default function TodoView() {
                                 <tr>
                                     <th className="col-check">Done</th>
                                     <th className="col-title">Task Title</th>
-                                    <th className="col-category">Category</th>
+                                    <th className="col-project">Project</th>
                                     <th className="col-priority">Priority</th>
                                     <th className="col-due">Due Date</th>
                                     <th className="col-status">Status</th>
@@ -331,17 +315,17 @@ export default function TodoView() {
                                         <td className="col-title">
                                             <div className="title-text">{todo.text}</div>
                                         </td>
-                                        <td className="col-category">
-                                            <span className="category-pill">{todo.listTitle || 'Default'}</span>
+                                        <td className="col-project">
+                                            <span className="project-pill">{todo.listTitle || 'Default'}</span>
                                         </td>
                                         <td className="col-priority">
-                                            <span className={`priority - pill ${todo.priority} `}>{todo.priority}</span>
+                                            <span className={`priority-pill ${todo.priority}`}>{todo.priority}</span>
                                         </td>
                                         <td className="col-due">
                                             {todo.dueAt ? new Date(todo.dueAt).toLocaleDateString() : '-'}
                                         </td>
                                         <td className="col-status">
-                                            <span className={`status - pill ${todo.status} `}>{todo.status}</span>
+                                            <span className={`status-pill ${todo.status}`}>{todo.status}</span>
                                         </td>
                                         <td className="col-info">
                                             <div className="info-badges">
@@ -349,24 +333,20 @@ export default function TodoView() {
                                                     <span className="info-item" title={`Subtasks: ${todo.subtasks.filter(s => s.done).length}/${todo.subtasks.length}`}>
                                                         <IconCheckSquare size={14} />
                                                         <small>{todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}</small>
-                                                    </span >
+                                                    </span>
                                                 )}
-                                                {
-                                                    todo.description && (
-                                                        <span className="info-item" title="Has description">
-                                                            <IconAlignLeft size={14} />
-                                                        </span>
-                                                    )
-                                                }
-                                                {
-                                                    todo.labels?.length > 0 && (
-                                                        <span className="info-item" title={`${todo.labels.length} labels`}>
-                                                            <IconTag size={12} />
-                                                        </span>
-                                                    )
-                                                }
-                                            </div >
-                                        </td >
+                                                {todo.description && (
+                                                    <span className="info-item" title="Has description">
+                                                        <IconAlignLeft size={14} />
+                                                    </span>
+                                                )}
+                                                {todo.labels?.length > 0 && (
+                                                    <span className="info-item" title={`${todo.labels.length} labels`}>
+                                                        <IconTag size={12} />
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </td>
                                         <td className="col-time">
                                             <div className={`time-display ${todo.status === 'running' ? 'active' : ''}`}>
                                                 {getLiveDuration(todo)}
@@ -382,483 +362,445 @@ export default function TodoView() {
                                                 </button>
                                             </div>
                                         </td>
-                                    </tr >
+                                    </tr>
                                 ))}
                                 <tr className="row-inline-add">
                                     <td colSpan="9">
                                         <InlineAddTask onAdd={(text, list, status) => addTodo(text, list || 'Default', '', { status: status || 'idle' })} />
                                     </td>
                                 </tr>
-                            </tbody >
-                        </table >
-                        {
-                            filteredTodos.length === 0 && (
-                                <div className="empty-state">No tasks found</div>
-                            )
-                        }
-                    </div >
-                </div >
+                            </tbody>
+                        </table>
+                        {filteredTodos.length === 0 && (
+                            <div className="empty-state">No tasks found</div>
+                        )}
+                    </div>
+                </div>
             )}
 
             {/* Modal for Add/Edit Task */}
-            {
-                isTodoModalOpen && (
-                    <div className="modal-overlay" onClick={handleCancel}>
-                        <form className="modal-card" onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
-                            <div className="modal-header">
-                                <div className="header-info">
-                                    <div className="header-text">
-                                        <div className="title-row">
-                                            <h2 className="modal-title">{editingTodoId ? 'Edit Task' : 'Add Task'}</h2>
+            {isTodoModalOpen && (
+                <div className="modal-overlay" onClick={handleCancel}>
+                    <form className="modal-card" onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-header">
+                            <div className="header-info">
+                                <div className="header-text">
+                                    <div className="title-row">
+                                        <h2 className="modal-title">{editingTodoId ? 'Edit Task' : 'Add Task'}</h2>
+                                    </div>
+                                    <p className="modal-subtitle">
+                                        {editingTodoId ? 'Update your task details' : 'What needs to be done?'}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="header-actions">
+                                {editingTodoId && currentEditingTodo && (
+                                    <div className="header-timer-indicator">
+                                        <div className="header-time-spent">
+                                            <IconClock size={16} />
+                                            <span>{getLiveDuration(currentEditingTodo)}</span>
+                                        </div>
+                                        <div className="timer-controls-inline">
+                                            {currentEditingTodo.status === 'idle' && (
+                                                <button type="button" className="btn-timer-control start" onClick={() => startTodo(editingTodoId)} title="Start Timer">
+                                                    <IconPlay size={16} />
+                                                    <span>Start</span>
+                                                </button>
+                                            )}
+                                            {currentEditingTodo.status === 'running' && (
+                                                <button type="button" className="btn-timer-control pause" onClick={() => pauseTodo(editingTodoId)} title="Pause Timer">
+                                                    <IconPause size={16} />
+                                                    <span>Pause</span>
+                                                </button>
+                                            )}
+                                            {currentEditingTodo.status === 'paused' && (
+                                                <button type="button" className="btn-timer-control resume" onClick={() => resumeTodo(editingTodoId)} title="Resume Timer">
+                                                    <IconPlay size={16} />
+                                                    <span>Resume</span>
+                                                </button>
+                                            )}
+                                            {(currentEditingTodo.status === 'running' || currentEditingTodo.status === 'paused') && (
+                                                <button type="button" className="btn-timer-control complete" onClick={() => endTodo(editingTodoId)} title="Stop Timer (Saved)">
+                                                    <IconStop size={16} />
+                                                    <span>Stop</span>
+                                                </button>
+                                            )}
+                                            {currentEditingTodo.status === 'completed' && (
+                                                <button type="button" className="btn-timer-control restart" onClick={() => restartTodo(editingTodoId)} title="Restart Task">
+                                                    <IconRefresh size={16} />
+                                                    <span>Restart</span>
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
-                                </div>
-                                <div className="header-actions">
-                                    {editingTodoId && currentEditingTodo && (
-                                        <div className="header-timer-indicator">
-                                            <div className="timer-controls-inline">
-                                                {currentEditingTodo.status === 'idle' && (
-                                                    <button type="button" className="btn-timer-control start" onClick={() => startTodo(editingTodoId)} title="Start Timer">
-                                                        <IconPlay size={16} />
-                                                        <span>Start</span>
-                                                    </button>
-                                                )}
-                                                {currentEditingTodo.status === 'running' && (
-                                                    <button type="button" className="btn-timer-control pause" onClick={() => pauseTodo(editingTodoId)} title="Pause Timer">
-                                                        <IconPause size={16} />
-                                                        <span>Pause</span>
-                                                    </button>
-                                                )}
-                                                {currentEditingTodo.status === 'paused' && (
-                                                    <button type="button" className="btn-timer-control resume" onClick={() => resumeTodo(editingTodoId)} title="Resume Timer">
-                                                        <IconPlay size={16} />
-                                                        <span>Resume</span>
-                                                    </button>
-                                                )}
-                                                {(currentEditingTodo.status === 'running' || currentEditingTodo.status === 'paused') && (
-                                                    <button type="button" className="btn-timer-control complete" onClick={() => endTodo(editingTodoId)} title="Stop Timer (Saved)">
-                                                        <IconStop size={16} />
-                                                        <span>Stop</span>
-                                                    </button>
-                                                )}
-                                                {currentEditingTodo.status === 'completed' && (
-                                                    <button type="button" className="btn-timer-control restart" onClick={() => restartTodo(editingTodoId)} title="Restart Task">
-                                                        <IconRefresh size={16} />
-                                                        <span>Restart</span>
-                                                    </button>
+                                )}
+                                <button type="button" className="btn-close-modal" onClick={handleCancel} title="Close">
+                                    <IconClose size={24} />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="modal-body-wrapper">
+                            <div className="form-body">
+                                {/* Left Column: Main Content */}
+                                <div className="form-main">
+
+                                    <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        {editingTodoId && currentEditingTodo && (
+                                            <div
+                                                className={`modal-check-circle ${currentEditingTodo.completed ? 'checked' : ''}`}
+                                                onClick={() => toggleTodo(editingTodoId)}
+                                                title={currentEditingTodo.completed ? "Mark as Undone" : "Mark as Done"}
+                                                style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', color: currentEditingTodo.completed ? 'var(--primary)' : 'var(--text-muted)' }}
+                                            >
+                                                {currentEditingTodo.completed ? <IconCheckSquare size={24} /> : <div style={{ width: 24, height: 24, border: '2px solid currentColor', borderRadius: 6 }}></div>}
+                                            </div>
+                                        )}
+                                        <input
+                                            type="text"
+                                            className="input-field main-input"
+                                            placeholder="E.g., Complete project proposal"
+                                            value={inputValue}
+                                            onChange={(e) => setInputValue(e.target.value)}
+                                            onBlur={() => {
+                                                if (editingTodoId && inputValue.trim()) {
+                                                    updateTodo(editingTodoId, { text: inputValue.trim() });
+                                                }
+                                            }}
+                                            required
+                                            autoFocus={!!editingTodoId}
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <div className="description-header">
+                                            <label className="form-label">Description</label>
+                                            {editingTodoId && !isDescriptionEditing && (
+                                                <button
+                                                    type="button"
+                                                    className="btn-edit-description"
+                                                    onClick={() => setIsDescriptionEditing(true)}
+                                                >
+                                                    Edit
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {(!editingTodoId || isDescriptionEditing) ? (
+                                            <div className="description-edit-wrapper">
+                                                <RichEditor
+                                                    value={description}
+                                                    onChange={setDescription}
+                                                    placeholder="Add details about this task..."
+                                                />
+                                                {editingTodoId && isDescriptionEditing && (
+                                                    <div className="description-actions">
+                                                        <button
+                                                            type="button"
+                                                            className="btn-primary btn-save-desc"
+                                                            onClick={() => {
+                                                                updateTodo(editingTodoId, { description });
+                                                                setIsDescriptionEditing(false);
+                                                            }}
+                                                        >
+                                                            Save
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            className="btn-secondary btn-cancel-desc"
+                                                            onClick={() => {
+                                                                const todo = todos.find(t => t.id === editingTodoId);
+                                                                setDescription(todo?.description || '');
+                                                                setIsDescriptionEditing(false);
+                                                            }}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
                                                 )}
                                             </div>
-                                            <div className="header-time-spent">
-                                                <IconClock size={16} />
-                                                <span>{getLiveDuration(currentEditingTodo)}</span>
+                                        ) : (
+                                            <div
+                                                className="description-display"
+                                                onClick={() => setIsDescriptionEditing(true)}
+                                            >
+                                                {description ? (
+                                                    <div
+                                                        className="description-content editor-content-area"
+                                                        dangerouslySetInnerHTML={{ __html: description }}
+                                                    />
+                                                ) : (
+                                                    <div className="description-placeholder">
+                                                        Add a more detailed description...
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Subtasks */}
+                                    <div className="form-group">
+                                        <div className="subtasks-header-row">
+                                            <label className="form-label">Subtasks</label>
+                                            {subtasks.length > 0 && (
+                                                <span className="subtasks-percentage">
+                                                    {Math.round((subtasks.filter(s => s.done).length / subtasks.length) * 100)}%
+                                                </span>
+                                            )}
+                                        </div>
+
+                                        {subtasks.length > 0 && (
+                                            <div className="subtasks-progress-bar">
+                                                <div
+                                                    className="progress-fill"
+                                                    style={{ width: `${(subtasks.filter(s => s.done).length / subtasks.length) * 100}%` }}
+                                                ></div>
+                                            </div>
+                                        )}
+
+                                        <div className="subtask-input-wrapper">
+                                            <input
+                                                type="text"
+                                                className="input-field"
+                                                placeholder="Add a subtask..."
+                                                value={subtaskInput}
+                                                onChange={(e) => setSubtaskInput(e.target.value)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' && subtaskInput.trim()) {
+                                                        const newST = [...subtasks, { text: subtaskInput.trim(), done: false }];
+                                                        setSubtasks(newST);
+                                                        if (editingTodoId) updateTodo(editingTodoId, { subtasks: newST });
+                                                        setSubtaskInput('');
+                                                    }
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                className="btn-add-subtask"
+                                                onClick={() => {
+                                                    if (subtaskInput.trim()) {
+                                                        const newST = [...subtasks, { text: subtaskInput.trim(), done: false }];
+                                                        setSubtasks(newST);
+                                                        if (editingTodoId) updateTodo(editingTodoId, { subtasks: newST });
+                                                        setSubtaskInput('');
+                                                    }
+                                                }}
+                                            >
+                                                <IconPlus size={18} />
+                                            </button>
+                                        </div>
+                                        {subtasks.length > 0 && (
+                                            <div className="subtask-list">
+                                                {subtasks.map((s, i) => (
+                                                    <div key={i} className="added-subtask">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={s.done}
+                                                            onChange={() => toggleSubtask(editingTodoId, i)}
+                                                            disabled={!editingTodoId}
+                                                        />
+                                                        <span style={{ textDecoration: s.done ? 'line-through' : 'none' }}>{s.text}</span>
+                                                        <button
+                                                            type="button"
+                                                            className="btn-remove-subtask"
+                                                            onClick={() => {
+                                                                const newST = subtasks.filter((_, idx) => idx !== i);
+                                                                setSubtasks(newST);
+                                                                if (editingTodoId) updateTodo(editingTodoId, { subtasks: newST });
+                                                            }}
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {/* Right Column: Meta Info */}
+                                <div className="form-sidebar">
+
+                                    {editingTodoId && currentEditingTodo && (
+                                        <div className="form-group side-info-group">
+                                            <label className="form-label">Task Info</label>
+                                            <div className="side-detail-item">
+                                                <span className="detail-label">Task ID:</span>
+                                                <span className="detail-value">#{currentEditingTodo.id.slice(-6)}</span>
+                                            </div>
+                                            <div className="side-detail-item">
+                                                <span className="detail-label">Status:</span>
+                                                <span className="detail-value status-badge-inline" data-status={currentEditingTodo.status}>
+                                                    {currentEditingTodo.status.toUpperCase()}
+                                                </span>
+                                            </div>
+                                            <div className="side-detail-item">
+                                                <span className="detail-label">Time Spent:</span>
+                                                <span className="detail-value">
+                                                    <IconClock size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
+                                                    {getLiveDuration(currentEditingTodo)}
+                                                </span>
+                                            </div>
+                                            <div className="side-detail-item">
+                                                <span className="detail-value">{formatDateFull(currentEditingTodo.createdAt)}</span>
                                             </div>
                                         </div>
                                     )}
-                                    <button type="button" className="btn-close-modal" onClick={handleCancel} title="Close">
-                                        <IconClose size={24} />
-                                    </button>
-                                </div>
-                            </div>
 
-                            <div className="modal-body-wrapper">
-                                <div className="form-body">
-                                    {/* Left Column: Main Content */}
-                                    <div className="form-main">
 
-                                        <div className="form-group" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            {editingTodoId && currentEditingTodo && (
+                                    <div className="form-group">
+                                        <label className="form-label">Set Priority</label>
+                                        <div className="priority-grid">
+                                            {['low', 'medium', 'high'].map((p) => (
                                                 <div
-                                                    className={`modal-check-circle ${currentEditingTodo.completed ? 'checked' : ''}`}
-                                                    onClick={() => toggleTodo(editingTodoId)}
-                                                    title={currentEditingTodo.completed ? "Mark as Undone" : "Mark as Done"}
-                                                    style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', color: currentEditingTodo.completed ? 'var(--primary)' : 'var(--text-muted)' }}
-                                                >
-                                                    {currentEditingTodo.completed ? <IconCheckSquare size={24} /> : <div style={{ width: 24, height: 24, border: '2px solid currentColor', borderRadius: 6 }}></div>}
-                                                </div>
-                                            )}
-                                            <input
-                                                type="text"
-                                                className="input-field main-input"
-                                                placeholder="E.g., Complete category proposal"
-                                                value={inputValue}
-                                                onChange={(e) => setInputValue(e.target.value)}
-                                                onBlur={() => {
-                                                    if (editingTodoId && inputValue.trim()) {
-                                                        updateTodo(editingTodoId, { text: inputValue.trim() });
-                                                    }
-                                                }}
-                                                required
-                                                autoFocus={!!editingTodoId}
-                                            />
-                                        </div>
-
-                                        <div className="form-group">
-                                            <div className="description-header">
-                                                <label className="form-label">Description</label>
-                                                {editingTodoId && !isDescriptionEditing && (
-                                                    <button
-                                                        type="button"
-                                                        className="btn-edit-description"
-                                                        onClick={() => setIsDescriptionEditing(true)}
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                )}
-                                            </div>
-
-                                            {(!editingTodoId || isDescriptionEditing) ? (
-                                                <div className="description-edit-wrapper">
-                                                    <RichEditor
-                                                        value={description}
-                                                        onChange={setDescription}
-                                                        placeholder="Add details about this task..."
-                                                    />
-                                                    {editingTodoId && isDescriptionEditing && (
-                                                        <div className="description-actions">
-                                                            <button
-                                                                type="button"
-                                                                className="btn-primary btn-save-desc"
-                                                                onClick={() => {
-                                                                    updateTodo(editingTodoId, { description });
-                                                                    setIsDescriptionEditing(false);
-                                                                }}
-                                                            >
-                                                                Save
-                                                            </button>
-                                                            <button
-                                                                type="button"
-                                                                className="btn-secondary btn-cancel-desc"
-                                                                onClick={() => {
-                                                                    const todo = todos.find(t => t.id === editingTodoId);
-                                                                    setDescription(todo?.description || '');
-                                                                    setIsDescriptionEditing(false);
-                                                                }}
-                                                            >
-                                                                Cancel
-                                                            </button>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <div
-                                                    className="description-display"
-                                                    onClick={() => setIsDescriptionEditing(true)}
-                                                >
-                                                    {description ? (
-                                                        <div
-                                                            className="description-content editor-content-area"
-                                                            dangerouslySetInnerHTML={{ __html: description }}
-                                                        />
-                                                    ) : (
-                                                        <div className="description-placeholder">
-                                                            Add a more detailed description...
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Checklist */}
-                                        <div className="form-group">
-                                            <div className="subtasks-header-row">
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                    <IconCheckSquare size={20} />
-                                                    <label className="form-label" style={{ marginBottom: 0 }}>Checklist</label>
-                                                </div>
-                                                <div className="header-actions-checklist">
-                                                    {subtasks.length > 0 && (
-                                                        <span className="subtasks-percentage">
-                                                            {Math.round((subtasks.filter(s => s.done).length / subtasks.length) * 100)}%
-                                                        </span>
-                                                    )}
-                                                    <button
-                                                        type="button"
-                                                        className="btn-add-checklist-item-title"
-                                                        onClick={() => document.getElementById('subtask-input-field')?.focus()}
-                                                    >
-                                                        Add Item
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            {subtasks.length > 0 && (
-                                                <div className="subtasks-progress-bar">
-                                                    <div
-                                                        className="progress-fill"
-                                                        style={{ width: `${(subtasks.filter(s => s.done).length / subtasks.length) * 100}%` }}
-                                                    ></div>
-                                                </div>
-                                            )}
-
-                                            {subtasks.length > 0 && (
-                                                <div className="subtask-list">
-                                                    {subtasks.map((s, i) => (
-                                                        <div key={i} className="added-subtask">
-                                                            <input
-                                                                type="checkbox"
-                                                                checked={s.done}
-                                                                onChange={() => toggleSubtask(editingTodoId, i)}
-                                                                disabled={!editingTodoId}
-                                                            />
-                                                            <span
-                                                                className={s.done ? 'subtask-done' : ''}
-                                                                contentEditable={editingTodoId ? "true" : "false"}
-                                                                onBlur={(e) => {
-                                                                    const newText = e.target.innerText.trim();
-                                                                    if (newText && newText !== s.text) {
-                                                                        const newST = [...subtasks];
-                                                                        newST[i] = { ...newST[i], text: newText };
-                                                                        setSubtasks(newST);
-                                                                        if (editingTodoId) updateTodo(editingTodoId, { subtasks: newST });
-                                                                    } else {
-                                                                        e.target.innerText = s.text;
-                                                                    }
-                                                                }}
-                                                                suppressContentEditableWarning={true}
-                                                            >
-                                                                {s.text}
-                                                            </span>
-                                                            <button
-                                                                type="button"
-                                                                className="btn-remove-subtask"
-                                                                onClick={() => {
-                                                                    const newST = subtasks.filter((_, idx) => idx !== i);
-                                                                    setSubtasks(newST);
-                                                                    if (editingTodoId) updateTodo(editingTodoId, { subtasks: newST });
-                                                                }}
-                                                            >
-                                                                <IconTrash size={14} />
-                                                            </button>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-
-                                            <div className="subtask-input-wrapper">
-                                                <input
-                                                    id="subtask-input-field"
-                                                    type="text"
-                                                    className="input-field"
-                                                    placeholder="Add an item..."
-                                                    value={subtaskInput}
-                                                    onChange={(e) => setSubtaskInput(e.target.value)}
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Enter' && subtaskInput.trim()) {
-                                                            const newST = [...subtasks, { text: subtaskInput.trim(), done: false }];
-                                                            setSubtasks(newST);
-                                                            if (editingTodoId) updateTodo(editingTodoId, { subtasks: newST });
-                                                            setSubtaskInput('');
-                                                        }
+                                                    key={p}
+                                                    className={`priority-option priority-${p} ${priority === p ? 'selected' : ''}`}
+                                                    onClick={() => {
+                                                        setPriority(p);
+                                                        if (editingTodoId) updateTodo(editingTodoId, { priority: p });
                                                     }}
-                                                />
-                                                <div className="input-actions-checklist">
-                                                    <button
-                                                        type="button"
-                                                        className="btn-add-subtask"
-                                                        onClick={() => {
-                                                            if (subtaskInput.trim()) {
-                                                                const newST = [...subtasks, { text: subtaskInput.trim(), done: false }];
-                                                                setSubtasks(newST);
-                                                                if (editingTodoId) updateTodo(editingTodoId, { subtasks: newST });
-                                                                setSubtaskInput('');
-                                                            }
-                                                        }}
-                                                    >
-                                                        Add
-                                                    </button>
+                                                >
+                                                    {p.charAt(0).toUpperCase() + p.slice(1)}
                                                 </div>
-                                            </div>
+                                            ))}
                                         </div>
                                     </div>
 
-                                    {/* Right Column: Meta Info */}
-                                    <div className="form-sidebar">
-
-                                        {editingTodoId && currentEditingTodo && (
-                                            <div className="form-group side-info-group">
-                                                <label className="form-label">Task Info</label>
-                                                <div className="side-detail-item">
-                                                    <span className="detail-label">Task ID:</span>
-                                                    <span className="detail-value">#{currentEditingTodo.id.slice(-6)}</span>
-                                                </div>
-                                                <div className="side-detail-item">
-                                                    <span className="detail-label">Status:</span>
-                                                    <span className="detail-value status-badge-inline" data-status={currentEditingTodo.status}>
-                                                        {currentEditingTodo.status.toUpperCase()}
-                                                    </span>
-                                                </div>
-                                                <div className="side-detail-item">
-                                                    <span className="detail-label">Time Spent:</span>
-                                                    <span className="detail-value">
-                                                        <IconClock size={14} style={{ marginRight: '4px', verticalAlign: 'middle' }} />
-                                                        {getLiveDuration(currentEditingTodo)}
-                                                    </span>
-                                                </div>
-                                                <div className="side-detail-item">
-                                                    <span className="detail-value">{formatDateFull(currentEditingTodo.createdAt)}</span>
-                                                </div>
-                                            </div>
-                                        )}
-
-
-                                        <div className="form-group">
-                                            <label className="form-label">Set Priority</label>
-                                            <div className="priority-grid">
-                                                {['low', 'medium', 'high'].map((p) => (
-                                                    <div
-                                                        key={p}
-                                                        className={`priority-option priority-${p} ${priority === p ? 'selected' : ''}`}
-                                                        onClick={() => {
-                                                            setPriority(p);
-                                                            if (editingTodoId) updateTodo(editingTodoId, { priority: p });
-                                                        }}
-                                                    >
-                                                        {p.charAt(0).toUpperCase() + p.slice(1)}
-                                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Project</label>
+                                        <div className="project-input-wrapper">
+                                            <input
+                                                type="text"
+                                                className="input-field"
+                                                placeholder="Select or type a project..."
+                                                list="project-list"
+                                                value={newListTitle}
+                                                onChange={(e) => setNewListTitle(e.target.value)}
+                                                onBlur={() => {
+                                                    if (editingTodoId) updateTodo(editingTodoId, { listTitle: newListTitle || 'Default' });
+                                                    // Also sync project list if new
+                                                    if (newListTitle && newListTitle !== 'Default' && !projects.includes(newListTitle)) {
+                                                        addProject(newListTitle);
+                                                    }
+                                                }}
+                                            />
+                                            <datalist id="project-list">
+                                                <option value="Default" />
+                                                {projects.map(p => (
+                                                    <option key={p} value={p} />
                                                 ))}
-                                            </div>
+                                            </datalist>
                                         </div>
+                                    </div>
 
-                                        <div className="form-group">
-                                            <label className="form-label">Category</label>
-                                            <div className="project-input-wrapper">
-                                                <input
-                                                    type="text"
-                                                    className="input-field"
-                                                    placeholder="Select or type a category..."
-                                                    list="category-list"
-                                                    value={newListTitle}
-                                                    onChange={(e) => setNewListTitle(e.target.value)}
-                                                    onBlur={() => {
-                                                        if (editingTodoId) updateTodo(editingTodoId, { listTitle: newListTitle || 'Default' });
-                                                        // Also sync category list if new
-                                                        if (newListTitle && newListTitle !== 'Default' && !categories.includes(newListTitle)) {
-                                                            addCategory(newListTitle);
+                                    <div className="form-group">
+                                        <label className="form-label">Labels</label>
+                                        <div className="label-input-wrapper">
+                                            <input
+                                                type="text"
+                                                className="input-field"
+                                                placeholder="Add a label (press Enter)..."
+                                                value={labelInput}
+                                                onChange={(e) => setLabelInput(e.target.value)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === 'Enter' && labelInput.trim()) {
+                                                        e.preventDefault();
+                                                        const cleanLabel = labelInput.trim();
+                                                        if (!labels.includes(cleanLabel)) {
+                                                            const newLabels = [...labels, cleanLabel];
+                                                            setLabels(newLabels);
+                                                            if (editingTodoId) updateTodo(editingTodoId, { labels: newLabels });
                                                         }
-                                                    }}
-                                                />
-                                                <datalist id="category-list">
-                                                    <option value="Default" />
-                                                    {categories.map(c => (
-                                                        <option key={c} value={c} />
-                                                    ))}
-                                                </datalist>
-                                            </div>
+                                                        setLabelInput('');
+                                                    }
+                                                }}
+                                            />
                                         </div>
-
-                                        <div className="form-group">
-                                            <label className="form-label">Labels</label>
-                                            <div className="labels-checklist-container">
-                                                {allLabels.map((l) => (
-                                                    <div key={l} className="label-checkbox-item">
-                                                        <div className="label-color-strip" style={{ backgroundColor: getLabelColor(l) }}></div>
-                                                        <input
-                                                            type="checkbox"
-                                                            id={`label-${l}`}
-                                                            checked={labels.includes(l)}
-                                                            onChange={() => {
-                                                                let newLabels;
-                                                                if (labels.includes(l)) {
-                                                                    newLabels = labels.filter(item => item !== l);
-                                                                } else {
-                                                                    newLabels = [...labels, l];
-                                                                }
+                                        {labels.length > 0 && (
+                                            <div className="label-tags-list">
+                                                {labels.map((l, i) => (
+                                                    <span key={i} className="label-tag">
+                                                        {l}
+                                                        <button
+                                                            type="button"
+                                                            className="btn-remove-tag"
+                                                            onClick={() => {
+                                                                const newLabels = labels.filter((_, idx) => idx !== i);
                                                                 setLabels(newLabels);
                                                                 if (editingTodoId) updateTodo(editingTodoId, { labels: newLabels });
                                                             }}
-                                                        />
-                                                        <label htmlFor={`label-${l}`} className="label-name">{l}</label>
-                                                    </div>
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </span>
                                                 ))}
-                                            </div>
-                                            <div className="label-input-wrapper mt-2">
-                                                <input
-                                                    type="text"
-                                                    className="input-field"
-                                                    placeholder="Add new label..."
-                                                    value={labelInput}
-                                                    onChange={(e) => setLabelInput(e.target.value)}
-                                                    onKeyDown={(e) => {
-                                                        if (e.key === 'Enter' && labelInput.trim()) {
-                                                            e.preventDefault();
-                                                            const cleanLabel = labelInput.trim();
-                                                            addGlobalLabel(cleanLabel);
-                                                            if (!labels.includes(cleanLabel)) {
-                                                                const newLabels = [...labels, cleanLabel];
-                                                                setLabels(newLabels);
-                                                                if (editingTodoId) updateTodo(editingTodoId, { labels: newLabels });
-                                                            }
-                                                            setLabelInput('');
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label className="form-label">Set Due Date</label>
-                                            <input
-                                                type="date"
-                                                className="input-field"
-                                                value={dueDate}
-                                                onChange={e => {
-                                                    setDueDate(e.target.value);
-                                                    if (editingTodoId) updateTodo(editingTodoId, { dueAt: e.target.value });
-                                                }}
-                                            />
-                                        </div>
-
-                                        <div className="form-group">
-                                            <label className="form-label">Card Cover</label>
-                                            <div className="cover-color-grid">
-                                                {coverColors.map((c) => (
-                                                    <div
-                                                        key={c.name}
-                                                        className={`cover-option ${coverColor === c.value ? 'selected' : ''}`}
-                                                        style={{ backgroundColor: c.value || 'transparent', border: !c.value ? '2px dashed var(--glass-border)' : 'none' }}
-                                                        onClick={() => {
-                                                            setCoverColor(c.value);
-                                                            if (editingTodoId) updateTodo(editingTodoId, { coverColor: c.value });
-                                                        }}
-                                                        title={c.name}
-                                                    >
-                                                        {!c.value && <IconClose size={14} />}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {editingTodoId && (
-                                            <div className="sidebar-footer-actions">
-                                                <button
-                                                    type="button"
-                                                    className="btn-sidebar-delete"
-                                                    onClick={() => {
-                                                        if (window.confirm('Are you sure you want to delete this task?')) {
-                                                            deleteTodo(editingTodoId);
-                                                            handleCancel();
-                                                        }
-                                                    }}
-                                                >
-                                                    <IconTrash size={16} /> Delete Task
-                                                </button>
                                             </div>
                                         )}
                                     </div>
+
+                                    <div className="form-group">
+                                        <label className="form-label">Set Due Date</label>
+                                        <input
+                                            type="date"
+                                            className="input-field"
+                                            value={dueDate}
+                                            onChange={e => {
+                                                setDueDate(e.target.value);
+                                                if (editingTodoId) updateTodo(editingTodoId, { dueAt: e.target.value });
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="form-label">Card Cover</label>
+                                        <div className="cover-color-grid">
+                                            {coverColors.map((c) => (
+                                                <div
+                                                    key={c.name}
+                                                    className={`cover-option ${coverColor === c.value ? 'selected' : ''}`}
+                                                    style={{ backgroundColor: c.value || 'transparent', border: !c.value ? '2px dashed var(--glass-border)' : 'none' }}
+                                                    onClick={() => {
+                                                        setCoverColor(c.value);
+                                                        if (editingTodoId) updateTodo(editingTodoId, { coverColor: c.value });
+                                                    }}
+                                                    title={c.name}
+                                                >
+                                                    {!c.value && <IconClose size={14} />}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {editingTodoId && (
+                                        <div className="sidebar-footer-actions">
+                                            <button
+                                                type="button"
+                                                className="btn-sidebar-delete"
+                                                onClick={() => {
+                                                    if (window.confirm('Are you sure you want to delete this task?')) {
+                                                        deleteTodo(editingTodoId);
+                                                        handleCancel();
+                                                    }
+                                                }}
+                                            >
+                                                <IconTrash size={16} /> Delete Task
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
+                        </div>
 
-                            {!editingTodoId && (
-                                <div className="modal-actions-footer">
-                                    <button type="submit" className="btn-primary btn-save-full">
-                                        Create Task
-                                    </button>
-                                </div>
-                            )}
-                        </form>
-                    </div>
-                )
-            }
-        </div >
+                        {!editingTodoId && (
+                            <div className="modal-actions-footer">
+                                <button type="submit" className="btn-primary btn-save-full">
+                                    Create Task
+                                </button>
+                            </div>
+                        )}
+                    </form>
+                </div>
+            )}
+        </div>
     );
 }
