@@ -854,7 +854,8 @@ textarea {
             border: 1px solid var(--glass-border);
             display: flex;
             flex-direction: column;
-            width: 320px;
+            flex: 0 0 320px;
+            max-width: 320px;
             max-height: calc(100% - 2.5rem);
             overflow: hidden;
             transition: var(--transition);

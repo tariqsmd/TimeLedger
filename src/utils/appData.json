@@ -1,52 +1,6 @@
 {
   "tasks": [
     {
-      "id": "1768332096266",
-      "text": "One more",
-      "description": "",
-      "completed": false,
-      "createdAt": "2026-01-13T19:21:36.266Z",
-      "listTitle": "Default",
-      "status": "idle",
-      "startTime": null,
-      "endTime": null,
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": []
-    },
-    {
-      "id": "1768332090146",
-      "text": "Assign new task",
-      "description": "",
-      "completed": false,
-      "createdAt": "2026-01-13T19:21:30.146Z",
-      "listTitle": "Default",
-      "status": "idle",
-      "startTime": null,
-      "endTime": null,
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": []
-    },
-    {
-      "id": "1768331980090",
-      "text": "New test task",
-      "description": "",
-      "completed": false,
-      "createdAt": "2026-01-13T19:19:40.090Z",
-      "listTitle": "Default",
-      "status": "idle",
-      "startTime": null,
-      "endTime": null,
-      "accumulatedTime": 0,
-      "lastStartedAt": null,
-      "priority": "medium",
-      "subtasks": [],
-      "boardTitle": "To Do"
-    },
-    {
       "id": "1768252213953",
       "text": "Bring Flor from Chaki",
       "description": "",
@@ -88,12 +42,12 @@
       "id": "1768252179289",
       "text": "Fix the Almari",
       "description": "",
-      "completed": true,
+      "completed": false,
       "createdAt": "2026-01-12T21:09:39.289Z",
       "listTitle": "Default",
-      "status": "completed",
+      "status": "idle",
       "startTime": null,
-      "endTime": "2026-01-13T08:52:33.422Z",
+      "endTime": null,
       "accumulatedTime": 0,
       "lastStartedAt": null,
       "priority": "medium",
@@ -141,7 +95,8 @@
       "startTime": "2026-01-12T20:35:40.146Z",
       "lastStartedAt": null,
       "accumulatedTime": 712,
-      "endTime": null
+      "endTime": null,
+      "boardTitle": "App Tasks"
     },
     {
       "id": "t2",
@@ -171,8 +126,8 @@
       "listTitle": "Personal",
       "priority": "medium",
       "dueAt": "2026-01-13T04:00:00.000Z",
-      "completed": true,
-      "status": "completed",
+      "completed": false,
+      "status": "idle",
       "subtasks": [
         {
           "text": "Check pantry stocks",
@@ -184,21 +139,8 @@
         }
       ],
       "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": "2026-01-12T21:08:52.409Z"
-    },
-    {
-      "id": "t4",
-      "text": "React Query Integration",
-      "description": "Refactor data fetching layer to use React Query for better caching and background updates.",
-      "listTitle": "Side Project",
-      "priority": "high",
-      "dueAt": null,
-      "completed": false,
-      "status": "idle",
-      "accumulatedTime": 7200000,
-      "createdAt": "2026-01-08T16:00:00.000Z",
       "endTime": null,
-      "boardTitle": "Completed"
+      "boardTitle": "Home"
     },
     {
       "id": "t5",
@@ -227,18 +169,6 @@
       "endTime": "2026-01-12T21:08:53.203Z"
     },
     {
-      "id": "t7",
-      "text": "Fix Navbar Bug",
-      "description": "Mobile menu does not close when clicking outside on iOS devices.",
-      "listTitle": "Work",
-      "priority": "high",
-      "dueAt": "2026-01-12T12:00:00.000Z",
-      "completed": false,
-      "status": "idle",
-      "createdAt": "2026-01-09T16:00:00.000Z",
-      "endTime": null
-    },
-    {
       "id": "t8",
       "text": "Plan Weekend Trip",
       "description": "Look for Airbnb options in the mountains.",
@@ -263,18 +193,6 @@
       "createdAt": "2026-01-05T16:00:00.000Z",
       "endTime": null,
       "boardTitle": "In Progress"
-    },
-    {
-      "id": "t10",
-      "text": "Car Service",
-      "description": "<blockquote><p>Book appointment for annual maintenance.</p></blockquote><p></p>",
-      "listTitle": "Personal",
-      "priority": "medium",
-      "dueAt": "2026-01-19T16:00:00.000Z",
-      "completed": false,
-      "status": "idle",
-      "createdAt": "2026-01-12T16:00:00.000Z",
-      "endTime": null
     }
   ]
 }
