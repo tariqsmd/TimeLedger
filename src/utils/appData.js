@@ -11,20 +11,63 @@
  *    (For now, since "Load Samples" button might be hidden, you can use the browser console: localStorage.clear() and reload)
  */
 
+
+export const majorTasks = [
+    {
+        id: 'mt1',
+        text: 'WP wordPress Plugin',
+        description: 'Update the component library documentation with new tokens and guidelines for dark mode.',
+        categories: ['Work'],
+        priority: 'high',
+        dueAt: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
+        completed: false,
+        status: 'idle',
+        checklists: [
+            {
+                id: 'cl1', title: 'Preparation', items: [
+                    { text: 'Portfolio', done: false },
+                    { text: 'LMS online for student.', done: false },
+                    { text: 'LMS online.', done: false }
+                ]
+            }
+        ],
+        createdAt: new Date(Date.now() - 172800000).toISOString() // 2 days ago
+    },
+];
+
+export const taskGroups = ['Work', 'Personal', 'Side Project', 'Learning', 'Health', 'Finance', 'Travel', 'Household', 'Volunteer', 'Fitness'];
+
+export const sampleCategories = [
+    { name: 'Work' },
+    { name: 'Personal' },
+    { name: 'Side Project' },
+    { name: 'Learning' },
+    { name: 'Health' },
+    { name: 'Finance' }
+];
+
 export const sampleTasks = [
     {
         id: 't1',
         text: 'Design System Documentation',
         description: 'Update the component library documentation with new tokens and guidelines for dark mode.',
-        listTitle: 'Work',
+        categories: ['Work'],
         priority: 'high',
         dueAt: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
         completed: false,
         status: 'idle',
-        subtasks: [
-            { text: 'Audit existing color tokens', done: true },
-            { text: 'Draft new spacing guidelines', done: false },
-            { text: 'Update button component examples', done: false }
+        checklists: [
+            {
+                id: 'cl1', title: 'Preparation', items: [
+                    { text: 'Audit existing color tokens', done: true },
+                    { text: 'Draft new spacing guidelines', done: false }
+                ]
+            },
+            {
+                id: 'cl2', title: 'Implementation', items: [
+                    { text: 'Update button component examples', done: false }
+                ]
+            }
         ],
         createdAt: new Date(Date.now() - 172800000).toISOString() // 2 days ago
     },
@@ -137,7 +180,20 @@ export const sampleTasks = [
     }
 ];
 
-export const sampleTrackerEntries = [
+export const monthlyGoals = [
+    { id: 'g1', text: 'Complete React Certification', target: 20, progress: 12, unit: 'hours', completed: false },
+    { id: 'g2', text: 'Read 2 Books', target: 2, progress: 1, unit: 'books', completed: false },
+    { id: 'g3', text: 'Gym Attendance', target: 15, progress: 8, unit: 'days', completed: false },
+    { id: 'g4', text: 'Save $500', target: 500, progress: 350, unit: 'dollars', completed: false },
+    { id: 'g5', text: 'Write 4 Blog Posts', target: 4, progress: 1, unit: 'posts', completed: false },
+    { id: 'g6', text: 'Network with 5 people', target: 5, progress: 2, unit: 'people', completed: false },
+    { id: 'g7', text: 'Meditate Daily', target: 30, progress: 20, unit: 'days', completed: false },
+    { id: 'g8', text: 'Launch Side Project', target: 100, progress: 80, unit: '%', completed: false },
+    { id: 'g9', text: 'Clean Digital Workspace', target: 1, progress: 0, unit: 'task', completed: false },
+    { id: 'g10', text: 'Try 3 New Recipes', target: 3, progress: 3, unit: 'recipes', completed: true }
+];
+
+export const trackerEntries = [
     {
         id: 'e1',
         description: 'Email & Communications',
@@ -219,18 +275,3 @@ export const sampleTrackerEntries = [
         tags: ['Admin']
     }
 ];
-
-export const sampleMonthlyGoals = [
-    { id: 'g1', text: 'Complete React Certification', target: 20, progress: 12, unit: 'hours', completed: false },
-    { id: 'g2', text: 'Read 2 Books', target: 2, progress: 1, unit: 'books', completed: false },
-    { id: 'g3', text: 'Gym Attendance', target: 15, progress: 8, unit: 'days', completed: false },
-    { id: 'g4', text: 'Save $500', target: 500, progress: 350, unit: 'dollars', completed: false },
-    { id: 'g5', text: 'Write 4 Blog Posts', target: 4, progress: 1, unit: 'posts', completed: false },
-    { id: 'g6', text: 'Network with 5 people', target: 5, progress: 2, unit: 'people', completed: false },
-    { id: 'g7', text: 'Meditate Daily', target: 30, progress: 20, unit: 'days', completed: false },
-    { id: 'g8', text: 'Launch Side Project', target: 100, progress: 80, unit: '%', completed: false },
-    { id: 'g9', text: 'Clean Digital Workspace', target: 1, progress: 0, unit: 'task', completed: false },
-    { id: 'g10', text: 'Try 3 New Recipes', target: 3, progress: 3, unit: 'recipes', completed: true }
-];
-
-export const sampleTaskGroups = ['Work', 'Personal', 'Side Project', 'Learning', 'Health', 'Finance', 'Travel', 'Household', 'Volunteer', 'Fitness'];

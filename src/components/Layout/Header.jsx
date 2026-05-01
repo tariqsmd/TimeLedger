@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
-import { IconPlus, IconSettings } from '../../assets//Icons';
-
+import { IconSettings, IconPlus, IconList } from '../../assets//Icons';
 import { useApp } from '../../utils/AppContext';
+import { useQuickTasks } from '../../utils/QuickTasksContext';
 import Search from '../Common/Search';
 import TimeDisplay from '../Common/TimeDisplay';
-import DateDisplay from '../Common/DateDisplay';
 import ProgressWidget from '../Common/ProgressWidget';
+import LayoutView from '../Common/LayoutView'
 
 export default function Header() {
     const {
-        searchQuery, setSearchQuery,
+        searchQuery,
+        setSearchQuery,
         todos,
         isSidebarOpen,
         setIsSidebarOpen,
-        loadSampleData
     } = useApp();
+
+    const { openQuickTasksModal } = useQuickTasks();
 
     return (
         <header className="header">
-            {/* Left Column: Logo */}
+            {/* Left Column */}
             <div className="header-left">
                 <div className="logo">
                     <div className="logo-icon">TL</div>
@@ -28,19 +29,35 @@ export default function Header() {
                 <Search value={searchQuery} onChange={setSearchQuery} placeholder="Search" />
             </div>
 
-            {/* Right Column: User Controls */}
+            {/* Center Column */}
+            <div className="header-cener">
+                <div className="header-quick-actions">
+                    <button 
+                        className="btn-prominent add-task-btn" 
+                        onClick={() => openQuickTasksModal('add')}
+                        title="Add Quick Task/Note"
+                    >
+                        <IconPlus size={18} />
+                        <span>Quick Task</span>
+                    </button>
+                    <button 
+                        className="btn-prominent view-tasks-btn" 
+                        onClick={() => openQuickTasksModal('view')}
+                        title="View Quick Tasks"
+                    >
+                        <IconList size={18} />
+                        <span>View Tasks</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Right Column */}
             <div className="header-right">
                 <ProgressWidget todos={todos} />
-                <TimeDisplay format="2-digit-minute" />
-                <DateDisplay format="full" />
-
-                <button
-                    className="btn-icon settings-btn"
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    title="Settings"
-                >
-                    <IconSettings size={20} />
-                </button>
+                <LayoutView showLabels={false} />
+                <TimeDisplay format="2-digit-minute" showDate={true} />
+                {/* <DateDisplay format="full" /> */}
+                <button className="btn-icon settings-btn" onClick={() => setIsSidebarOpen(!isSidebarOpen)} title="Settings"><IconSettings size={20} /></button>
             </div>
         </header>
     );

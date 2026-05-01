@@ -2,11 +2,24 @@
  * TodoItem.jsx
  * Renders a single todo item with inline controls
  */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIsOverdue, getLiveDuration, formatDateShort } from './useTodoUtils';
-import { useState, useEffect } from 'react';
 import { IconClock, IconCalendar, IconCheckSquare, IconAlignLeft, IconTag, IconInfo, IconBell } from '../../assets/Icons';
 import { useApp } from '../../utils/AppContext';
+
+// Multi-color label palette
+const LABEL_COLORS = [
+    '#61bd4f', '#f2d600', '#ff9f1a', '#eb5a46', '#c377e0',
+    '#0079bf', '#00c2e0', '#51e898', '#ff78cb', '#344563'
+];
+
+const getLabelColor = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return LABEL_COLORS[Math.abs(hash) % LABEL_COLORS.length];
+};
 
 export default function TodoItem({
     todo,
@@ -18,7 +31,7 @@ export default function TodoItem({
     draggedItem,
     viewMode
 }) {
-    const { showGlobalBadges, setShowGlobalBadges } = useApp();
+    const { showGlobalBadges, setShowGlobalBadges, allLabels, categories } = useApp();
     const [tick, setTick] = useState(0);
 
     useEffect(() => {
@@ -30,7 +43,12 @@ export default function TodoItem({
     }, [todo.status]);
 
     const isOverdue = useIsOverdue(todo);
-    const hasIncompleteSubtasks = !todo.completed && todo.subtasks?.some(st => !st.done);
+    const hasIncompleteSubtasks = !todo.completed && todo.checklists?.some(c => c.items.some(i => !i.done));
+
+    const getLabelColorS = (name) => {
+        const label = allLabels.find(l => l.name === name);
+        return label ? label.color : getLabelColor(name);
+    };
 
     const handleTaskClick = (e) => {
         // Prevent opening modal if clicking interactive elements
@@ -97,11 +115,20 @@ export default function TodoItem({
                                     <span>{todo.priority}</span>
                                 </div>
                             )}
-                            {todo.listTitle && todo.listTitle !== 'Default' && (
-                                <div className="task-badge project-badge">
-                                    <IconTag size={12} className="badge-icon" />
-                                    <span>{todo.listTitle}</span>
-                                </div>
+                            {todo.categories && todo.categories.length > 0 ? (
+                                todo.categories.map((cat, idx) => (
+                                    <div key={`${cat}-${idx}`} className="task-badge category-badge" style={{ color: `#000` }}>
+                                        <IconTag size={12} className="badge-icon" />
+                                        <span>{cat}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                todo.listTitle && todo.listTitle !== 'Default' && (
+                                    <div className="task-badge category-badge">
+                                        <IconTag size={12} className="badge-icon" />
+                                        <span>{todo.listTitle}</span>
+                                    </div>
+                                )
                             )}
                             {todo.dueAt && (
                                 <div className={`task-badge due-badge ${isOverdue ? 'overdue' : ''}`}>
@@ -109,23 +136,28 @@ export default function TodoItem({
                                     <span>{formatDateShort(todo.dueAt)}</span>
                                 </div>
                             )}
-                            {todo.subtasks?.length > 0 && (
-                                <div className={`task-badge subtasks-badge ${todo.subtasks.every(s => s.done) ? 'all-done' : ''}`}>
+                            {todo.checklists?.some(c => c.items.length > 0) && (
+                                <div className={`task-badge subtasks-badge ${todo.checklists.every(c => c.items.every(i => i.done)) ? 'all-done' : ''}`}>
                                     <IconCheckSquare size={12} className="badge-icon" />
-                                    <span>{todo.subtasks.filter(s => s.done).length}/{todo.subtasks.length}</span>
+                                    <span>
+                                        {(() => {
+                                            const total = todo.checklists.reduce((acc, c) => acc + c.items.length, 0);
+                                            const done = todo.checklists.reduce((acc, c) => acc + c.items.filter(i => i.done).length, 0);
+                                            return `${done}/${total}`;
+                                        })()}
+                                    </span>
                                 </div>
                             )}
 
-                            {todo.labels && todo.labels.length > 0 && (
+                            {/* {todo.labels && todo.labels.length > 0 && (
                                 <div className="task-labels-container">
                                     {todo.labels.map((label, idx) => (
-                                        <span key={idx} className="item-label-tag">
-                                            <IconTag size={10} />
+                                        <span key={idx} className="item-label-tag" style={{ backgroundColor: getLabelColorS(label) }}>
                                             {label}
                                         </span>
                                     ))}
                                 </div>
-                            )}
+                            )} */}
 
                             {todo.description && (
                                 <div className="task-badge desc-badge" title="Has description">

@@ -1,33 +1,57 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
-import { sampleTasks, sampleTaskGroups } from './appData';
+import { sampleTasks, sampleCategories } from './appData';
+import { useElectronLifecycle } from './useElectron';
+
 
 const AppContext = createContext();
 
 export function AppProvider({ children }) {
+    // Category/Group State
+    const [categories, setCategories] = useLocalStorage('taskGroups', sampleCategories);
+    const [allLabels, setAllLabels] = useLocalStorage('allLabels', [
+        { name: 'Urgent', color: '#eb5a46' },
+        { name: 'Bug', color: '#344563' },
+        { name: 'Feature', color: '#00c2e0' }
+    ]);
 
-    // Project State
-    const [projects, setProjects] = useLocalStorage('taskGroups', sampleTaskGroups);
+    // Data Normalization (for backward compatibility)
+    React.useEffect(() => {
+        let changed = false;
+        let normCats = [...categories];
+        let normLabels = [...allLabels];
+
+        if (categories && categories.length > 0 && typeof categories[0] === 'string') {
+            normCats = categories.map(c => ({ name: c, color: '#0079bf' }));
+            changed = true;
+        }
+
+        if (allLabels && allLabels.length > 0 && typeof allLabels[0] === 'string') {
+            normLabels = allLabels.map(l => ({ name: l, color: '#61bd4f' }));
+            changed = true;
+        }
+
+        if (changed) {
+            setCategories(normCats);
+            setAllLabels(normLabels);
+        }
+    }, [categories, allLabels, setCategories, setAllLabels]);
 
     // Modal & Editing State
     const [editingEntry, setEditingEntry] = useState(null);
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-
-    console.log(sampleTasks);
-    console.log(sampleTaskGroups);
-
     // Load Sample Data
     const loadSampleData = () => {
         if (window.confirm('This will replace your current data with sample data. Are you sure?')) {
             try {
                 localStorage.setItem('tasks', JSON.stringify(sampleTasks));
-                localStorage.setItem('taskGroups', JSON.stringify(sampleTaskGroups));
+                localStorage.setItem('taskGroups', JSON.stringify(sampleCategories));
 
                 // Force state update as well in case reload is delayed or prevented (though reload usually clears state)
                 setTodos(sampleTasks);
-                setProjects(sampleTaskGroups);
+                setCategories(sampleCategories);
 
                 window.location.reload();
             } catch (error) {
@@ -87,6 +111,23 @@ export function AppProvider({ children }) {
         return () => clearTimeout(timeoutId);
     }, [todos, isDataLoaded]);
 
+    // Electron lifecycle - save data on app close
+    const saveDataToServer = useCallback(async () => {
+        if (!isDataLoaded) return;
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tasks: todos })
+            });
+            console.log('Data saved before app close');
+        } catch (error) {
+            console.error('Failed to save data before close:', error);
+        }
+    }, [todos, isDataLoaded]);
+
+    useElectronLifecycle(saveDataToServer);
+
     const [viewMode, setViewMode] = useLocalStorage('todoViewMode', 'board');
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTab, setActiveTab] = useLocalStorage('activeView', 'tasks');
@@ -119,7 +160,9 @@ export function AppProvider({ children }) {
             accumulatedTime: 0,
             lastStartedAt: null,
             priority: 'medium',
-            subtasks: [],
+            categories: listTitle ? [listTitle] : [], // Multiple categories support
+            labels: [], // Multiple labels support
+            checklists: [], // Multiple checklists support
             ...extraData
         };
         setTodos([newTodo, ...todos]);
@@ -275,15 +318,56 @@ export function AppProvider({ children }) {
         setTodos(todos.map(todo => todo.id === id ? { ...todo, ...updates } : todo));
     };
 
-    // Project Management
-    const addProject = (name) => {
-        if (name && !projects.includes(name)) {
-            setProjects([...projects, name]);
+    // Category Management
+    const addGlobalCategory = (name, color = '#61bd4f') => {
+        if (name && !categories.some(c => c.name === name)) {
+            setCategories([...categories, { name, color }]);
         }
     };
 
-    const removeProject = (name) => {
-        setProjects(projects.filter(p => p !== name));
+    const removeCategory = (name) => {
+        setCategories(categories.filter(p => p.name !== name));
+    };
+
+    const addGlobalLabel = (name, color = '#61bd4f') => {
+        if (name && !allLabels.some(l => l.name === name)) {
+            setAllLabels([...allLabels, { name, color }]);
+        }
+    };
+
+    const addChecklist = (todoId, title = 'Checklist') => {
+        setTodos(todos.map(todo => {
+            if (todo.id === todoId) {
+                const newChecklists = [...(todo.checklists || []), {
+                    id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+                    title,
+                    items: []
+                }];
+                return { ...todo, checklists: newChecklists };
+            }
+            return todo;
+        }));
+    };
+
+    const removeChecklist = (todoId, checklistId) => {
+        setTodos(todos.map(todo => {
+            if (todo.id === todoId) {
+                return { ...todo, checklists: todo.checklists.filter(c => c.id !== checklistId) };
+            }
+            return todo;
+        }));
+    };
+
+    const updateChecklist = (todoId, checklistId, updates) => {
+        setTodos(todos.map(todo => {
+            if (todo.id === todoId) {
+                return {
+                    ...todo,
+                    checklists: todo.checklists.map(c => c.id === checklistId ? { ...c, ...updates } : c)
+                };
+            }
+            return todo;
+        }));
     };
 
 
@@ -315,9 +399,14 @@ export function AppProvider({ children }) {
         boardBackground,
         setBoardBackground,
         loadSampleData,
-        projects,
-        addProject,
-        removeProject,
+        categories,
+        addGlobalCategory,
+        removeCategory,
+        allLabels,
+        addGlobalLabel,
+        addChecklist,
+        removeChecklist,
+        updateChecklist,
         isSidebarOpen,
         setIsSidebarOpen,
         sortBy,

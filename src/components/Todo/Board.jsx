@@ -27,7 +27,7 @@ export default function Board({
     };
 
     const handleRemoveBoard = (name) => {
-        if (window.confirm(`Are you sure you want to remove the "${name}" board?`)) {
+        if (window.confirm(`Are you sure you want to remove the "${name}" category column?`)) {
             setCustomBoards(customBoards.filter(b => b !== name));
         }
     };
@@ -58,7 +58,7 @@ export default function Board({
                                             e.stopPropagation();
                                             handleRemoveBoard(boardTitle);
                                         }}
-                                        title="Remove Board"
+                                        title="Remove Category Column"
                                     >
                                         ✕
                                     </button>
@@ -91,14 +91,14 @@ export default function Board({
                     {!isAddingBoard ? (
                         <div className="add-board-trigger" onClick={() => setIsAddingBoard(true)}>
                             <IconPlus size={20} />
-                            <span>Add Board</span>
+                            <span>Add Category Column</span>
                         </div>
                     ) : (
                         <div className="add-board-form">
                             <input
                                 type="text"
                                 className="input-field"
-                                placeholder="Enter board title..."
+                                placeholder="Enter category title..."
                                 value={newBoardName}
                                 onChange={(e) => setNewBoardName(e.target.value)}
                                 autoFocus

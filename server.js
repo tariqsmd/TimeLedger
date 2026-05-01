@@ -10,10 +10,16 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 5175;
 const DATA_FILE = path.join(__dirname, 'src/utils/appData.json');
+const QUICK_TASKS_FILE = path.join(__dirname, 'src/utils/quickTasksData.json');
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Ensure quickTasksData.json exists
+if (!fs.existsSync(QUICK_TASKS_FILE)) {
+    fs.writeFileSync(QUICK_TASKS_FILE, JSON.stringify({ tasks: [] }, null, 2));
+}
 
 // POST: Upload image
 app.post('/api/upload', (req, res) => {
@@ -70,6 +76,33 @@ app.post('/api/tasks', (req, res) => {
             return res.status(500).json({ error: 'Failed to save data' });
         }
         console.log('Data saved to file successfully');
+        res.json({ success: true });
+    });
+});
+
+// GET: Read quick tasks
+app.get('/api/quick-tasks', (req, res) => {
+    fs.readFile(QUICK_TASKS_FILE, 'utf8', (err, data) => {
+        if (err) {
+            console.error('Error reading quick tasks file:', err);
+            return res.status(500).json({ error: 'Failed to read quick tasks' });
+        }
+        res.json(JSON.parse(data));
+    });
+});
+
+// POST: Save quick tasks
+app.post('/api/quick-tasks', (req, res) => {
+    const newData = req.body;
+    if (!newData || !Array.isArray(newData.tasks)) {
+        return res.status(400).json({ error: 'Invalid data format' });
+    }
+
+    fs.writeFile(QUICK_TASKS_FILE, JSON.stringify(newData, null, 2), (err) => {
+        if (err) {
+            console.error('Error writing quick tasks file:', err);
+            return res.status(500).json({ error: 'Failed to save quick tasks' });
+        }
         res.json({ success: true });
     });
 });
