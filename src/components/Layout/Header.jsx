@@ -1,4 +1,4 @@
-import { IconSettings, IconPlus, IconList } from '../../assets//Icons';
+import { IconSettings, IconPlus } from '../../assets/Icons';
 import { useApp } from '../../utils/AppContext';
 import { useQuickTasks } from '../../utils/QuickTasksContext';
 import Search from '../Common/Search';
@@ -15,7 +15,7 @@ export default function Header() {
         setIsSidebarOpen,
     } = useApp();
 
-    const { openQuickTasksModal } = useQuickTasks();
+    const { activeLayout, openQuickTasksModal } = useQuickTasks();
 
     return (
         <header className="header">
@@ -30,33 +30,26 @@ export default function Header() {
             </div>
 
             {/* Center Column */}
-            <div className="header-cener">
-                <div className="header-quick-actions">
-                    <button 
-                        className="btn-prominent add-task-btn" 
-                        onClick={() => openQuickTasksModal('add')}
-                        title="Add Quick Task/Note"
-                    >
-                        <IconPlus size={18} />
-                        <span>Quick Task</span>
-                    </button>
-                    <button 
-                        className="btn-prominent view-tasks-btn" 
-                        onClick={() => openQuickTasksModal('view')}
-                        title="View Quick Tasks"
-                    >
-                        <IconList size={18} />
-                        <span>View Tasks</span>
-                    </button>
-                </div>
-            </div>
+            <div className="header-cener"></div>
 
             {/* Right Column */}
             <div className="header-right">
-                <ProgressWidget todos={todos} />
-                <LayoutView showLabels={false} />
+                <button 
+                    className="btn-prominent-header" 
+                    onClick={() => openQuickTasksModal()}
+                    title="Add Quick Task/Note"
+                    style={{ marginRight: '10px' }}
+                >
+                    <IconPlus size={18} />
+                    <span>Add Task</span>
+                </button>
+                {activeLayout === 'modern' && (
+                    <>
+                        <ProgressWidget todos={todos} />
+                        <LayoutView showLabels={false} />
+                    </>
+                )}
                 <TimeDisplay format="2-digit-minute" showDate={true} />
-                {/* <DateDisplay format="full" /> */}
                 <button className="btn-icon settings-btn" onClick={() => setIsSidebarOpen(!isSidebarOpen)} title="Settings"><IconSettings size={20} /></button>
             </div>
         </header>

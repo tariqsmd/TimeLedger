@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../utils/AppContext';
+import { useQuickTasks } from '../../utils/QuickTasksContext';
 import LayoutView from '../Common/LayoutView'
+import { IconBoard, IconList, IconRefresh } from '../../assets/Icons';
 
 export default function Sidebar() {
     const {
@@ -23,6 +25,8 @@ export default function Sidebar() {
         boardBackgroundValue,
         setBoardBackgroundValue
     } = useApp();
+
+    const { activeLayout, setActiveLayout } = useQuickTasks();
 
     const [activePanel, setActivePanel] = React.useState('main'); // 'main', 'typography', 'background', 'theme'
     const [uploadedImages, setUploadedImages] = React.useState([]);
@@ -218,6 +222,36 @@ export default function Sidebar() {
                                 </div>
                                 <div className="menu-arrow">→</div>
                             </button>
+                        </div>
+
+                        <div className="settings-group">
+                            <label className="settings-label">Workspace Layout</label>
+                            <div className="layout-switcher-sidebar">
+                                <button 
+                                    className={`layout-btn ${activeLayout === 'modern' ? 'active' : ''}`}
+                                    onClick={() => setActiveLayout('modern')}
+                                    title="Modern Board"
+                                >
+                                    <IconBoard size={18} />
+                                    <span>Modern</span>
+                                </button>
+                                <button 
+                                    className={`layout-btn ${activeLayout === 'quick' ? 'active' : ''}`}
+                                    onClick={() => setActiveLayout('quick')}
+                                    title="Quick Ledger"
+                                >
+                                    <IconList size={18} />
+                                    <span>Quick</span>
+                                </button>
+                                <button 
+                                    className="layout-btn reset"
+                                    onClick={() => setActiveLayout('start')}
+                                    title="Reset to Start"
+                                >
+                                    <IconRefresh size={18} />
+                                    <span>Reset</span>
+                                </button>
+                            </div>
                         </div>
 
                         <div className="settings-group">

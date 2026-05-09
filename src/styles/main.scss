@@ -265,6 +265,27 @@ textarea {
     }
 }
 
+.btn-prominent-header {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 12px var(--primary-glow);
+
+    &:hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px var(--primary-glow);
+    }
+}
+
 .btn-icon {
     display: flex;
     align-items: center;
@@ -2678,6 +2699,54 @@ textarea {
 
     .settings-panel {
         animation: fadeInRight 0.3s ease-out;
+    }
+
+    .layout-switcher-sidebar {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+
+        .layout-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 8px;
+            background: var(--bg-main);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+
+            span {
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+
+            &:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+                background: var(--primary-glow);
+            }
+
+            &.active {
+                background: var(--primary);
+                color: white;
+                border-color: var(--primary);
+                box-shadow: 0 4px 12px var(--primary-glow);
+            }
+
+            &.reset {
+                &:hover {
+                    border-color: var(--warning);
+                    color: var(--warning);
+                    background: rgba(245, 158, 11, 0.1);
+                }
+            }
+        }
     }
 
     .settings-group {

@@ -2,53 +2,68 @@
   "tasks": [
     {
       "id": 1778519071448,
+      "text": "Prepare for Interviews and Practice Skills",
+      "description": "1 - Gutenberg Blocks\n2 - FSE\n3 - Lunch Plugin and Put on GitHub\n4 - Accessibility\n5 - DDdev\n6 - Dev Ops\n7 - Ract+Nextjs - MERN stack\n8 - Gsap\n9 - Performance\n",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-05-11T17:04:31.448Z",
-      "status": "pending",
-      "title": "Prepare for Interviews and Practice Skills",
-      "note": "1 - Gutenberg Blocks\n2 - FSE\n3 - Lunch Plugin and Put on GitHub\n4 - Accessibility\n5 - DDdev\n6 - Dev Ops\n7 - Ract+Nextjs - MERN stack\n8 - Gsap\n9 - Performance\n",
-      "date": "",
+      "dueAt": "",
       "time": "",
-      "priority": "medium"
+      "priority": "medium",
+      "listTitle": "Quick Tasks",
+      "boardTitle": "To Do"
     },
     {
       "id": 1778518867688,
+      "text": "Prepare CV from the LinkedIn Profiles",
+      "description": "1 - Prepare CV\n2 - Start Job Posting\n3 - Start Freelancing ",
+      "completed": false,
+      "status": "idle",
       "createdAt": "2026-05-11T17:01:07.688Z",
-      "status": "pending",
-      "title": "Prepare CV from the LinkedIn Profiles",
-      "note": "1 - Prepare CV\n2 - Start Job Posting\n3 - Start Freelancing ",
-      "date": "2026-05-14",
+      "dueAt": "2026-05-14",
       "time": "",
-      "priority": "medium"
+      "priority": "medium",
+      "listTitle": "Quick Tasks",
+      "boardTitle": "To Do"
     },
     {
       "id": 1778518798104,
-      "createdAt": "2026-05-11T16:59:58.104Z",
+      "text": "Complete Upwork Profile",
+      "description": "1 - Add more projects \n2 - Update the profile text to some real-world scenario.\n3 - Add at least 5 Services and enable 3 of theme.",
+      "completed": false,
       "status": "pending",
-      "title": "Complete Upwork Profile",
-      "note": "1 - Add more projects \n2 - Update the profile text to some real-world scenario.\n3 - Add at least 5 Services and enable 3 of theme.",
-      "date": "",
+      "createdAt": "2026-05-11T16:59:58.104Z",
+      "dueAt": "",
       "time": "",
-      "priority": "medium"
+      "priority": "medium",
+      "listTitle": "Quick Tasks",
+      "boardTitle": "To Do"
     },
     {
       "id": 1778518709488,
-      "createdAt": "2026-05-11T16:58:29.488Z",
+      "text": "Complete Fiverr Profile",
+      "description": "1 - Add more projects \n2 - Update the profile text to some real-world scenario.\n3 -  Add at least 5 Gigs and enable 3 of theme.",
+      "completed": false,
       "status": "pending",
-      "title": "Complete Fiverr Profile",
-      "note": "1 - Add more projects \n2 - Update the profile text to some real-world scenario.\n3 -  Add at least 5 Gigs and enable 3 of theme.",
-      "date": "2026-05-13",
+      "createdAt": "2026-05-11T16:58:29.488Z",
+      "dueAt": "2026-05-13",
       "time": "",
-      "priority": "medium"
+      "priority": "medium",
+      "listTitle": "Quick Tasks",
+      "boardTitle": "To Do"
     },
     {
       "id": 1778518366609,
-      "createdAt": "2026-05-11T16:52:46.609Z",
+      "text": "Complete the LinkedIn and Indeed Profiles",
+      "description": "",
+      "completed": false,
       "status": "pending",
-      "title": "Complete the LinkedIn and Indeed Profiles",
-      "note": "",
-      "date": "2026-05-12",
+      "createdAt": "2026-05-11T16:52:46.609Z",
+      "dueAt": "2026-05-12",
       "time": "",
-      "priority": "medium"
+      "priority": "medium",
+      "listTitle": "Quick Tasks",
+      "boardTitle": "To Do"
     }
   ]
 }

@@ -1,9 +1,10 @@
 import { AppProvider, useApp } from './utils/AppContext';
-import { QuickTasksProvider } from './utils/QuickTasksContext';
+import { QuickTasksProvider, useQuickTasks } from './utils/QuickTasksContext';
 import Header from './components/Layout/Header';
 import SideBar from './components/Layout/Sidebar';
 import TodoView from './components/Todo/TodoView';
 import QuickTaskModal from './components/QuickTasks/QuickTaskModal';
+import StartWindow from './components/Layout/StartWindow';
 
 function MainLayout() {
     const {
@@ -11,6 +12,8 @@ function MainLayout() {
         boardBackgroundType,
         boardBackgroundValue,
     } = useApp();
+
+    const { activeLayout, setActiveLayout } = useQuickTasks();
 
     const getBackgroundStyle = () => {
         if (!boardBackgroundValue && boardBackgroundType !== 'none') return 'var(--app-bg)';
@@ -21,12 +24,20 @@ function MainLayout() {
         return 'var(--app-bg)';
     };
 
+    if (activeLayout === 'start') {
+        return <StartWindow onSelectLayout={(layout) => setActiveLayout(layout)} />;
+    }
+
     return (
         <div className="dashboard-layout" style={{ background: getBackgroundStyle() }} data-theme={appTheme}>
             <Header />
             <main className="main-content">
                 <div className="content-area">
-                    <TodoView />
+                    {activeLayout === 'modern' ? <TodoView /> : (
+                        <div className="quick-layout-view">
+                            <QuickTaskModal forcedOpen={true} />
+                        </div>
+                    )}
                 </div>
                 <SideBar />
             </main>
