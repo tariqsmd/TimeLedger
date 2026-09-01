@@ -1,42 +1,3 @@
-/**
- * CONFIGURATION FILE
- * 
- * This file serves as the initial configuration and data source for the application.
- * You can add, remove, or modify tasks and settings here.
- * 
- * To apply changes:
- * 1. Edit this file.
- * 2. Save.
- * 3. In the application header, click "Load Samples" (if enabled) or clear your localStorage to reset to these defaults.
- *    (For now, since "Load Samples" button might be hidden, you can use the browser console: localStorage.clear() and reload)
- */
-
-
-export const majorTasks = [
-    {
-        id: 'mt1',
-        text: 'WP wordPress Plugin',
-        description: 'Update the component library documentation with new tokens and guidelines for dark mode.',
-        categories: ['Work'],
-        priority: 'high',
-        dueAt: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
-        completed: false,
-        status: 'idle',
-        checklists: [
-            {
-                id: 'cl1', title: 'Preparation', items: [
-                    { text: 'Portfolio', done: false },
-                    { text: 'LMS online for student.', done: false },
-                    { text: 'LMS online.', done: false }
-                ]
-            }
-        ],
-        createdAt: new Date(Date.now() - 172800000).toISOString() // 2 days ago
-    },
-];
-
-export const taskGroups = ['Work', 'Personal', 'Side Project', 'Learning', 'Health', 'Finance', 'Travel', 'Household', 'Volunteer', 'Fitness'];
-
 export const sampleCategories = [
     { name: 'Work' },
     { name: 'Personal' },
@@ -53,7 +14,7 @@ export const sampleTasks = [
         description: 'Update the component library documentation with new tokens and guidelines for dark mode.',
         categories: ['Work'],
         priority: 'high',
-        dueAt: new Date(Date.now() + 86400000).toISOString(), // Tomorrow
+        dueAt: new Date(Date.now() + 86400000).toISOString(),
         completed: false,
         status: 'idle',
         checklists: [
@@ -69,7 +30,7 @@ export const sampleTasks = [
                 ]
             }
         ],
-        createdAt: new Date(Date.now() - 172800000).toISOString() // 2 days ago
+        createdAt: new Date(Date.now() - 172800000).toISOString()
     },
     {
         id: 't2',
@@ -77,7 +38,7 @@ export const sampleTasks = [
         description: 'Analyze user growth trends and prepare slides for the quarterly meeting.',
         listTitle: 'Work',
         priority: 'high',
-        dueAt: new Date(Date.now() + 172800000).toISOString(), // 2 days
+        dueAt: new Date(Date.now() + 172800000).toISOString(),
         completed: false,
         status: 'running',
         accumulatedTime: 3600000,
@@ -90,13 +51,9 @@ export const sampleTasks = [
         description: 'Buy essentials for the week: Fruits, Vegetables, Milk, Eggs.',
         listTitle: 'Personal',
         priority: 'medium',
-        dueAt: new Date(Date.now() + 43200000).toISOString(), // 12 hours
+        dueAt: new Date(Date.now() + 43200000).toISOString(),
         completed: false,
         status: 'idle',
-        subtasks: [
-            { text: 'Check pantry stocks', done: true },
-            { text: 'Make a list', done: true }
-        ],
         createdAt: new Date().toISOString()
     },
     {
@@ -109,7 +66,7 @@ export const sampleTasks = [
         completed: false,
         status: 'paused',
         accumulatedTime: 7200000,
-        createdAt: new Date(Date.now() - 345600000).toISOString() // 4 days ago
+        createdAt: new Date(Date.now() - 345600000).toISOString()
     },
     {
         id: 't5',
@@ -140,138 +97,9 @@ export const sampleTasks = [
         description: 'Mobile menu does not close when clicking outside on iOS devices.',
         listTitle: 'Work',
         priority: 'high',
-        dueAt: new Date(Date.now() - 3600000).toISOString(), // Overdue
+        dueAt: new Date(Date.now() - 3600000).toISOString(),
         completed: false,
         status: 'idle',
         createdAt: new Date(Date.now() - 259200000).toISOString()
-    },
-    {
-        id: 't8',
-        text: 'Plan Weekend Trip',
-        description: 'Look for Airbnb options in the mountains.',
-        listTitle: 'Personal',
-        priority: 'low',
-        dueAt: new Date(Date.now() + 432000000).toISOString(), // 5 days
-        completed: false,
-        status: 'idle',
-        createdAt: new Date().toISOString()
-    },
-    {
-        id: 't9',
-        text: 'Update Portfolio',
-        description: 'Add recent projects and update resume PDF.',
-        listTitle: 'Work',
-        priority: 'medium',
-        dueAt: null,
-        completed: false,
-        status: 'idle',
-        createdAt: new Date(Date.now() - 604800000).toISOString()
-    },
-    {
-        id: 't10',
-        text: 'Car Service',
-        description: 'Book appointment for annual maintenance.',
-        listTitle: 'Personal',
-        priority: 'medium',
-        dueAt: new Date(Date.now() + 604800000).toISOString(),
-        completed: false,
-        status: 'idle',
-        createdAt: new Date().toISOString()
-    }
-];
-
-export const monthlyGoals = [
-    { id: 'g1', text: 'Complete React Certification', target: 20, progress: 12, unit: 'hours', completed: false },
-    { id: 'g2', text: 'Read 2 Books', target: 2, progress: 1, unit: 'books', completed: false },
-    { id: 'g3', text: 'Gym Attendance', target: 15, progress: 8, unit: 'days', completed: false },
-    { id: 'g4', text: 'Save $500', target: 500, progress: 350, unit: 'dollars', completed: false },
-    { id: 'g5', text: 'Write 4 Blog Posts', target: 4, progress: 1, unit: 'posts', completed: false },
-    { id: 'g6', text: 'Network with 5 people', target: 5, progress: 2, unit: 'people', completed: false },
-    { id: 'g7', text: 'Meditate Daily', target: 30, progress: 20, unit: 'days', completed: false },
-    { id: 'g8', text: 'Launch Side Project', target: 100, progress: 80, unit: '%', completed: false },
-    { id: 'g9', text: 'Clean Digital Workspace', target: 1, progress: 0, unit: 'task', completed: false },
-    { id: 'g10', text: 'Try 3 New Recipes', target: 3, progress: 3, unit: 'recipes', completed: true }
-];
-
-export const trackerEntries = [
-    {
-        id: 'e1',
-        description: 'Email & Communications',
-        duration: 1800, // 30 mins
-        startTime: new Date(Date.now() - 3600000 * 4).toISOString(),
-        endTime: new Date(Date.now() - 3600000 * 3.5).toISOString(),
-        tags: ['Admin', 'Comms']
-    },
-    {
-        id: 'e2',
-        description: 'Daily Standup',
-        duration: 900,
-        startTime: new Date(Date.now() - 3600000 * 3.5).toISOString(),
-        endTime: new Date(Date.now() - 3600000 * 3.25).toISOString(),
-        tags: ['Meeting']
-    },
-    {
-        id: 'e3',
-        description: 'Project Architecture',
-        duration: 5400, // 1.5 hrs
-        startTime: new Date(Date.now() - 3600000 * 3).toISOString(),
-        endTime: new Date(Date.now() - 3600000 * 1.5).toISOString(),
-        tags: ['Deep Work', 'Dev']
-    },
-    {
-        id: 'e4',
-        description: 'Lunch Break',
-        duration: 3600,
-        startTime: new Date(Date.now() - 3600000 * 1.5).toISOString(),
-        endTime: new Date(Date.now() - 3600000 * 0.5).toISOString(),
-        tags: ['Break']
-    },
-    {
-        id: 'e5',
-        description: 'Code Review',
-        duration: 2700,
-        startTime: new Date(Date.now() - 86400000).toISOString(),
-        endTime: new Date(Date.now() - 86400000 + 2700000).toISOString(), // Yesterday
-        tags: ['Dev']
-    },
-    {
-        id: 'e6',
-        description: 'Client Meeting',
-        duration: 3600,
-        startTime: new Date(Date.now() - 86400000 * 2).toISOString(),
-        endTime: new Date(Date.now() - 86400000 * 2 + 3600000).toISOString(),
-        tags: ['Meeting', 'Client']
-    },
-    {
-        id: 'e7',
-        description: 'Bug Fixes',
-        duration: 4500,
-        startTime: new Date(Date.now() - 86400000 * 2.5).toISOString(),
-        endTime: new Date(Date.now() - 86400000 * 2.5 + 4500000).toISOString(),
-        tags: ['Dev']
-    },
-    {
-        id: 'e8',
-        description: 'Learning Rust',
-        duration: 3600,
-        startTime: new Date(Date.now() - 86400000 * 3).toISOString(),
-        endTime: new Date(Date.now() - 86400000 * 3 + 3600000).toISOString(),
-        tags: ['Learning']
-    },
-    {
-        id: 'e9',
-        description: 'Gym Workout',
-        duration: 4800,
-        startTime: new Date(Date.now() - 86400000 * 4).toISOString(),
-        endTime: new Date(Date.now() - 86400000 * 4 + 4800000).toISOString(),
-        tags: ['Health']
-    },
-    {
-        id: 'e10',
-        description: 'Weekly Planning',
-        duration: 1800,
-        startTime: new Date(Date.now() - 86400000 * 7).toISOString(),
-        endTime: new Date(Date.now() - 86400000 * 7 + 1800000).toISOString(),
-        tags: ['Admin']
     }
 ];

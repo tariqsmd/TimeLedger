@@ -1,9 +1,9 @@
 {
   "name": "timeledger",
   "productName": "TimeLedger",
-  "private": true,
+  "private": false,
   "version": "1.0.0",
-  "description": "Time tracking and task management application",
+  "description": "Task management & time tracking application with Kanban board, Quick Tasks view, built-in timers, and customizable themes.",
   "type": "module",
   "main": "electron/main.cjs",
   "author": "Muhammad Tariq",
@@ -29,7 +29,6 @@
     "@tiptap/starter-kit": "^3.15.3",
     "cors": "^2.8.5",
     "express": "^5.2.1",
-    "gulp": "^5.0.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

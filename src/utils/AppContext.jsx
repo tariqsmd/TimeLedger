@@ -37,19 +37,12 @@ export function AppProvider({ children }) {
         }
     }, [categories, allLabels, setCategories, setAllLabels]);
 
-    // Modal & Editing State
-    const [editingEntry, setEditingEntry] = useState(null);
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
-
-    // Load Sample Data
     const loadSampleData = () => {
         if (window.confirm('This will replace your current data with sample data. Are you sure?')) {
             try {
                 localStorage.setItem('tasks', JSON.stringify(sampleTasks));
                 localStorage.setItem('taskGroups', JSON.stringify(sampleCategories));
 
-                // Force state update as well in case reload is delayed or prevented (though reload usually clears state)
                 setTodos(sampleTasks);
                 setCategories(sampleCategories);
 
@@ -61,8 +54,7 @@ export function AppProvider({ children }) {
         }
     };
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [todos, setTodos] = useState([]); // Start empty, fetch from server
+    const [todos, setTodos] = useState([]);
     const [isDataLoaded, setIsDataLoaded] = useState(false); // Flag to prevent overwriting server data on init
 
     // --- File Persistence Logic ---
@@ -132,7 +124,6 @@ export function AppProvider({ children }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeTab, setActiveTab] = useLocalStorage('activeView', 'tasks');
     const [isTodoModalOpen, setIsTodoModalOpen] = useState(false);
-    const [boardBackground, setBoardBackground] = useLocalStorage('todoBoardBackground', null);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [sortBy, setSortBy] = useLocalStorage('sortBy', 'createdAt'); // 'createdAt', 'priority', 'dueAt', 'alpha'
     const [appFontBody, setAppFontBody] = useLocalStorage('appFontBody', 'Inter');
@@ -372,8 +363,6 @@ export function AppProvider({ children }) {
 
 
     const value = {
-        isModalOpen,
-        editingEntry,
         todos,
         viewMode,
         setViewMode,
@@ -392,12 +381,8 @@ export function AppProvider({ children }) {
         setSearchQuery,
         activeTab,
         setActiveTab,
-        openModal,
-        closeModal,
         isTodoModalOpen,
         setIsTodoModalOpen,
-        boardBackground,
-        setBoardBackground,
         loadSampleData,
         categories,
         addGlobalCategory,

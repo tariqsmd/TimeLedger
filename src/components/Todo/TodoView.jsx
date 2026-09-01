@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useApp } from '../../utils/AppContext';
-import { IconClock, IconCalendar, IconCheckSquare, IconAlignLeft, IconTag, IconEdit, IconPlus, IconTrash, IconClose, IconPlay, IconPause, IconStop, IconRefresh, IconUser, IconBell, IconInfo } from '../../assets/Icons';
+import { IconClock, IconCalendar, IconCheckSquare, IconAlignLeft, IconTag, IconEdit, IconPlus, IconTrash, IconClose, IconPlay, IconPause, IconStop, IconRefresh, IconBell, IconInfo } from '../../assets/Icons';
 import { getLiveDuration, formatDateFull, formatDateShort } from './useTodoUtils';
 import RichEditor from '../Common/RichEditor';
 import Board from './Board';
