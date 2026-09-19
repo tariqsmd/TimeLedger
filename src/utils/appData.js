@@ -10,23 +10,28 @@ export const sampleCategories = [
 export const sampleTasks = [
     {
         id: 't1',
-        text: 'Design System Documentation',
-        description: 'Update the component library documentation with new tokens and guidelines for dark mode.',
+        text: 'Ship Q3 Product Release',
+        description: '<h2>Release Checklist</h2><p>Finalize <strong>all outstanding PRs</strong> before the code freeze on Friday. Key deliverables:</p><ul><li>Authentication bug fixes</li><li>New onboarding flow</li><li>Billing integration tests</li></ul><blockquote>Coordinate with the QA lead once the release candidate is ready.</blockquote><h3>Go-Live Saturday 10:00 UTC</h3><p>Rollback plan is documented in the shared drive.</p>',
         categories: ['Work'],
+        listTitle: 'Work',
         priority: 'high',
-        dueAt: new Date(Date.now() + 86400000).toISOString(),
+        dueAt: new Date(Date.now() + 86400000 * 2).toISOString(),
         completed: false,
         status: 'idle',
+        coverColor: '#6366f1',
         checklists: [
             {
-                id: 'cl1', title: 'Preparation', items: [
-                    { text: 'Audit existing color tokens', done: true },
-                    { text: 'Draft new spacing guidelines', done: false }
+                id: 'cl1', title: 'Pre-release', items: [
+                    { text: 'Update CHANGELOG.md', done: true },
+                    { text: 'Bump package.json version', done: true },
+                    { text: 'Run smoke tests on staging', done: false }
                 ]
             },
             {
-                id: 'cl2', title: 'Implementation', items: [
-                    { text: 'Update button component examples', done: false }
+                id: 'cl2', title: 'Launch', items: [
+                    { text: 'Merge release branch', done: false },
+                    { text: 'Trigger production deploy', done: false },
+                    { text: 'Post release notes in Slack', done: false }
                 ]
             }
         ],
@@ -34,8 +39,9 @@ export const sampleTasks = [
     },
     {
         id: 't2',
-        text: 'Review Q1 Analytics',
-        description: 'Analyze user growth trends and prepare slides for the quarterly meeting.',
+        text: 'Review Q1 Analytics (In Progress)',
+        description: '<h3>Scope of analysis</h3><ol><li>Weekly active users (WAU) trendline</li><li>New signups vs churn</li><li>Top 5 conversion bottlenecks</li><li>Revenue per user cohort</li></ol><p>Prepare slides for the quarterly meeting.</p><pre><code>// Sample query\nSELECT date, COUNT(*) \nFROM users \nWHERE signup_date &gt;= &apos;2025-01-01&apos;\nGROUP BY 1;\n</code></pre>',
+        categories: ['Work'],
         listTitle: 'Work',
         priority: 'high',
         dueAt: new Date(Date.now() + 172800000).toISOString(),
@@ -43,63 +49,74 @@ export const sampleTasks = [
         status: 'running',
         accumulatedTime: 3600000,
         lastStartedAt: new Date().toISOString(),
+        coverColor: '#f59e0b',
         createdAt: new Date().toISOString()
     },
     {
         id: 't3',
-        text: 'Grocery Shopping',
-        description: 'Buy essentials for the week: Fruits, Vegetables, Milk, Eggs.',
+        text: 'Weekly Grocery Run',
+        description: '<p>Buy essentials for the week:</p><ul><li>🥑 Fruits: Apples, bananas, berries</li><li>🥬 Vegetables: Spinach, broccoli, tomatoes</li><li>🥛 Dairy: Milk, eggs, yogurt</li><li>🍞 Pantry: Bread, oats, olive oil</li></ul><blockquote>Shop Saturday morning — less crowded.</blockquote>',
+        categories: ['Personal'],
         listTitle: 'Personal',
         priority: 'medium',
-        dueAt: new Date(Date.now() + 43200000).toISOString(),
+        dueAt: new Date(Date.now() + 86400000).toISOString(),
         completed: false,
         status: 'idle',
+        coverColor: '#10b981',
         createdAt: new Date().toISOString()
     },
     {
         id: 't4',
-        text: 'React Query Integration',
-        description: 'Refactor data fetching layer to use React Query for better caching and background updates.',
-        listTitle: 'Side Project',
-        priority: 'high',
-        dueAt: null,
-        completed: false,
-        status: 'paused',
-        accumulatedTime: 7200000,
-        createdAt: new Date(Date.now() - 345600000).toISOString()
-    },
-    {
-        id: 't5',
-        text: 'Read "Atomic Habits"',
-        description: 'Finish chapter 4 and take notes on habit stacking.',
+        text: 'Read "Atomic Habits" — Ch. 4-6',
+        description: '<h2>Reading Notes</h2><p>Focus on <em>habit stacking</em> and <em>environment design</em>.</p><h3>Action items</h3><ol><li>Highlight pages 50-78</li><li>Summarize 3 actionable ideas</li><li>Pick <strong>one habit</strong> to test this week</li></ol><p>Example stack: <code>After [current habit], I will [new habit] at [time] in [location].</code></p>',
+        categories: ['Learning'],
         listTitle: 'Learning',
         priority: 'low',
         dueAt: null,
         completed: false,
         status: 'idle',
+        coverColor: '#8b5cf6',
         createdAt: new Date().toISOString()
     },
     {
-        id: 't6',
-        text: 'Morning Jog',
-        description: 'Run 5km at the park.',
+        id: 't5',
+        text: '30-Minute Morning Run 🏃',
+        description: '<p>5km loop at the park.</p><ul><li>Warm up: 5 min walk</li><li>Zone 2 pace for 25 min</li><li>Stretch when home</li></ul><blockquote>Track the run on your watch, log distance &amp; average HR.</blockquote>',
+        categories: ['Health'],
         listTitle: 'Health',
         priority: 'medium',
         dueAt: new Date().toISOString(),
         completed: true,
         status: 'completed',
         accumulatedTime: 1800000,
+        coverColor: '#ef4444',
         createdAt: new Date(Date.now() - 86400000).toISOString()
     },
     {
-        id: 't7',
-        text: 'Fix Navbar Bug',
-        description: 'Mobile menu does not close when clicking outside on iOS devices.',
-        listTitle: 'Work',
+        id: 't6',
+        text: 'Fix: Navbar menu on iOS (Overdue)',
+        description: '<h2>Bug Report</h2><p>Mobile hamburger menu does not close when the user taps outside on iOS Safari.</p><h3>Suspected root cause</h3><ul><li>Missing <code>touchstart</code> listener on the overlay backdrop</li><li>iOS Safari swallows some <code>click</code> events on non-interactive elements</li></ul><blockquote>Reproduced on iPhone 13 Pro / iOS 17.4.</blockquote>',
+        categories: ['Side Project'],
+        listTitle: 'Side Project',
         priority: 'high',
         dueAt: new Date(Date.now() - 3600000).toISOString(),
         completed: false,
         status: 'idle',
+        coverColor: '#ec4899',
         createdAt: new Date(Date.now() - 259200000).toISOString()
+    },
+    {
+        id: 't7',
+        text: 'Rebalancing — Investment Portfolio',
+        description: '<h3>Target allocations</h3><ul><li>60% equities</li><li>25% bonds</li><li>10% cash</li><li>5% gold</li></ul><p>Current drift is approximately 8% overweight on equities.</p><blockquote>Place the rebalance trades before end of month.</blockquote>',
+        categories: ['Finance'],
+        listTitle: 'Finance',
+        priority: 'medium',
+        dueAt: new Date(Date.now() + 86400000 * 5).toISOString(),
+        completed: false,
+        status: 'paused',
+        accumulatedTime: 1800000,
+        coverColor: '#14b8a6',
+        createdAt: new Date().toISOString()
     }
 ];

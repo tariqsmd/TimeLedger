@@ -21,11 +21,10 @@ A comprehensive productivity application that combines **Kanban-style task manag
 3. **Table** &mdash; Spreadsheet-style master list with all metadata
 
 ### 🏷️ Organization Tools
-- **Categories / Groups** with custom colors
-- **Labels** (Urgent, Bug, Feature, and custom)
+- **Categories / Groups** (column names on the Kanban board) with inline add / remove
+- **Labels**: named tags with stable auto-generated colors (add custom labels in the task editor)
 - **Priorities**: Low / Medium / High
 - **Due Dates** with overdue highlighting
-- **Card Cover Colors** for visual grouping
 
 ### ✅ Subtasks & Checklists
 - Multiple nested checklists per task
@@ -33,9 +32,17 @@ A comprehensive productivity application that combines **Kanban-style task manag
 - Inline editable subtask text
 
 ### 📝 Rich Text Descriptions
-- Powered by **TipTap** editor
-- Bold, Italic, Headings, Lists, Blockquotes, Code Blocks
-- Placeholder support
+- Powered by **TipTap** editor with a visible formatting toolbar (Bold, Italic, H1/H2, Bullet/Ordered Lists, Blockquote, Code Block)
+- **Edit ↔ Preview parity**: The same typography styles apply in the editor *and* every plain/preview surface:
+  - Todo-card description panel (click "Add a more detailed description…")
+  - Quick Ledger table rows (compact `.prose-sm` sizing)
+- Supported styling: Headings, Bold, Italic, Bullet + Ordered Lists, Blockquotes, Inline `<code>`, Multi-line `<pre>` code blocks, `<hr>` dividers
+- Placeholder support when empty
+
+### ✏️ Card Covers & Badges
+- **Card Cover Colors** — pick an accent strip color for the top of any task card (10 presets)
+- **Badge row (toggleable)** — shows Priority, Category(ies), Due Date, and Checklist progress on each card
+- **Label dots** in the Table view + full label pills in the task editor (auto-generated color palette per label name)
 
 ### 🎨 Customizable UI
 - **10 Color Themes**: Premium Indigo, Deep Midnight, Forest Emerald, Golden Sunset, Velvet Rose, Oceanic Blue, Royal Purple, Carbon Black, Neon Lime, Cyber Pink
@@ -53,8 +60,7 @@ A comprehensive productivity application that combines **Kanban-style task manag
 
 ### ⚡ Cross-Platform Ready
 - Pure **React + Vite** web app (runs in any modern browser)
-- Optional **Electron** desktop build for Windows / macOS / Linux
-
+ 
 ---
 
 ## 🚀 Getting Started
@@ -85,23 +91,6 @@ Open http://localhost:5173 in your browser.
 npm run build
 npm run preview
 ```
-
-### Desktop App (Electron)
-
-```bash
-# Dev mode (frontend + server + Electron window)
-npm run electron:start
-
-# Build installers (all platforms)
-npm run electron:build
-
-# Platform-specific
-npm run electron:build:win
-npm run electron:build:mac
-npm run electron:build:linux
-```
-
----
 
 ## 📖 Usage Guide
 
@@ -148,12 +137,11 @@ TimeLedger/
 │   │   ├── QuickTasks/           # QuickTaskModal (add/edit + full table view)
 │   │   └── Todo/                 # Board, TodoItem, TodoView (main board + list + table), useTodoUtils
 │   ├── styles/
-│   │   └── main.scss             # Global styles + CSS variables for themes
+│   │   └── main.scss             # Global styles, 10 theme palettes, shared `.prose` rich-text typography
 │   ├── utils/
 │   │   ├── AppContext.jsx        # Main todos + settings state + server sync
 │   │   ├── QuickTasksContext.jsx # Quick tasks + layout selection + combined tasks
 │   │   ├── useLocalStorage.js    # Persistence hook
-│   │   ├── useElectron.js        # Electron lifecycle + beforeunload save
 │   │   ├── Helpers.jsx           # Date/time formatters
 │   │   ├── appData.js            # Sample seed data
 │   │   ├── appData.json          # Persisted main tasks (auto-generated)

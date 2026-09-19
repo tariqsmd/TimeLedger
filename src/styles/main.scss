@@ -269,6 +269,7 @@ textarea {
     background: var(--primary);
     color: white;
     border: none;
+    flex-shrink: 0;
     padding: 8px 20px;
     border-radius: 20px;
     font-weight: 600;
@@ -3007,6 +3008,186 @@ textarea {
     }
 }
 
+.prose,
+.rich-editor-container .editor-content-area {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+
+    >*+* {
+        margin-top: 0.75em;
+    }
+
+    > p {
+        margin: 0;
+    }
+
+    > p + p {
+        margin-top: 0.5rem;
+    }
+
+    ul,
+    ol {
+        padding: 0 1rem;
+        margin: 0.5rem 0;
+    }
+
+    ul {
+        list-style: disc;
+    }
+
+    ol {
+        list-style: decimal;
+    }
+
+    li {
+        margin: 0.2rem 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        line-height: 1.15;
+        color: var(--text-primary);
+        margin: 1rem 0 0.5rem 0;
+        font-weight: 700;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    strong {
+        font-weight: 700;
+    }
+
+    em {
+        font-style: italic;
+    }
+
+    code {
+        background-color: rgba(97, 97, 97, 0.12);
+        color: var(--text-primary);
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.85em;
+    }
+
+    pre {
+        background: #0d0d0d;
+        color: #f8f8f2;
+        padding: 0.85rem 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 0.75rem 0;
+
+        code {
+            color: inherit;
+            padding: 0;
+            background: none;
+            font-size: 0.85rem;
+        }
+    }
+
+    blockquote {
+        padding: 0.25rem 0 0.25rem 1rem;
+        margin: 0.75rem 0;
+        border-left: 3px solid var(--primary);
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid var(--glass-border);
+        margin: 1rem 0;
+    }
+}
+
+.prose-sm {
+    font-size: 0.82rem;
+    line-height: 1.5;
+
+    >*+* {
+        margin-top: 0.35em;
+    }
+
+    > p + p {
+        margin-top: 0.3rem;
+    }
+
+    ul,
+    ol {
+        margin: 0.3rem 0;
+    }
+
+    li {
+        margin: 0.05rem 0;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 0.5rem 0 0.25rem 0;
+    }
+
+    h1 { font-size: 1.15rem; }
+    h2 { font-size: 1.05rem; }
+    h3 { font-size: 0.95rem; }
+
+    pre {
+        padding: 0.5rem 0.75rem;
+        margin: 0.4rem 0;
+
+        code {
+            font-size: 0.75rem;
+        }
+    }
+
+    code {
+        font-size: 0.8em;
+        padding: 0.1rem 0.3rem;
+    }
+
+    blockquote {
+        padding: 0.1rem 0 0.1rem 0.75rem;
+        margin: 0.35rem 0;
+    }
+
+    hr {
+        margin: 0.5rem 0;
+    }
+}
+
+.rich-editor-container .editor-content-area {
+    padding: 12px;
+    min-height: 120px;
+    outline: none;
+
+    p.is-editor-empty:first-child::before {
+        color: var(--text-muted);
+        content: attr(data-placeholder);
+        float: left;
+        height: 0;
+        pointer-events: none;
+    }
+}
+
 .description-display {
     display: block;
     min-height: 160px;
@@ -3018,26 +3199,6 @@ textarea {
 
     &:hover {
         background: var(--bg-card);
-    }
-
-    .description-content {
-        color: var(--text-primary);
-        line-height: 1.6;
-        font-size: 13px;
-
-        p {
-            margin: 0 0 0.5rem 0;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-
-        ul,
-        ol {
-            margin: 0;
-            padding: 0;
-        }
     }
 
     .description-placeholder {
@@ -3879,79 +4040,5 @@ textarea {
     .editor-scroll-area {
         max-height: 250px;
         overflow-y: auto;
-    }
-
-    .editor-content-area {
-        padding: 12px;
-        min-height: 120px;
-        outline: none;
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: var(--text-primary);
-
-        /* ProseMirror Defaults */
-        >*+* {
-            margin-top: 0.75em;
-        }
-
-        ul,
-        ol {
-            padding: 0 1rem;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            line-height: 1.1;
-        }
-
-        h1 {
-            font-size: 1.4rem;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-        }
-
-        code {
-            background-color: rgba(97, 97, 97, 0.1);
-            color: #616161;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.85rem;
-        }
-
-        pre {
-            background: #0d0d0d;
-            color: #fff;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-
-            code {
-                color: inherit;
-                padding: 0;
-                background: none;
-                font-size: 0.8rem;
-            }
-        }
-
-        blockquote {
-            padding-left: 1rem;
-            border-left: 3px solid var(--primary);
-            color: var(--text-muted);
-            font-style: italic;
-        }
-
-        p.is-editor-empty:first-child::before {
-            color: var(--text-muted);
-            content: attr(data-placeholder);
-            float: left;
-            height: 0;
-            pointer-events: none;
-        }
     }
 }

@@ -207,7 +207,7 @@ export default function QuickTaskModal({ forcedOpen = false }) {
                                                         {task._source === 'main' && <span className="source-tag">Board</span>}
                                                     </div>
                                                     {task.description && (
-                                                        <div className="task-description" dangerouslySetInnerHTML={{ __html: task.description }}></div>
+                                                        <div className="task-description prose prose-sm" dangerouslySetInnerHTML={{ __html: task.description }}></div>
                                                     )}
                                                 </div>
                                             </td>

@@ -614,7 +614,7 @@ export default function TodoView() {
                                                 >
                                                     {description ? (
                                                         <div
-                                                            className="description-content editor-content-area"
+                                                            className="description-content prose"
                                                             dangerouslySetInnerHTML={{ __html: description }}
                                                         />
                                                     ) : (
@@ -752,7 +752,6 @@ export default function TodoView() {
                                                     </span>
                                                 </div>
                                                 <div className="side-detail-item">
-                                                    {/* <span className="detail-label">Created:</span> */}
                                                     <span className="detail-value">{formatDateFull(currentEditingTodo.createdAt)}</span>
                                                 </div>
                                             </div>
@@ -815,7 +814,6 @@ export default function TodoView() {
                                                 <label className="form-label">Categories</label>
                                                 <button type="button" className="btn-add-tag-header" onClick={() => setIsCatPopupOpen(!isCatPopupOpen)}>
                                                     {isCatPopupOpen === true ? "Close" : "Add"}
-                                                    {/* <IconPlus size={14} /> */}
                                                 </button>
                                             </div>
                                             <div className="selected-tags-container">

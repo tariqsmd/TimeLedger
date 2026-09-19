@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import { sampleTasks, sampleCategories } from './appData';
-import { useElectronLifecycle } from './useElectron';
-
 
 const AppContext = createContext();
+const SAMPLES_BOOTSTRAPPED_KEY = 'tl_samples_bootstrapped_v1';
 
 export function AppProvider({ children }) {
     // Category/Group State
@@ -37,50 +36,87 @@ export function AppProvider({ children }) {
         }
     }, [categories, allLabels, setCategories, setAllLabels]);
 
-    const loadSampleData = () => {
-        if (window.confirm('This will replace your current data with sample data. Are you sure?')) {
-            try {
-                localStorage.setItem('tasks', JSON.stringify(sampleTasks));
-                localStorage.setItem('taskGroups', JSON.stringify(sampleCategories));
-
-                setTodos(sampleTasks);
-                setCategories(sampleCategories);
-
-                window.location.reload();
-            } catch (error) {
-                console.error("Failed to load sample data:", error);
-                alert("An error occurred while loading sample data. Please check the console.");
-            }
-        }
-    };
-
     const [todos, setTodos] = useState([]);
     const [isDataLoaded, setIsDataLoaded] = useState(false); // Flag to prevent overwriting server data on init
 
     // --- File Persistence Logic ---
     const API_URL = 'http://localhost:5175/api/tasks';
 
-    // 1. Fetch initial data from server (appData.json)
+    // 1. Fetch initial data from server (appData.json), falling back to sample auto-bootstrap.
+    //    First ever run (no persisted data anywhere) seeds sampleTasks / sampleCategories
+    //    into localStorage AND the JSON file server so users immediately see real examples
+    //    demonstrating every feature (rich text, priorities, due dates, checklists, cover
+    //    colors, running/paused/completed timers, etc.).
+    const bootstrapSamples = useCallback((targetTodos, targetCategories) => {
+        try {
+            localStorage.setItem('tasks', JSON.stringify(targetTodos));
+            localStorage.setItem('taskGroups', JSON.stringify(targetCategories));
+            localStorage.setItem(SAMPLES_BOOTSTRAPPED_KEY, '1');
+        } catch (e) {
+            console.warn('Could not save samples to localStorage:', e);
+        }
+    }, []);
+
     React.useEffect(() => {
         const fetchData = async () => {
+            let fileTodos = null;
+            let serverAvailable = false;
             try {
                 const response = await fetch(API_URL);
                 if (response.ok) {
                     const data = await response.json();
-                    if (data && data.tasks) {
-                        setTodos(data.tasks);
-                        setIsDataLoaded(true);
-                        console.log('Loaded tasks from file server:', data.tasks.length);
-                    }
+                    fileTodos = data?.tasks ?? null;
+                    serverAvailable = true;
                 } else {
-                    console.error('Failed to fetch from local server');
+                    console.warn('Task file endpoint returned non-ok status:', response.status);
                 }
             } catch (error) {
-                console.error('Error connecting to local server:', error);
+                console.info('Local JSON server not reachable, using localStorage + samples fallback.');
             }
+
+            const lsTasks = (() => {
+                try {
+                    const raw = localStorage.getItem('tasks');
+                    return raw ? JSON.parse(raw) : null;
+                } catch { return null; }
+            })();
+            const lsHasTasks = Array.isArray(lsTasks) && lsTasks.length > 0;
+            const fileHasTasks = Array.isArray(fileTodos) && fileTodos.length > 0;
+            const alreadyBootstrapped = localStorage.getItem(SAMPLES_BOOTSTRAPPED_KEY) === '1';
+
+            let finalTodos = lsHasTasks ? lsTasks : fileTodos;
+
+            // First-run: no user data anywhere yet. Seed the curated sample data
+            // so every feature of the app is immediately visible.
+            if (!lsHasTasks && !fileHasTasks && !alreadyBootstrapped) {
+                finalTodos = sampleTasks;
+                setCategories(sampleCategories);
+                bootstrapSamples(sampleTasks, sampleCategories);
+
+                // Also write samples to the JSON file server so on next load the
+                // persisted samples are loaded back (matching localStorage state).
+                if (serverAvailable) {
+                    try {
+                        fetch(API_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ tasks: sampleTasks })
+                        }).catch(() => { /* silent — localStorage copy is canonical */ });
+                    } catch { /* noop */ }
+                }
+            }
+
+            // If we only have data in the JSON file (no localStorage), mirror it.
+            if (!lsHasTasks && fileHasTasks) {
+                try { localStorage.setItem('tasks', JSON.stringify(fileTodos)); } catch { /* noop */ }
+            }
+
+            setTodos(Array.isArray(finalTodos) ? finalTodos : []);
+            setIsDataLoaded(true);
+            console.log('Loaded tasks:', (finalTodos || []).length, serverAvailable ? '(file+localStorage)' : '(localStorage only)');
         };
         fetchData();
-    }, []);
+    }, [bootstrapSamples, setCategories]);
 
     // 2. Auto-save changes to server (appData.json)
     React.useEffect(() => {
@@ -117,8 +153,6 @@ export function AppProvider({ children }) {
             console.error('Failed to save data before close:', error);
         }
     }, [todos, isDataLoaded]);
-
-    useElectronLifecycle(saveDataToServer);
 
     const [viewMode, setViewMode] = useLocalStorage('todoViewMode', 'board');
     const [searchQuery, setSearchQuery] = useState('');
@@ -383,7 +417,6 @@ export function AppProvider({ children }) {
         setActiveTab,
         isTodoModalOpen,
         setIsTodoModalOpen,
-        loadSampleData,
         categories,
         addGlobalCategory,
         removeCategory,
