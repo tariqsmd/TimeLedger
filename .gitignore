@@ -73,6 +73,9 @@ build/Release
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# Runtime dirs
+uploads/
+
 # IDEs and Editors
 .vscode/*
 !.vscode/extensions.json

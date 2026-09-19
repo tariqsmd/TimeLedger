@@ -17,13 +17,13 @@
     "vite",
     "quick-notes"
   ],
-  "homepage": "https://github.com/your-username/timeledger#readme",
+  "homepage": "https://github.com/tariqsmd/TimeLedger#readme",
   "bugs": {
-    "url": "https://github.com/your-username/timeledger/issues"
+    "url": "https://github.com/tariqsmd/TimeLedger/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/timeledger.git"
+    "url": "git+https://github.com/tariqsmd/TimeLedger.git"
   },
   "scripts": {
     "dev": "vite",
